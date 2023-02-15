@@ -28,8 +28,8 @@ PygmentsUseClasses = true    # required for shhighlight shortcode
 disqusShortname = ""         # disqus_shortname
 googleAnalytics = ""         # UA-XXXXXXXX-X
 
-# language support # en / zh-tw / other... translations present in i18n/
-defaultContentLanguage = "en"           # Default language to use
+# language support # en / zh-cn / other... translations present in i18n/
+defaultContentLanguage = "zh-cn"           # Default language to use
 defaultContentLanguageInSubdir = true
 
 # Links format
@@ -40,7 +40,7 @@ defaultContentLanguageInSubdir = true
   pages = "/:slug/"
 
 [author]                     # required
-  name = "Jane Doe"
+  name = "yehh"
 
 [sitemap]                    # required
   changefreq = "weekly"
@@ -58,7 +58,7 @@ defaultContentLanguageInSubdir = true
   # site info (optional)
   keywords = ["Hugo", "theme","den"]
   description = "A simple theme for Hugo"
-  logoTitle = "Den" # shown on top-left, default: title
+  logoTitle = "Yehh" # shown on top-left, default: title
   siteLogoImage = "images/globe.svg"     # shown besides logoTitle
   # headerTitle = "Den"                   # default: title
   headerImage = "images/background.jpg"
@@ -113,6 +113,8 @@ defaultContentLanguageInSubdir = true
   languageName = "English"
   contentDir = "content/en"
   weight = 1
+  [languages.en.params]
+  description = "Light tomorrow with today."
 
   [[languages.en.menu.main]]
     name = "Notes"
@@ -122,8 +124,8 @@ defaultContentLanguageInSubdir = true
   [[languages.en.menu.main]]
     name = "Demos"
     weight = 20
-    identifier = "demos"
-    url = "category/demos/"
+    identifier = "code"
+    url = "category/code/"
 
   [[languages.en.menu.social]]
     name = "GitHub"
@@ -137,34 +139,34 @@ defaultContentLanguageInSubdir = true
     identifier = "about-me"
     url = "https://github.com/shaform/hugo-theme-den/"
 
-[languages.zh-tw]
-  languageCode = "zh-tw"
-  languageName = "繁體中文"
-  contentDir = "content/zh-tw"
+[languages.zh-cn]
+  languageCode = "zh-cn"
+  languageName = "简体中文"
+  contentDir = "content/zh-cn"
   weight = 2
 
-  [languages.zh-tw.params]
-    description = "一個簡單的佈景。"
+  [languages.zh-cn.params]
+    description = "用现在点亮未来"
 
-  [[languages.zh-tw.menu.main]]
+  [[languages.zh-cn.menu.main]]
     name = "筆記"
     weight = 10
     identifier = "notes"
     url = "category/notes/"
-  [[languages.zh-tw.menu.main]]
-    name = "展示"
+  [[languages.zh-cn.menu.main]]
+    name = "编程"
     weight = 20
-    identifier = "demos"
-    url = "category/demos/"
+    identifier = "code"
+    url = "category/code/"
 
-  [[languages.zh-tw.menu.social]]
+  [[languages.zh-cn.menu.social]]
     name = "GitHub"
     weight = 10
     identifier = "github"
     url = "https://github.com/shaform/hugo-theme-den/"
 
-  [[languages.zh-tw.menu.links]]
-    name = "關於我"
+  [[languages.zh-cn.menu.links]]
+    name = "关于我"
     weight = 10
     identifier = "about-me"
     url = "https://github.com/shaform/hugo-theme-den/"

@@ -1,0 +1,13 @@
+url = "https://blog.yehaohui.com/zh-cn/about/"
+
+[name]
+display = "叶浩辉"
+
+[image]
+url = "images/yehh.png"
+
+[zh-cn]
+description = "一起分享与进步吧。"
+
+[en]
+description = "Stay hungry, stay foolish."

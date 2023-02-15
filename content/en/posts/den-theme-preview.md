@@ -9,7 +9,7 @@ authors:
 - "Shaform"
 - "Jan Doe"
 ---
-
+{{<audio src="audios/爱人错过.mp3" caption="《测试》" >}}
 This is a simple preview for styles in Den.
 
 <!--more-->
