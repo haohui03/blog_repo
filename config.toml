@@ -1,7 +1,8 @@
 # ------------------------------------- #
 # ---- General Settings --------------- #
 # ------------------------------------- #
-baseURL = "https://blog.yehaohui.com/"
+baseURL = "https://haohui03.github.io/blog_repo/"
+canonifyURLs = true           # serve root-relative assets under the GitHub Pages project path
 title = "Yehh"
 theme = "hugo-theme-den"
 #enableRobotsTXT = true       # generate robots.txt
@@ -124,8 +125,8 @@ defaultContentLanguageInSubdir = true
   [[languages.en.menu.main]]
     name = "Demos"
     weight = 20
-    identifier = "code"
-    url = "category/code/"
+    identifier = "demos"
+    url = "category/demos/"
 
   [[languages.en.menu.social]]
     name = "GitHub"

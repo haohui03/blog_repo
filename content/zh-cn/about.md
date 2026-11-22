@@ -6,7 +6,7 @@ menu: "main"
 weight: 50
 ---
 
-## Hi! 我是[叶浩辉](https://blog.yehaohui.com/)
+## Hi! 我是[叶浩辉](/)
 
 [华南理工大学](https://www.scut.edu.cn/new/) 软件学院二年级本科生, 兴趣集中在Computer Vision 和 Trustworthy Machine Learning。
 
