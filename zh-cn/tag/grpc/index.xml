@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>grpc on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/grpc/</link>
+    <description>Recent content in grpc on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 20 Nov 2023 09:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/grpc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>grpc-advanced</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/20/category/grpc-advanced/</link>
+      <pubDate>Mon, 20 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/20/category/grpc-advanced/</guid>
+      <description>grpc-tsl server side TLS 有关TLS的知识结合这个看体验更佳 Interceptor 有4种拦截器 type UnaryClientInterceptor func(ctx context.Context, method string, req, reply interface{}, cc *ClientConn, invoker UnaryInvoker, opts ...CallOption) error type UnaryServerInterceptor func(ctx context.Context, req interface{}, info *UnaryServerInfo, handler UnaryHandler) (resp interface{}, err error) type StreamClientInterceptor func(ctx context.Context, desc *StreamDesc, cc *ClientConn, method string, streamer Streamer,</description>
+    </item>
+    
+    <item>
+      <title>grpc-intro</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/grpc-intro/</link>
+      <pubDate>Sun, 19 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/grpc-intro/</guid>
+      <description>grpc 简单使用 这次这次实践的目录 . ├── client │ └── hello-client │ └── client.go ├── go.mod ├── go.sum ├── proto │ └── hello │ ├── hello_grpc.pb.go │ ├── hello.pb.go │ └── hello.proto └── server └── hello-server └</description>
+    </item>
+    
+  </channel>
+</rss>

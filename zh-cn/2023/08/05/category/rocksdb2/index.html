@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>rocksdb源码分析（2） · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="memtable WAL 介绍 column family共享WAL文件 Life Cycle of a WAL 创建 只有两种情况会创建WAL文件 打开一个新DB Flush DB* db; std::vector&amp;lt;ColumnFamilyDescriptor&amp;gt; column_families; column_families.push_back(ColumnFamilyDescriptor( kDefaultColumnFamilyName, ColumnFamilyOptions())); column_families.push_back(ColumnFamilyDescriptor( &amp;#34;new_cf&amp;#34;, ColumnFamilyOptions())); std::vector&amp;lt;ColumnFamilyHandle*&amp;gt; handles; s = DB::Open(DBOptions(), kDBPath, column_families, &amp;amp;handles, &amp;amp;db); db-&amp;gt;Put(WriteOptions(), handles[1], Slice(&amp;#34;key1&amp;#34;), Slice(&amp;#34;value1&amp;#34;));" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb2/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="rocksdb源码分析（2）" />
+<meta property="og:description" content="memtable WAL 介绍 column family共享WAL文件 Life Cycle of a WAL 创建 只有两种情况会创建WAL文件 打开一个新DB Flush DB* db; std::vector&lt;ColumnFamilyDescriptor&gt; column_families; column_families.push_back(ColumnFamilyDescriptor( kDefaultColumnFamilyName, ColumnFamilyOptions())); column_families.push_back(ColumnFamilyDescriptor( &#34;new_cf&#34;, ColumnFamilyOptions())); std::vector&lt;ColumnFamilyHandle*&gt; handles; s = DB::Open(DBOptions(), kDBPath, column_families, &amp;handles, &amp;db); db-&gt;Put(WriteOptions(), handles[1], Slice(&#34;key1&#34;), Slice(&#34;value1&#34;));" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb2/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-08-05T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-08-05T13:27:30+08:00" />
+
+<meta itemprop="name" content="rocksdb源码分析（2）">
+<meta itemprop="description" content="memtable WAL 介绍 column family共享WAL文件 Life Cycle of a WAL 创建 只有两种情况会创建WAL文件 打开一个新DB Flush DB* db; std::vector&lt;ColumnFamilyDescriptor&gt; column_families; column_families.push_back(ColumnFamilyDescriptor( kDefaultColumnFamilyName, ColumnFamilyOptions())); column_families.push_back(ColumnFamilyDescriptor( &#34;new_cf&#34;, ColumnFamilyOptions())); std::vector&lt;ColumnFamilyHandle*&gt; handles; s = DB::Open(DBOptions(), kDBPath, column_families, &amp;handles, &amp;db); db-&gt;Put(WriteOptions(), handles[1], Slice(&#34;key1&#34;), Slice(&#34;value1&#34;));"><meta itemprop="datePublished" content="2023-08-05T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-08-05T13:27:30+08:00" />
+<meta itemprop="wordCount" content="1398">
+<meta itemprop="keywords" content="infra,Middleware,rocksdb," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="rocksdb源码分析（2）"/>
+<meta name="twitter:description" content="memtable WAL 介绍 column family共享WAL文件 Life Cycle of a WAL 创建 只有两种情况会创建WAL文件 打开一个新DB Flush DB* db; std::vector&lt;ColumnFamilyDescriptor&gt; column_families; column_families.push_back(ColumnFamilyDescriptor( kDefaultColumnFamilyName, ColumnFamilyOptions())); column_families.push_back(ColumnFamilyDescriptor( &#34;new_cf&#34;, ColumnFamilyOptions())); std::vector&lt;ColumnFamilyHandle*&gt; handles; s = DB::Open(DBOptions(), kDBPath, column_families, &amp;handles, &amp;db); db-&gt;Put(WriteOptions(), handles[1], Slice(&#34;key1&#34;), Slice(&#34;value1&#34;));"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">rocksdb源码分析（2）</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-08-05
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/infra/">infra</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/middleware/">Middleware</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/rocksdb/">rocksdb</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="memtable">memtable</h2>
+<h2 id="wal">WAL</h2>
+<h3 id="介绍">介绍</h3>
+<p>column family共享WAL文件</p>
+<h4 id="life-cycle-of-a-wal">Life Cycle of a WAL</h4>
+<h5 id="创建">创建</h5>
+<p>只有两种情况会创建WAL文件</p>
+<ol>
+<li>打开一个新DB</li>
+<li>Flush</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">DB</span><span class="o">*</span> <span class="n">db</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ColumnFamilyDescriptor</span><span class="o">&gt;</span> <span class="n">column_families</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">column_families</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ColumnFamilyDescriptor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">kDefaultColumnFamilyName</span><span class="p">,</span> <span class="n">ColumnFamilyOptions</span><span class="p">()));</span>
+</span></span><span class="line"><span class="cl"><span class="n">column_families</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ColumnFamilyDescriptor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s">&#34;new_cf&#34;</span><span class="p">,</span> <span class="n">ColumnFamilyOptions</span><span class="p">()));</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ColumnFamilyHandle</span><span class="o">*&gt;</span> <span class="n">handles</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="n">DB</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">DBOptions</span><span class="p">(),</span> <span class="n">kDBPath</span><span class="p">,</span> <span class="n">column_families</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">handles</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">db</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">db</span><span class="o">-&gt;</span><span class="n">Put</span><span class="p">(</span><span class="n">WriteOptions</span><span class="p">(),</span> <span class="n">handles</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;key1&#34;</span><span class="p">),</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;value1&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">db</span><span class="o">-&gt;</span><span class="n">Put</span><span class="p">(</span><span class="n">WriteOptions</span><span class="p">(),</span> <span class="n">handles</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;key2&#34;</span><span class="p">),</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;value2&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">db</span><span class="o">-&gt;</span><span class="n">Put</span><span class="p">(</span><span class="n">WriteOptions</span><span class="p">(),</span> <span class="n">handles</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;key3&#34;</span><span class="p">),</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;value3&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">db</span><span class="o">-&gt;</span><span class="n">Put</span><span class="p">(</span><span class="n">WriteOptions</span><span class="p">(),</span> <span class="n">handles</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;key4&#34;</span><span class="p">),</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;value4&#34;</span><span class="p">));</span>
+</span></span></code></pre></div><p>WAL文件此时只有一个，并保持open状态持续记录log，直到大小超过DBOptions::max_total_wal_size(DBImpl::PreprocessWrite里面会检查)。</p>
+<h5 id="flush和删除">Flush和删除</h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">db</span><span class="o">-&gt;</span><span class="n">Flush</span><span class="p">(</span><span class="n">FlushOptions</span><span class="p">(),</span> <span class="n">handles</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// key5 and key6 will appear in a new WAL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">db</span><span class="o">-&gt;</span><span class="n">Put</span><span class="p">(</span><span class="n">WriteOptions</span><span class="p">(),</span> <span class="n">handles</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;key5&#34;</span><span class="p">),</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;value5&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">db</span><span class="o">-&gt;</span><span class="n">Put</span><span class="p">(</span><span class="n">WriteOptions</span><span class="p">(),</span> <span class="n">handles</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;key6&#34;</span><span class="p">),</span> <span class="n">Slice</span><span class="p">(</span><span class="s">&#34;value6&#34;</span><span class="p">));</span>
+</span></span></code></pre></div><p>在<code>new_cf</code>Flush的时候会创建一个新的WAL文件，此时旧的WAL文件不会被删除，因为里面还保存默认cf里面的log。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">db</span><span class="o">-&gt;</span><span class="n">Flush</span><span class="p">(</span><span class="n">FlushOptions</span><span class="p">(),</span> <span class="n">handles</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// The older WAL will be archived and purged separately
+</span></span></span></code></pre></div><p>只有当<code>default_cf</code>Flush的时候，旧的WAL文件才会被删除。</p>
+<h3 id="wal-configuration">WAL configuration</h3>
+<ul>
+<li>DBOptions::wal_dir WAL目录位置</li>
+<li>DBOptions::WAL_ttl_seconds, DBOptions::WAL_size_limit_MB archive和purge的时间和大小限制</li>
+<li>DBOptions::max_total_wal_size 设置当前WAL的最大大小，超过就flush。这会让我们不必跟踪非常久远的WAL文件。</li>
+<li>WriteOptions::disableWAL 禁用WAL</li>
+</ul>
+<h3 id="dbimpllog_mutex">DBImpl::log_mutex</h3>
+<p>所有的cf共享WAL文件于是理所当然同步所需的锁应该由DBImpl来持有，实际上DBImpl使用了两个锁来实现复杂的同步机制。</p>
+<h4 id="1-dbimplmutex_-用来同步log相关的变量">1. DBImpl::mutex_ 用来同步log相关的变量</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">  <span class="c1">// State below is protected by mutex_
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// With two_write_queues enabled, some of the variables that accessed during
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// WriteToWAL need different synchronization: log_empty_, alive_log_files_,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// logs_, logfile_number_. Refer to the definition of each variable below for
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// more description.
+</span></span></span></code></pre></div><h4 id="2-dbimpllog_write_mutex_-用来同步log的写入">2. DBImpl::log_write_mutex_ 用来同步log的写入</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">  <span class="c1">// In addition to mutex_, log_write_mutex_ protects writes to logs_ and
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// logfile_number_. With two_write_queues it also protects alive_log_files_,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// and log_empty_. Refer to the definition of each variable below for more
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// details.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// Note: to avoid deadlock, if needed to acquire both log_write_mutex_ and
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// mutex_, the order should be first mutex_ and then log_write_mutex_.
+</span></span></span></code></pre></div><p>具体对某个变量如何进行加锁和释放需要看具体的代码。</p>
+<h3 id="switchwal">SwitchWAL</h3>
+<p>对应上面说的切换WAL文件</p>
+<p>代码中主要对应得是DBImpl::SwitchWAL，这是一个重要的函数，接下来让我们看下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Status</span> <span class="n">DBImpl</span><span class="o">::</span><span class="n">SwitchWAL</span><span class="p">(</span><span class="n">WriteContext</span><span class="o">*</span> <span class="n">write_context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//首先确保mutex_是被持有的，DBImpl::mutex_是用来实现log的一些变量的同步的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="wal写入">WAL写入</h3>
+<p>在写入的时候（PUT）有两种情况：</p>
+<h4 id="leader">LEADER</h4>
+<p>LEADER在WriteImpl的时候首先会做一个preprocess</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">    <span class="c1">//::WriteImpl
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">//记录此次的log_Context
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">status</span> <span class="o">=</span> <span class="n">PreprocessWrite</span><span class="p">(</span><span class="n">write_options</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">log_context</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">write_context</span><span class="p">);</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">    <span class="c1">//这个函数主要是在Leader写之前将比较大的memtable变成immutable和把WAL文件刷到磁盘上
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Status</span> <span class="n">DBImpl</span><span class="o">::</span><span class="n">PreprocessWrite</span><span class="p">(</span><span class="k">const</span> <span class="n">WriteOptions</span><span class="o">&amp;</span> <span class="n">write_options</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                               <span class="n">LogContext</span><span class="o">*</span> <span class="n">log_context</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                               <span class="n">WriteContext</span><span class="o">*</span> <span class="n">write_context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//主要是对各个情况进行分析
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">UNLIKELY</span><span class="p">(</span><span class="n">status</span><span class="p">.</span><span class="n">ok</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">total_log_size_</span> <span class="o">&gt;</span> <span class="n">GetMaxTotalWalSize</span><span class="p">()))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">//WAL大小超过了max_total_wal_size，需要创建新的WAL文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">assert</span><span class="p">(</span><span class="n">versions_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">InstrumentedMutexLock</span> <span class="nf">l</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">//对column_family不熟悉的可以看源码解析第三章
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">const</span> <span class="n">ColumnFamilySet</span><span class="o">*</span> <span class="k">const</span> <span class="n">column_families</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">                <span class="n">versions_</span><span class="o">-&gt;</span><span class="n">GetColumnFamilySet</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">assert</span><span class="p">(</span><span class="n">column_families</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">size_t</span> <span class="n">num_cfs</span> <span class="o">=</span> <span class="n">column_families</span><span class="o">-&gt;</span><span class="n">NumberOfColumnFamilies</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">assert</span><span class="p">(</span><span class="n">num_cfs</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">num_cfs</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">//说明这个WAL文件包含多个cf
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="c1">//WaitForFlushes会等待所有的写memtable完成，包括pipeline被设置时的Memtable_write队列和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="c1">//要切换memtable的写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">WaitForPendingWrites</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">//这个函数会创建新的WAL文件，详情看上面
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">status</span> <span class="o">=</span> <span class="n">SwitchWAL</span><span class="p">(</span><span class="n">write_context</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></div><h3 id="格式">格式</h3>
+<h3 id="创建-1">创建:</h3>
+<ol>
+<li>rocksdb::DB::Open(options, “./db/”, &amp;db);</li>
+<li>db-&gt;Flush(rocksdb::FlushOptions(), handles[1]);</li>
+<li>在Write的时候检查WAl大小超过了max_total_wal_size的时候，会创建新的wal。</li>
+</ol>
+<h2 id="memtable-1">memtable</h2>
+<h3 id="写入">写入</h3>
+<h2 id="sliceh">slice.h</h2>
+<h3 id="slice">Slice</h3>
+<ul>
+<li>主要是对字符串的封装，包括了字符串的长度和指针。</li>
+</ul>
+<h3 id="pinnableslice">pinnableslice</h3>
+<ul>
+<li>
+<p>主要是对Slice的封装，继承于slice和cleanable，主要是避免memcpy，可以注册clean函数，当slice不再使用的时候，会调用clean函数。</p>
+</li>
+<li>
+<p>读时优化 <img src="https://haohui03.github.io/blog_repo/images/restored/v2-48739e53602175c42694c5d756e4b112_720w-2a5c867536bc.webp" alt=""></p>
+</li>
+</ul>
+<p>记得每次使用过后需要reset，否则会出现内存泄漏。</p>
+<h2 id="customizableh">customizable.h</h2>
+<pre tabindex="0"><code>看不下去
+</code></pre><h2 id="configurableh">Configurable.h</h2>
+<pre tabindex="0"><code>Configurable类
+也看不下去
+</code></pre><p>参考:</p>
+<p><a href="https://rocksdb.org/blog/2017/08/24/pinnableslice.html">official blog</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/30807728">这个讲的比较好</a></p>
+<h3 id="sliceparts">SliceParts</h3>
+<ul>
+<li>表示slice数组。</li>
+</ul>
+<p>参考:</p>
+<p><a href="https://zhuanlan.zhihu.com/p/343323703">Rocksdb WAL实现及源码详解</a> <a href="https://github.com/facebook/rocksdb/wiki/Write-Ahead-Log-%28WAL%29">official blog</a> <a href="http://mysql.taobao.org/monthly/2018/09/04/">数据库月报RocksDB · Memtable flush分析</a></p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

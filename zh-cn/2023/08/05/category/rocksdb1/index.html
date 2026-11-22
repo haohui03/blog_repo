@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>rocksdb源码分析（1） · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="rocksdb源码解读(一) 本系列开始对rocksdb源码进行解读，主要是为了更好的理解rocksdb的设计思想，以及对rocksdb的使用" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb1/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="rocksdb源码分析（1）" />
+<meta property="og:description" content="rocksdb源码解读(一) 本系列开始对rocksdb源码进行解读，主要是为了更好的理解rocksdb的设计思想，以及对rocksdb的使用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb1/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-08-05T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-08-05T13:27:30+08:00" />
+
+<meta itemprop="name" content="rocksdb源码分析（1）">
+<meta itemprop="description" content="rocksdb源码解读(一) 本系列开始对rocksdb源码进行解读，主要是为了更好的理解rocksdb的设计思想，以及对rocksdb的使用"><meta itemprop="datePublished" content="2023-08-05T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-08-05T13:27:30+08:00" />
+<meta itemprop="wordCount" content="4705">
+<meta itemprop="keywords" content="infra,Middleware,rocksdb," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="rocksdb源码分析（1）"/>
+<meta name="twitter:description" content="rocksdb源码解读(一) 本系列开始对rocksdb源码进行解读，主要是为了更好的理解rocksdb的设计思想，以及对rocksdb的使用"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">rocksdb源码分析（1）</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-08-05
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/infra/">infra</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/middleware/">Middleware</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/rocksdb/">rocksdb</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="rocksdb源码解读一">rocksdb源码解读(一)</h2>
+<p>本系列开始对rocksdb源码进行解读，主要是为了更好的理解rocksdb的设计思想，以及对rocksdb的使用有更深入的理解。 从用法开始一步步深入。</p>
+<h2 id="rocksdb的基本使用">rocksdb的基本使用</h2>
+<h3 id="option设置">option设置</h3>
+<p>在打开一个rocksdb的时候需要提供设置选项,有<a href="https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map">三种方法</a></p>
+<ol>
+<li>通过Options类</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">  <span class="n">rocksdb</span><span class="o">::</span><span class="n">DB</span> <span class="o">*</span><span class="n">db</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">rocksdb</span><span class="o">::</span><span class="n">Options</span> <span class="n">options</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">options</span><span class="p">.</span><span class="n">create_if_missing</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">rocksdb</span><span class="o">::</span><span class="n">Status</span> <span class="n">status</span> <span class="o">=</span> <span class="n">rocksdb</span><span class="o">::</span><span class="n">DB</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s">&#34;/tmp/testdb&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">db</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">assert</span><span class="p">(</span><span class="n">status</span><span class="p">.</span><span class="n">ok</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//也可以使用leveldb相关接口的options并转变成rocksdb的options
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="cp">#include</span> <span class="cpf">&#34;rocksdb/utilities/leveldb_options.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">rocksdb</span><span class="o">::</span><span class="n">LevelDBOptions</span> <span class="n">leveldb_options</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">leveldb_options</span><span class="p">.</span><span class="n">option1</span> <span class="o">=</span> <span class="n">value1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">leveldb_options</span><span class="p">.</span><span class="n">option2</span> <span class="o">=</span> <span class="n">value2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">...</span>
+</span></span><span class="line"><span class="cl">  <span class="n">rocksdb</span><span class="o">::</span><span class="n">Options</span> <span class="n">options</span> <span class="o">=</span> <span class="n">rocksdb</span><span class="o">::</span><span class="n">ConvertOptions</span><span class="p">(</span><span class="n">leveldb_options</span><span class="p">);</span>
+</span></span></code></pre></div><p><a href="https://github.com/facebook/rocksdb/wiki/RocksDB-Options-File">也可以通过options 文件</a></p>
+<blockquote>
+<p>In RocksDB 4.3, we add a set of features that makes managing RocksDB options easier.</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>Each RocksDB database will now automatically persist its current set of options into a file on every successful call of DB::Open(), SetOptions(), and CreateColumnFamily() / DropColumnFamily().</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>LoadLatestOptions() / LoadOptionsFromFile(): A function that constructs RocksDB options object from an options file.</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>CheckOptionsCompatibility: A function that performs compatibility check on two sets of RocksDB options.</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>With the above options file support, developers no longer need to maintain the full set of options of a previously-created RocksDB instance. In addition, when changing options is needed, CheckOptionsCompatibility() can further make sure the resulting set of Options can successfully open the same RocksDB database without corrupting the underlying data.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">  <span class="c1">// 一般来说的步骤就是 先load上次的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">LoadLatestOptions</span><span class="p">(</span><span class="n">cfg_opts</span><span class="p">,</span> <span class="n">path_to_db</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">loaded_db_opt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">loaded_cf_descs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">//然后检查
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">Status</span> <span class="n">s</span> <span class="o">=</span> <span class="n">CheckOptionsCompatibility</span><span class="p">(</span><span class="n">cfg_opts</span><span class="p">,</span> <span class="n">kDBPath</span><span class="p">,</span> <span class="n">db_options</span><span class="p">,</span> <span class="n">loaded_cf_descs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">//接着打开
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">s</span> <span class="o">=</span> <span class="n">DB</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">loaded_db_opt</span><span class="p">,</span> <span class="n">kDBPath</span><span class="p">,</span> <span class="n">loaded_cf_descs</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">handles</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">db</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 要注意一些 新版本-&gt;旧版本和 一些用户定义的函数和指针类型的option需要特殊处理
+</span></span></span></code></pre></div><p><a href="https://github.com/facebook/rocksdb/blob/main/examples/rocksdb_option_file_example.ini">这是一个官方的示例ini配置文件</a></p>
+<ol start="2">
+<li>Option String</li>
+<li>Option map</li>
+</ol>
+<h3 id="status">Status</h3>
+<p>两种方法</p>
+<ol>
+<li></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"> <span class="k">delete</span> <span class="n">db</span><span class="p">;</span> <span class="c1">//会丢失错误信息
+</span></span></span></code></pre></div><ol start="2">
+<li></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">  <span class="p">...</span> <span class="k">do</span> <span class="n">something</span> <span class="n">with</span> <span class="n">db</span> <span class="p">...</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Status</span> <span class="n">s</span> <span class="o">=</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">...</span> <span class="n">log</span> <span class="n">status</span> <span class="p">...</span>
+</span></span><span class="line"><span class="cl">  <span class="k">delete</span> <span class="n">db</span><span class="p">;</span>
+</span></span></code></pre></div><h2 id="simple-rw-example">simple r/w example</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">DB</span><span class="o">*</span> <span class="n">db</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Options</span> <span class="n">options</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Optimize RocksDB. This is the easiest way to get RocksDB to perform well
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">options</span><span class="p">.</span><span class="n">IncreaseParallelism</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">options</span><span class="p">.</span><span class="n">OptimizeLevelStyleCompaction</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// create the DB if it&#39;s not already present
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">options</span><span class="p">.</span><span class="n">create_if_missing</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// open DB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Status</span> <span class="n">s</span> <span class="o">=</span> <span class="n">DB</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">kDBPath</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">db</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assert</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">ok</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Put key-value
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">s</span> <span class="o">=</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">Put</span><span class="p">(</span><span class="n">WriteOptions</span><span class="p">(),</span> <span class="s">&#34;key1&#34;</span><span class="p">,</span> <span class="s">&#34;value&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assert</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">ok</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// get value
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">s</span> <span class="o">=</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="n">ReadOptions</span><span class="p">(),</span> <span class="s">&#34;key1&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assert</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">ok</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assert</span><span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="s">&#34;value&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// atomically apply a set of updates
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">WriteBatch</span> <span class="n">batch</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">batch</span><span class="p">.</span><span class="n">Delete</span><span class="p">(</span><span class="s">&#34;key1&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">batch</span><span class="p">.</span><span class="n">Put</span><span class="p">(</span><span class="s">&#34;key2&#34;</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">s</span> <span class="o">=</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">(</span><span class="n">WriteOptions</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">batch</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">=</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="n">ReadOptions</span><span class="p">(),</span> <span class="s">&#34;key1&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assert</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">IsNotFound</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">db</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="n">ReadOptions</span><span class="p">(),</span> <span class="s">&#34;key2&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assert</span><span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="s">&#34;value&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">PinnableSlice</span> <span class="n">pinnable_val</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">db</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="n">ReadOptions</span><span class="p">(),</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">DefaultColumnFamily</span><span class="p">(),</span> <span class="s">&#34;key2&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pinnable_val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">assert</span><span class="p">(</span><span class="n">pinnable_val</span> <span class="o">==</span> <span class="s">&#34;value&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">string_val</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// If it cannot pin the value, it copies the value to its internal buffer.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// The intenral buffer could be set during construction.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">PinnableSlice</span> <span class="nf">pinnable_val</span><span class="p">(</span><span class="o">&amp;</span><span class="n">string_val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">db</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="n">ReadOptions</span><span class="p">(),</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">DefaultColumnFamily</span><span class="p">(),</span> <span class="s">&#34;key2&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pinnable_val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">assert</span><span class="p">(</span><span class="n">pinnable_val</span> <span class="o">==</span> <span class="s">&#34;value&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// If the value is not pinned, the internal buffer must have the value.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">assert</span><span class="p">(</span><span class="n">pinnable_val</span><span class="p">.</span><span class="n">IsPinned</span><span class="p">()</span> <span class="o">||</span> <span class="n">string_val</span> <span class="o">==</span> <span class="s">&#34;value&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">PinnableSlice</span> <span class="n">pinnable_val</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">=</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="n">ReadOptions</span><span class="p">(),</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">DefaultColumnFamily</span><span class="p">(),</span> <span class="s">&#34;key1&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pinnable_val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assert</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">IsNotFound</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Reset PinnableSlice after each use and before each reuse
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">pinnable_val</span><span class="p">.</span><span class="n">Reset</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">db</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="n">ReadOptions</span><span class="p">(),</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">DefaultColumnFamily</span><span class="p">(),</span> <span class="s">&#34;key2&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pinnable_val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assert</span><span class="p">(</span><span class="n">pinnable_val</span> <span class="o">==</span> <span class="s">&#34;value&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pinnable_val</span><span class="p">.</span><span class="n">Reset</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// The Slice pointed by pinnable_val is not valid after this point
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">delete</span> <span class="n">db</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span></code></pre></div><h4 id="writeoption">WriteOption</h4>
+<p>设置写入选项</p>
+<ul>
+<li>sync(是否刷盘)</li>
+<li>disableWAL</li>
+<li>ignore_missing_column_families(没有Column_family的时候忽略)</li>
+<li>no_slowdown(非阻塞写，否则立即返回错误)</li>
+<li>low_pri(等待优先级高的写入或者compaction完成)</li>
+<li>memtable_insert_hint_per_batch（记住该batch的最后写入位置提高效率）</li>
+<li>rate_limiter_priority（设置优先级）</li>
+<li>protection_bytes_per_key([0|8]设置保护字节，用于检测写入的错误)</li>
+</ul>
+<p>readoption有点多遇到再看</p>
+<h4 id="put实现">PUT实现</h4>
+<p>先贴一张dalao的图</p>
+<p>入口:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// Set the database entry for &#34;key&#34; to &#34;value&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// If &#34;key&#34; already exists, it will be overwritten.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// Returns OK on success, and a non-OK status on error.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// Note: consider setting options.sync = true.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">virtual</span> <span class="n">Status</span> <span class="nf">Put</span><span class="p">(</span><span class="k">const</span> <span class="n">WriteOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                     <span class="n">ColumnFamilyHandle</span><span class="o">*</span> <span class="n">column_family</span><span class="p">,</span> <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                     <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">virtual</span> <span class="n">Status</span> <span class="nf">Put</span><span class="p">(</span><span class="k">const</span> <span class="n">WriteOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                     <span class="n">ColumnFamilyHandle</span><span class="o">*</span> <span class="n">column_family</span><span class="p">,</span> <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                     <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">ts</span><span class="p">,</span> <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">virtual</span> <span class="n">Status</span> <span class="nf">Put</span><span class="p">(</span><span class="k">const</span> <span class="n">WriteOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span> <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                     <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Put</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">DefaultColumnFamily</span><span class="p">(),</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">virtual</span> <span class="n">Status</span> <span class="nf">Put</span><span class="p">(</span><span class="k">const</span> <span class="n">WriteOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span> <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                     <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">ts</span><span class="p">,</span> <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Put</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">DefaultColumnFamily</span><span class="p">(),</span> <span class="n">key</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">//上面两个纯虚函数才是真正实现的地方，下面只是设置默认的column_family。而DBImpl也只是检查一下并调用父类的put函数
+</span></span></span></code></pre></div><p>下面来看Put的实现</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// Default implementations of convenience methods that subclasses of DB
+</span></span></span><span class="line"><span class="cl"><span class="c1">// can call if they wish
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Status</span> <span class="n">DB</span><span class="o">::</span><span class="n">Put</span><span class="p">(</span><span class="k">const</span> <span class="n">WriteOptions</span><span class="o">&amp;</span> <span class="n">opt</span><span class="p">,</span> <span class="n">ColumnFamilyHandle</span><span class="o">*</span> <span class="n">column_family</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span> <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// Pre-allocate size of write batch conservatively.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 8 bytes are taken by header, 4 bytes for count, 1 byte for type,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// and we allocate 11 extra bytes for key length, as well as value length.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">WriteBatch</span> <span class="nf">batch</span><span class="p">(</span><span class="n">key</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">+</span> <span class="n">value</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">+</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">0</span> <span class="cm">/* max_bytes */</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">opt</span><span class="p">.</span><span class="n">protection_bytes_per_key</span><span class="p">,</span> <span class="mi">0</span> <span class="cm">/* default_cf_ts_sz */</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Status</span> <span class="n">s</span> <span class="o">=</span> <span class="n">batch</span><span class="p">.</span><span class="n">Put</span><span class="p">(</span><span class="n">column_family</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">ok</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nf">Write</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">batch</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Write进入WriteImpl
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Status</span> <span class="n">DBImpl</span><span class="o">::</span><span class="n">Write</span><span class="p">(</span><span class="k">const</span> <span class="n">WriteOptions</span><span class="o">&amp;</span> <span class="n">write_options</span><span class="p">,</span> <span class="n">WriteBatch</span><span class="o">*</span> <span class="n">my_batch</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Status</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">write_options</span><span class="p">.</span><span class="n">protection_bytes_per_key</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">=</span> <span class="n">WriteBatchInternal</span><span class="o">::</span><span class="n">UpdateProtectionInfo</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">my_batch</span><span class="p">,</span> <span class="n">write_options</span><span class="p">.</span><span class="n">protection_bytes_per_key</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">ok</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">=</span> <span class="n">WriteImpl</span><span class="p">(</span><span class="n">write_options</span><span class="p">,</span> <span class="n">my_batch</span><span class="p">,</span> <span class="cm">/*callback=*/</span><span class="k">nullptr</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                  <span class="cm">/*log_used=*/</span><span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这其实是DB PUT的一个默认实现，在DBImpl中下面两个PUT被重写，主要就是检查一下time-stamp然后调用DB::PUT，这里的put默认就是上面的实现（将单个PUT包装成一个Batch(软件复用)）,然后进入DBImpl::Write,,然后调用WriteImpl。</p>
+<h5 id="接下来是最重要的writeimpl这里先介绍一些背景知识和术语">接下来是最重要的WriteImpl，这里先介绍一些背景知识和术语。</h5>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/Z2qXMzLYCHbgrfR-1598ab295705.png" alt="image.png"></p>
+<blockquote>
+<p>rocksdb支持多线程并发写入，在多个写线程中选出一个领导者，然后领导者负责为这一批线程进行统一的WAL写入，然后根据用户设置的不同（rocksdb允许在打开数据库时通过选项进行设置）。</p>
+<ul>
+<li>如果使用高并发度的设置，leader线程就会唤醒所有在等待的follower线程，然后所有线程一起并发写memtable，等到所有线程全部写入完成，leader线程就会唤醒组织下一批写入的正在等待的新leader线程，然后退出</li>
+<li>如果使用低并发度的设置，leader线程就会为整个批写入组的线程完成串行的memtable写入，然后按照与上述逻辑相同的方式退出。</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">//...检查option的一些条件
+</span></span></span><span class="line"><span class="cl"><span class="c1">//生成Writer Writer是单次写入的一个抽象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">WriteThread</span><span class="o">::</span><span class="n">Writer</span> <span class="n">w</span><span class="p">(</span><span class="n">write_options</span><span class="p">,</span> <span class="n">my_batch</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">log_ref</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">disable_memtable</span><span class="p">,</span> <span class="n">batch_cnt</span><span class="p">,</span> <span class="n">pre_release_callback</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">post_memtable_callback</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//将此次Write加入队列中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">write_thread_</span><span class="p">.</span><span class="n">JoinBatchGroup</span><span class="p">(</span><span class="o">&amp;</span><span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//... 见下
+</span></span></span></code></pre></div><p>首先会生成一个Writer，包含了此次写入的信息，然后WriteThread::JoinBatchGroup（这里的group是一串链表，每次写入都只会有一个group被写入）。</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/FL28VCWfDxNn73E-2467f9d82130.png" alt="image.png"> 两个指针实现双向链表，而且在DBImpl中唯一的WriteThread中是用<code>std::atomic&lt;Writer*&gt; newest_writer_;</code>来保存的，这样可以实现尾节点插入的原子性，可以多线程并发插入尾节点。(注意在插入节点的时候只有后指向前的单向链表，在leader写的时候才会从后往前建立另一个方向的连接)</p>
+<p>而且WriteThread在初始化的时候，newest_writer_是初始化为null的所以第一个进入的一定是leader。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">WriteThread</span><span class="o">::</span><span class="n">JoinBatchGroup</span><span class="p">(</span><span class="n">Writer</span><span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">TEST_SYNC_POINT_CALLBACK</span><span class="p">(</span><span class="s">&#34;WriteThread::JoinBatchGroup:Start&#34;</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">assert</span><span class="p">(</span><span class="n">w</span><span class="o">-&gt;</span><span class="n">batch</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">//linkOne 函数主要是把链表尾newest_writer变成此次的writer（也就是插入尾）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">//，如果链表没有元素就直接返回(也就是这是第一个Writer也就是leader)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">bool</span> <span class="n">linked_as_leader</span> <span class="o">=</span> <span class="n">LinkOne</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">newest_writer_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">linked_as_leader</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SetState</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">STATE_GROUP_LEADER</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">TEST_SYNC_POINT_CALLBACK</span><span class="p">(</span><span class="s">&#34;WriteThread::JoinBatchGroup:Wait&#34;</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">TEST_SYNC_POINT_CALLBACK</span><span class="p">(</span><span class="s">&#34;WriteThread::JoinBatchGroup:Wait2&#34;</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">linked_as_leader</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * Wait util:
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 1) An existing leader pick us as the new leader when it finishes
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 2) An existing leader pick us as its follewer and
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 2.1) finishes the memtable writes on our behalf
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 2.2) Or tell us to finish the memtable writes in pralallel
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 3) (pipelined write) An existing leader pick us as its follower and
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *    finish book-keeping and WAL write for us, enqueue us as pending
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *    memtable writer, and
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 3.1) we become memtable writer group leader, or
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 3.2) an existing memtable writer group leader tell us to finish memtable
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *      writes in parallel.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TEST_SYNC_POINT_CALLBACK</span><span class="p">(</span><span class="s">&#34;WriteThread::JoinBatchGroup:BeganWaiting&#34;</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">AwaitState</span><span class="p">(</span><span class="n">w</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="n">STATE_GROUP_LEADER</span> <span class="o">|</span> <span class="n">STATE_MEMTABLE_WRITER_LEADER</span> <span class="o">|</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">STATE_PARALLEL_MEMTABLE_WRITER</span> <span class="o">|</span> <span class="n">STATE_COMPLETED</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="o">&amp;</span><span class="n">jbg_ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TEST_SYNC_POINT_CALLBACK</span><span class="p">(</span><span class="s">&#34;WriteThread::JoinBatchGroup:DoneWaiting&#34;</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>一个DBImpl有一个write_thread_。</p>
+<p>newest_writer是WriteThread的一个成员变量，是一个指向Writer的指针，用来指向当前正在写入的Writer，而且是原子的，所以可以多线程并发写入。</p>
+<p>LinkOne实现得也比较好，所以这里也记录一下，注意看注释。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">WriteThread</span><span class="o">::</span><span class="n">LinkOne</span><span class="p">(</span><span class="n">Writer</span><span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="n">Writer</span><span class="o">*&gt;*</span> <span class="n">newest_writer</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">assert</span><span class="p">(</span><span class="n">newest_writer</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 设置初始化状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">assert</span><span class="p">(</span><span class="n">w</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">==</span> <span class="n">STATE_INIT</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Writer</span><span class="o">*</span> <span class="n">writers</span> <span class="o">=</span> <span class="n">newest_writer</span><span class="o">-&gt;</span><span class="n">load</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assert</span><span class="p">(</span><span class="n">writers</span> <span class="o">!=</span> <span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// If write stall in effect, and w-&gt;no_slowdown is not true,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// block here until stall is cleared. If its true, then return
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// immediately
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">writers</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">write_stall_dummy_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">w</span><span class="o">-&gt;</span><span class="n">no_slowdown</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">w</span><span class="o">-&gt;</span><span class="n">status</span> <span class="o">=</span> <span class="n">Status</span><span class="o">::</span><span class="n">Incomplete</span><span class="p">(</span><span class="s">&#34;Write stall&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">SetState</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">STATE_COMPLETED</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// Since no_slowdown is false, wait here to be notified of the write
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// stall clearing
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//mutex和cv一起使用，先获取锁，再判断，如果不行就wait，如果可以就执行，不行就循环。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">MutexLock</span> <span class="nf">lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">stall_mu_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">writers</span> <span class="o">=</span> <span class="n">newest_writer</span><span class="o">-&gt;</span><span class="n">load</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">writers</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">write_stall_dummy_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">TEST_SYNC_POINT_CALLBACK</span><span class="p">(</span><span class="s">&#34;WriteThread::WriteStall::Wait&#34;</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="n">stall_cv_</span><span class="p">.</span><span class="n">Wait</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">          <span class="c1">// Load newest_writers_ again since it may have changed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="n">writers</span> <span class="o">=</span> <span class="n">newest_writer</span><span class="o">-&gt;</span><span class="n">load</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//连接到链表尾，并且如果cas失败不破坏newest_writer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">w</span><span class="o">-&gt;</span><span class="n">link_older</span> <span class="o">=</span> <span class="n">writers</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">newest_writer</span><span class="o">-&gt;</span><span class="n">compare_exchange_weak</span><span class="p">(</span><span class="n">writers</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">(</span><span class="n">writers</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>LinkOne结束后，要么以leader退出JoinBatchGroup要么阻塞等待。</p>
+<ol>
+<li>现在先以leader角度分析，继续看WriteImpl</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">//加入队列后有三种状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">switch</span><span class="p">(</span><span class="n">status</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">  <span class="k">case</span> <span class="nl">leader</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//leader有责任选择Writegroup中的一系列write进行写入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//根据条件选择性，这主要是检查memtable和log文件是否太大这些，是不是要在这次写前先刷盘或者变成immutable这样。 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">status</span> <span class="o">=</span> <span class="n">PreprocessWrite</span><span class="p">(</span><span class="n">write_options</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">log_context</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">write_context</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//重要的还是这个
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">WriteThread</span><span class="o">::</span><span class="n">WriteGroup</span> <span class="n">write_group</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">last_batch_group_size_</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">    <span class="n">write_thread_</span><span class="p">.</span><span class="n">EnterAsBatchGroupLeader</span><span class="p">(</span><span class="o">&amp;</span><span class="n">w</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">write_group</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//判断是否可以并发写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// Rules for when we can update the memtable concurrently
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 1. supported by memtable
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 2. Puts are not okay if inplace_update_support
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 3. Merges are not okay
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">//再次遍历并且记录信息(valid_batches,total_byte_size等等)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">*</span> <span class="nl">writer</span> <span class="p">:</span> <span class="n">write_group</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">assert</span><span class="p">(</span><span class="n">writer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">writer</span><span class="o">-&gt;</span><span class="n">CheckCallback</span><span class="p">(</span><span class="k">this</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">valid_batches</span> <span class="o">+=</span> <span class="n">writer</span><span class="o">-&gt;</span><span class="n">batch_cnt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">writer</span><span class="o">-&gt;</span><span class="n">ShouldWriteToMemtable</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">total_countvalid_batches</span> <span class="o">+=</span> <span class="n">WriteBatchInternal</span><span class="o">::</span><span class="n">Count</span><span class="p">(</span><span class="n">writer</span><span class="o">-&gt;</span><span class="n">batch</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="n">parallel</span> <span class="o">=</span> <span class="n">parallel</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">writer</span><span class="o">-&gt;</span><span class="n">batch</span><span class="o">-&gt;</span><span class="n">HasMerge</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">total_byte_size</span> <span class="o">=</span> <span class="n">WriteBatchInternal</span><span class="o">::</span><span class="n">AppendedByteSize</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">total_byte_size</span><span class="p">,</span> <span class="n">WriteBatchInternal</span><span class="o">::</span><span class="n">ByteSize</span><span class="p">(</span><span class="n">writer</span><span class="o">-&gt;</span><span class="n">batch</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">writer</span><span class="o">-&gt;</span><span class="n">pre_release_callback</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">pre_release_callback_cnt</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//根据seq_per_batch_判断是增加valid batch还是total_count一个是包括所有的batch一个是去掉dismemtable的。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">size_t</span> <span class="n">seq_inc</span> <span class="o">=</span> <span class="n">seq_per_batch_</span> <span class="o">?</span> <span class="nl">valid_batches</span> <span class="p">:</span> <span class="n">total_count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//由leader统计一些信息，比如total_byte_size等等
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">stats</span><span class="o">-&gt;</span><span class="n">AddDBStats</span><span class="p">(</span><span class="n">InternalStats</span><span class="o">::</span><span class="n">kIntStatsNumKeysWritten</span><span class="p">,</span> <span class="n">total_count</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                      <span class="n">concurrent_update</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">RecordTick</span><span class="p">(</span><span class="n">stats_</span><span class="p">,</span> <span class="n">NUMBER_KEYS_WRITTEN</span><span class="p">,</span> <span class="n">total_count</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//终于到了写WAL,WAL的写入请看源码分析第二章
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">two_write_queues_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">.</span><span class="n">ok</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">write_options</span><span class="p">.</span><span class="n">disableWAL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">assert</span><span class="p">(</span><span class="n">log_context</span><span class="p">.</span><span class="n">log_file_number_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">LogFileNumberSize</span><span class="o">&amp;</span> <span class="n">log_file_number_size</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">            <span class="o">*</span><span class="p">(</span><span class="n">log_context</span><span class="p">.</span><span class="n">log_file_number_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">PERF_TIMER_GUARD</span><span class="p">(</span><span class="n">write_wal_time</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">io_s</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">            <span class="n">WriteToWAL</span><span class="p">(</span><span class="n">write_group</span><span class="p">,</span> <span class="n">log_context</span><span class="p">.</span><span class="n">writer</span><span class="p">,</span> <span class="n">log_used</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                       <span class="n">log_context</span><span class="p">.</span><span class="n">need_log_sync</span><span class="p">,</span> <span class="n">log_context</span><span class="p">.</span><span class="n">need_log_dir_sync</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                       <span class="n">last_sequence</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">log_file_number_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">.</span><span class="n">ok</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">write_options</span><span class="p">.</span><span class="n">disableWAL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">PERF_TIMER_GUARD</span><span class="p">(</span><span class="n">write_wal_time</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// LastAllocatedSequence is increased inside WriteToWAL under
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// wal_write_mutex_ to ensure ordered events in WAL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">io_s</span> <span class="o">=</span> <span class="n">ConcurrentWriteToWAL</span><span class="p">(</span><span class="n">write_group</span><span class="p">,</span> <span class="n">log_used</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">last_sequence</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                    <span class="n">seq_inc</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// Otherwise we inc seq number for memtable writes
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">last_sequence</span> <span class="o">=</span> <span class="n">versions_</span><span class="o">-&gt;</span><span class="n">FetchAddLastAllocatedSequence</span><span class="p">(</span><span class="n">seq_inc</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>EnterAsBatchGroupLeader看起来没什么压力</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">size_t</span> <span class="n">WriteThread</span><span class="o">::</span><span class="n">EnterAsBatchGroupLeader</span><span class="p">(</span><span class="n">Writer</span><span class="o">*</span> <span class="n">leader</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                            <span class="n">WriteGroup</span><span class="o">*</span> <span class="n">write_group</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 统计此次写的大小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">size_t</span> <span class="n">size</span> <span class="o">=</span> <span class="n">WriteBatchInternal</span><span class="o">::</span><span class="n">ByteSize</span><span class="p">(</span><span class="n">leader</span><span class="o">-&gt;</span><span class="n">batch</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">//当超过一定大小就终止此次写入，一开始的大小不要太小避免拖慢小写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// Allow the group to grow up to a maximum size, but if the
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// original write is small, limit the growth so we do not slow
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// down the small write too much.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">size_t</span> <span class="n">max_size</span> <span class="o">=</span> <span class="n">max_write_batch_group_size_bytes</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">const</span> <span class="kt">uint64_t</span> <span class="n">min_batch_size_bytes</span> <span class="o">=</span> <span class="n">max_write_batch_group_size_bytes</span> <span class="o">/</span> <span class="mi">8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">&lt;=</span> <span class="n">min_batch_size_bytes</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">max_size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">+</span> <span class="n">min_batch_size_bytes</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">//准备，把所有的Writer都指向Write_group
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// write_group 会统计leader，last_writer,size(多少个Writer)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">leader</span><span class="o">-&gt;</span><span class="n">write_group</span> <span class="o">=</span> <span class="n">write_group</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">write_group</span><span class="o">-&gt;</span><span class="n">leader</span> <span class="o">=</span> <span class="n">leader</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">write_group</span><span class="o">-&gt;</span><span class="n">last_writer</span> <span class="o">=</span> <span class="n">leader</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">write_group</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 从当前newest_writer向前构建指向后的link
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">CreateMissingNewerLinks</span><span class="p">(</span><span class="n">newest_writer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="k">while</span> <span class="p">(</span><span class="n">w</span> <span class="o">!=</span> <span class="n">newest_writer</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">assert</span><span class="p">(</span><span class="n">w</span><span class="o">-&gt;</span><span class="n">link_newer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">w</span> <span class="o">=</span> <span class="n">w</span><span class="o">-&gt;</span><span class="n">link_newer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">//...(判断各个write里面的option以及size是否超过max以break)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">w</span><span class="o">-&gt;</span><span class="n">write_group</span> <span class="o">=</span> <span class="n">write_group</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">size</span> <span class="o">+=</span> <span class="n">batch_size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">write_group</span><span class="o">-&gt;</span><span class="n">last_writer</span> <span class="o">=</span> <span class="n">w</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">write_group</span><span class="o">-&gt;</span><span class="n">size</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>根据该写入线程是否是leader分为几种情况</p>
+<ol>
+<li>
+<p>是leader</p>
+<ol>
+<li>JoinBatchGroup返回STATE_GROUP_LEADER,而且是无阻塞的。</li>
+<li>先进行PreprocessWrite(),这个函数里面是进行一些预处理
+<ol>
+<li>比如WAL的大小超过了max_total_wal_size就把对应wal里面的数据刷盘(刷盘过程中也会切换memtable)并且切换新的wal</li>
+<li>看buffer_size够不够，(其实就是看write_buffer_manager_-&gt;ShouldFlush())</li>
+<li>等等</li>
+</ol>
+</li>
+<li>EnterAsBatchGroupLeader，这个函数主要先建立从前往后的连接(CreateMissingNewerLinks)然后是从leader开始从后根据option的相同建立write_group。</li>
+<li>获取到此次写入的write_group后先进行一些数据统计。</li>
+<li>然后就是真正的写入了，先是<a href="https://zhuanlan.zhihu.com/p/618736762">写入WAL</a>
+<ol>
+<li>先把write_group的数据整合到一起然后写入WAL，接着根据option判断是否刷盘。</li>
+</ol>
+</li>
+<li>然后是<a href="https://zhuanlan.zhihu.com/p/618742569">memtable</a>
+<ol>
+<li>根据option的是否并行来决定是自己把所有数据写入(!parallel)还是通知其他线程让他们自己写入（parallel）</li>
+</ol>
+</li>
+<li>接着是判断是否刷盘</li>
+<li>然后优雅退出并且做一些收尾工作，主要是调用ExitAsBatchGroupLeader 通知其他线程成为leader</li>
+</ol>
+</li>
+<li>
+<p>不是leader</p>
+<ol>
+<li>
+<p>加入batch group 并且leader perform the write 返回 STATE_DONE</p>
+</li>
+<li>
+<p>加入batch group 且由自己的线程负责写入 返回STATE_PARALLEL_MEMTABLE_WRITER</p>
+</li>
+</ol>
+</li>
+<li></li>
+</ol>
+<p><a href="https://pic3.zhimg.com/80/v2-8bb3b4d09992145cb3090aa58fdc98c6_720w.webp">状态转化图</a></p>
+<h4 id="pinnableslice">PinnableSlice</h4>
+<p>先说Slice，它基本就是对c字符串的封装，包含了一个指针和一个长度，可以通过data()和size()获取，也可以通过[]访问，但是没有做越界检查，所以要注意。</p>
+<p>然后PinnableSlice继承自Slice，它的作用是为了减少内存拷贝，它有两种模式，一种是pin模式，一种是no pin模式，pin模式下，它会直接返回指向rocksdb内部的指针，这样就不用拷贝了，但是要注意，这个指针只在当前的读操作有效，下一次读操作之前必须调用reset()，否则会出现错误，no pin模式下，它会拷贝一份数据到自己的内部缓冲区，这样就不用担心下一次读操作会出错了，但是会多一次内存拷贝。</p>
+<h3 id="参考">参考：</h3>
+<p><a href="https://kernelmaker.github.io/Rocksdb_pinnableslice">某位阿里云dalao的博客</a></p>
+<p><a href="https://seekstar.github.io/2022/03/09/rocksdb-timestamp/">也是分析rocksdb的</a></p>
+<p><a href="http://blog.xnnyygn.in/how-to-understand-cpp-atomic-memory-order-1/">分析c++ atomic的memory order 还是挺有用的</a></p>
+<p><a href="https://kernelmaker.github.io/Leveldb_Put">某位阿里云dalao的博客</a></p>
+<p><a href="https://www.jianshu.com/p/daa18eebf6e1">湾湾大哥的解析，图片的来源(侵删)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/441890425">RocksDB-04-写流程图解</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/369384686">RocksDB写流程梳理</a></p>
+<p><a href="https://blog.csdn.net/qq_33154343/article/details/101381793">在DB_impl中using DB::PUT 的解释</a></p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

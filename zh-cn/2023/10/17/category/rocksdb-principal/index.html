@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>rocksdb原理 · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="基本概念 版本(Version)：这个是RocksDB内部概念。一个版本包含某个时间点的所有存活SST文件。一旦一个落盘或者压缩完成，由于存活" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/10/17/category/rocksdb-principal/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="rocksdb原理" />
+<meta property="og:description" content="基本概念 版本(Version)：这个是RocksDB内部概念。一个版本包含某个时间点的所有存活SST文件。一旦一个落盘或者压缩完成，由于存活" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/10/17/category/rocksdb-principal/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-10-17T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-10-17T13:27:30+08:00" />
+
+<meta itemprop="name" content="rocksdb原理">
+<meta itemprop="description" content="基本概念 版本(Version)：这个是RocksDB内部概念。一个版本包含某个时间点的所有存活SST文件。一旦一个落盘或者压缩完成，由于存活"><meta itemprop="datePublished" content="2023-10-17T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-10-17T13:27:30+08:00" />
+<meta itemprop="wordCount" content="2159">
+<meta itemprop="keywords" content="infra,Middleware,rocksdb," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="rocksdb原理"/>
+<meta name="twitter:description" content="基本概念 版本(Version)：这个是RocksDB内部概念。一个版本包含某个时间点的所有存活SST文件。一旦一个落盘或者压缩完成，由于存活"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">rocksdb原理</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-10-17
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/infra/">infra</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/middleware/">Middleware</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/rocksdb/">rocksdb</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h4 id="基本概念">基本概念</h4>
+<ul>
+<li>
+<p>版本(Version)：这个是RocksDB内部概念。一个版本包含某个时间点的所有存活SST文件。一旦一个落盘或者压缩完成，由于存活SST文件发生了变化，一个新的“版本”会被创建。一个旧的“版本”还会被仍在进行的读请求或者压缩工作使用。旧的版本最终会被回收。</p>
+</li>
+<li>
+<p>超级版本(super version)：RocksDB的内部概念。一个超级版本包含一个特定时间的 的 一个SST文件列表（一个“版本”）以及一个存活memtable的列表。不管是压缩还是落盘，抑或是一个memtable切换，都会生成一个新的“超级版本”。一个旧的“超级版本”会被继续用于正在进行的读请求。旧的超级版本最终会在不再需要的时候被回收掉。</p>
+</li>
+<li>
+<p>对two_write_queues的解释 When we have two write queues (two_write_queues=true) then the primary write queue can write to both WAL and memtable and the 2nd one can write only to the WAL, which will be used for writing the commit marker in WritePrepared transactions. In this case the primary queue (and its PreReleaseCallback callback) is always used for prepare entires and the 2nd queue (and its PreReleaseCallback callback) is always used only for commits. This i) avoids race condition between the two queues, ii) maintains the in-order addition to PreparedHeap, and iii) simplifies the code by avoiding concurrent insertion to CommitCache (and the code that is called upon each eviction from it).</p>
+</li>
+</ul>
+<h4 id="transaction">transaction</h4>
+<p>暂时没有总结什么，看<a href="https://whoiami.github.io/ROCKSDB_TRANSACTION_2PC">2PC</a>和<a href="https://whoiami.github.io/ROCKSDB_TRANSACTION">transaction</a>就差不多了。</p>
+<h4 id="pipeline">pipeline</h4>
+<p>pipeline write</p>
+<p>【默认情况】</p>
+<p>单一的write thread队列，队首writer成为leader，并负责写WAL以及memtable</p>
+<p>【pipeline write】</p>
+<p>只有一个writer的情况下，要先写WAL，再写memtbale</p>
+<p>如果有多个writer，默认情况就需要先写完WAL，在写memtable</p>
+<p>启用pipeline之后，前一个writer写完WAL就可以写memtbale，而后一个writer开始写他的WAL</p>
+<p>开启方式：Options.enable_pipeline_write=true</p>
+<p>提升：20%性能提升</p>
+<h4 id="merge">Merge</h4>
+<p>Merge 本质上就是一个 read-modify-write的原子操作。</p>
+<p>code is all you need</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">    <span class="c1">// A &#39;model&#39; merge operator with uint64 addition semantics
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">class</span> <span class="nc">UInt64AddOperator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">AssociativeMergeOperator</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">      <span class="k">virtual</span> <span class="kt">bool</span> <span class="n">Merge</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="n">Slice</span><span class="o">*</span> <span class="n">existing_value</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">new_value</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Logger</span><span class="o">*</span> <span class="n">logger</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// assuming 0 if no existing value
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">uint64_t</span> <span class="n">existing</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">existing_value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">Deserialize</span><span class="p">(</span><span class="o">*</span><span class="n">existing_value</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">existing</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// if existing_value is corrupted, treat it as 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">Log</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="s">&#34;existing value corruption&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">existing</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">uint64_t</span> <span class="n">oper</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">Deserialize</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">oper</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="c1">// if operand is corrupted, treat it as 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="n">Log</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="s">&#34;operand value corruption&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="n">oper</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">auto</span> <span class="k">new</span> <span class="o">=</span> <span class="n">existing</span> <span class="o">+</span> <span class="n">oper</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">*</span><span class="n">new_value</span> <span class="o">=</span> <span class="n">Serialize</span><span class="p">(</span><span class="k">new</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>        <span class="c1">// always return true for this, since we treat all errors as &#34;zero&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">Name</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s">&#34;UInt64AddOperator&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">       <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Implement &#39;add&#39; directly with the new Merge operation
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">class</span> <span class="nc">MergeBasedCounters</span> <span class="o">:</span> <span class="k">public</span> <span class="n">RocksCounters</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">MergeBasedCounters</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DB</span><span class="o">&gt;</span> <span class="n">db</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// mapped to a leveldb Merge operation
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">Add</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span> <span class="kt">uint64_t</span> <span class="n">value</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">string</span> <span class="n">serialized</span> <span class="o">=</span> <span class="n">Serialize</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">db_</span><span class="o">-&gt;</span><span class="n">Merge</span><span class="p">(</span><span class="n">merge_option_</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">serialized</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// How to use it
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">DB</span><span class="o">*</span> <span class="n">dbp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Options</span> <span class="n">options</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">options</span><span class="p">.</span><span class="n">merge_operator</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">UInt64AddOperator</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">DB</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s">&#34;/tmp/db&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dbp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DB</span><span class="o">&gt;</span> <span class="n">db</span><span class="p">(</span><span class="n">dbp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">MergeBasedCounters</span> <span class="nf">counters</span><span class="p">(</span><span class="n">db</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">counters</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">counters</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">);</span>
+</span></span></code></pre></div><p>AssociativeMergeOperator适用于比较简单的情景，也就是说，如果你的merge操作是满足结合律的，那么就可以使用AssociativeMergeOperator。</p>
+<p>但是如果是复杂一点的，比如说data是json字符串，但是merge的时候只是对其中的一个子结构进行修改，那么就需要使用MergeOperator。</p>
+<p>值得注意的是，put和merge并不会在invoke的时候就立刻执行，而是会stack，在get的时候才执行，而在stack的时候就是PartialMerge的时候了。</p>
+<p>接口：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">    <span class="c1">// The Merge Operator
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// Essentially, a MergeOperator specifies the SEMANTICS of a merge, which only
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// client knows. It could be numeric addition, list append, string
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// concatenation, edit data structure, ... , anything.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// The library, on the other hand, is concerned with the exercise of this
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// interface, at the right time (during get, iteration, compaction...)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">class</span> <span class="nc">MergeOperator</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">      <span class="k">virtual</span> <span class="o">~</span><span class="n">MergeOperator</span><span class="p">()</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// Gives the client a way to express the read -&gt; modify -&gt; write semantics
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// key:         (IN) The key that&#39;s associated with this merge operation.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// existing:    (IN) null indicates that the key does not exist before this op
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// operand_list:(IN) the sequence of merge operations to apply, front() first.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// new_value:  (OUT) Client is responsible for filling the merge result here
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// logger:      (IN) Client could use this to log errors during merge.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// Return true on success. Return false failure / error / corruption.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">FullMerge</span><span class="p">(</span><span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                             <span class="k">const</span> <span class="n">Slice</span><span class="o">*</span> <span class="n">existing_value</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                             <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">deque</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">operand_list</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                             <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">new_value</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                             <span class="n">Logger</span><span class="o">*</span> <span class="n">logger</span><span class="p">)</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="k">struct</span> <span class="nc">MergeOperationInput</span> <span class="p">{</span> <span class="p">...</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">      <span class="k">struct</span> <span class="nc">MergeOperationOutput</span> <span class="p">{</span> <span class="p">...</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">      <span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">FullMergeV2</span><span class="p">(</span><span class="k">const</span> <span class="n">MergeOperationInput</span><span class="o">&amp;</span> <span class="n">merge_in</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                               <span class="n">MergeOperationOutput</span><span class="o">*</span> <span class="n">merge_out</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// This function performs merge(left_op, right_op)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// when both the operands are themselves merge operation types.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// Save the result in *new_value and return true. If it is impossible
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// or infeasible to combine the two operations, return false instead.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">PartialMerge</span><span class="p">(</span><span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">left_operand</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">right_operand</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">new_value</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">Logger</span><span class="o">*</span> <span class="n">logger</span><span class="p">)</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// The name of the MergeOperator. Used to check for MergeOperator
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// mismatches (i.e., a DB created with one MergeOperator is
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// accessed using a different MergeOperator)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">Name</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// Determines whether the MergeOperator can be called with just a single
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// merge operand.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// Override and return true for allowing a single operand. FullMergeV2 and
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// PartialMerge/PartialMergeMulti should be implemented accordingly to handle
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// a single operand.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">AllowSingleOperand</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span></code></pre></div><p>示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// A &#39;model&#39; pseudo-code merge operator with json update semantics
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// We pretend we have some in-memory data-structure (called JsonDataStructure) for
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// parsing and serializing json strings.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">class</span> <span class="nc">JsonMergeOperator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">MergeOperator</span> <span class="p">{</span>          <span class="c1">// not associative
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">      <span class="k">virtual</span> <span class="kt">bool</span> <span class="n">FullMerge</span><span class="p">(</span><span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                             <span class="k">const</span> <span class="n">Slice</span><span class="o">*</span> <span class="n">existing_value</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                             <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">deque</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">operand_list</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                             <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">new_value</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                             <span class="n">Logger</span><span class="o">*</span> <span class="n">logger</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">JsonDataStructure</span> <span class="n">obj</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">existing_value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">obj</span><span class="p">.</span><span class="n">ParseFrom</span><span class="p">(</span><span class="n">existing_value</span><span class="o">-&gt;</span><span class="n">ToString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">obj</span><span class="p">.</span><span class="n">IsInvalid</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">Log</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="s">&#34;Invalid json string after parsing: %s&#34;</span><span class="p">,</span> <span class="n">existing_value</span><span class="o">-&gt;</span><span class="n">ToString</span><span class="p">().</span><span class="n">c_str</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">          <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="nl">value</span> <span class="p">:</span> <span class="n">operand_list</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">auto</span> <span class="n">split_vector</span> <span class="o">=</span> <span class="n">Split</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s">&#34; = &#34;</span><span class="p">);</span>      <span class="c1">// &#34;xyz[0] = 5&#34; might return [&#34;xyz[0]&#34;, 5] as an std::vector, etc.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="n">obj</span><span class="p">.</span><span class="n">SelectFromHierarchy</span><span class="p">(</span><span class="n">split_vector</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">=</span> <span class="n">split_vector</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="n">obj</span><span class="p">.</span><span class="n">IsInvalid</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Log</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="s">&#34;Invalid json after parsing operand: %s&#34;</span><span class="p">,</span> <span class="n">value</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">obj</span><span class="p">.</span><span class="n">SerializeTo</span><span class="p">(</span><span class="n">new_value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// Partial-merge two operands if and only if the two operands
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// both update the same value. If so, take the &#34;later&#34; operand.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">PartialMerge</span><span class="p">(</span><span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">left_operand</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">right_operand</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">new_value</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">Logger</span><span class="o">*</span> <span class="n">logger</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">auto</span> <span class="n">split_vector1</span> <span class="o">=</span> <span class="n">Split</span><span class="p">(</span><span class="n">left_operand</span><span class="p">,</span> <span class="s">&#34; = &#34;</span><span class="p">);</span>   <span class="c1">// &#34;xyz[0] = 5&#34; might return [&#34;xyz[0]&#34;, 5] as an std::vector, etc.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">auto</span> <span class="n">split_vector2</span> <span class="o">=</span> <span class="n">Split</span><span class="p">(</span><span class="n">right_operand</span><span class="p">,</span> <span class="s">&#34; = &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// If the two operations update the same value, just take the later one.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">split_vector1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">split_vector2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">new_value</span><span class="o">-&gt;</span><span class="n">assign</span><span class="p">(</span><span class="n">right_operand</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">right_operand</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">          <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">Name</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s">&#34;JsonMergeOperator&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">       <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// How to use it
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">DB</span><span class="o">*</span> <span class="n">dbp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Options</span> <span class="n">options</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">options</span><span class="p">.</span><span class="n">merge_operator</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">JsonMergeOperator</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">DB</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s">&#34;/tmp/db&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dbp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DB</span><span class="o">&gt;</span> <span class="n">db_</span><span class="p">(</span><span class="n">dbp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Put/store the json string into to the database
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">db_</span><span class="o">-&gt;</span><span class="n">Put</span><span class="p">(</span><span class="n">put_option_</span><span class="p">,</span> <span class="s">&#34;json_obj_key&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">             <span class="s">&#34;{ employees: [ {first_name: john, last_name: doe}, {first_name: adam, last_name: smith}] }&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Use the &#34;merge operator&#34; to incrementally update the value of the json string
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">db_</span><span class="o">-&gt;</span><span class="n">Merge</span><span class="p">(</span><span class="n">merge_option_</span><span class="p">,</span> <span class="s">&#34;json_obj_key&#34;</span><span class="p">,</span> <span class="s">&#34;employees[1].first_name = lucy&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">db_</span><span class="o">-&gt;</span><span class="n">Merge</span><span class="p">(</span><span class="n">merge_option_</span><span class="p">,</span> <span class="s">&#34;json_obj_key&#34;</span><span class="p">,</span> <span class="s">&#34;employees[0].last_name = dow&#34;</span><span class="p">);</span>
+</span></span></code></pre></div><h4 id="compaction-filter">Compaction Filter</h4>
+<p>Compaction Filter是用来在compaction的时候执行一些自定义操作比如：根据ttl删除值，删除特定范围的键值对等等。</p>
+<p>接口可以在rocksdb/compaction_filter.h文件里面找到.</p>
+<p>有两种方式可以使用compaction filter:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">options</span><span class="p">.</span><span class="n">compaction_filter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CustomCompactionFilter</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// or
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">options</span><span class="p">.</span><span class="n">compaction_filter_factory</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">CustomCompactionFilterFactory</span><span class="p">());</span>
+</span></span></code></pre></div><p>这两种方式对并发有不同的要求：</p>
+<ol>
+<li>compaction_filter: 一个compaction filter实例会被多个线程共享，所以需要保证线程安全。</li>
+<li>compaction_filter_factory: 每个线程会有一个compaction filter实例，所以不需要保证线程安全。</li>
+</ol>
+<blockquote>
+<p>Compaction filter will not be invoked during flush, despite arguably flush is a special type of compaction. When merge is being used, compaction filter is invoked per merge operand. The result of compaction filter is applied to the merge operand before merge operator is invoked.</p>
+</blockquote>
+<p>有两套API来实现compaction filter:</p>
+<ol>
+<li>Filter/FilterMergeOperand 作用有限</li>
+<li>FilterV2 changing the value, or dropping a range of keys starting from the current key.</li>
+</ol>
+<h4 id="reference">Reference</h4>
+<p><a href="https://segmentfault.com/a/1190000041198407">简单介绍</a> <a href="https://wanghenshui.github.io/rocksdb-doc-cn/">rocksdb文档的翻译</a></p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

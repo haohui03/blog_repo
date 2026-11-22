@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>protobuf on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/protobuf/</link>
+    <description>Recent content in protobuf on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 19 Nov 2023 09:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/protobuf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>protobuf-intro</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/protobuf-intro/</link>
+      <pubDate>Sun, 19 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/protobuf-intro/</guid>
+      <description>本篇文章记录学习protobuf的过程 定义消息 syntax = &amp;#34;proto3&amp;#34;; message name { body } syntax = &amp;#34;proto3&amp;#34;; message SearchRequest { string query = 1; int32 page_number = 2; int32 result_per_page = 3; } 通常把message定义在一个单独的文件</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/categories/</link>
+    <description>Recent content in Categories on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 17 Jan 2024 09:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>code</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/category/code/</link>
+      <pubDate>Wed, 17 Jan 2024 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/category/code/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>life</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/category/life/</link>
+      <pubDate>Wed, 20 Sep 2023 16:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/category/life/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Notes</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/category/notes/</link>
+      <pubDate>Sat, 16 Sep 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/category/notes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Demos</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/category/demos/</link>
+      <pubDate>Mon, 05 Mar 2018 16:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/category/demos/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

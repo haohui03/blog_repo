@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>quic协议 · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="QUIC QUIC在用户空间实现，tcp/udp在内核空间 优势 减少了 TCP 三次握手及 TLS 握手时间。 改进的拥塞控制。 避免队头阻塞的多路复用。 连接迁移。 前向安" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2024/01/17/category/quic%E5%8D%8F%E8%AE%AE/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="quic协议" />
+<meta property="og:description" content="QUIC QUIC在用户空间实现，tcp/udp在内核空间 优势 减少了 TCP 三次握手及 TLS 握手时间。 改进的拥塞控制。 避免队头阻塞的多路复用。 连接迁移。 前向安" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2024/01/17/category/quic%E5%8D%8F%E8%AE%AE/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-01-17T09:01:23+08:00" />
+<meta property="article:modified_time" content="2024-01-17T09:20:30+08:00" />
+
+<meta itemprop="name" content="quic协议">
+<meta itemprop="description" content="QUIC QUIC在用户空间实现，tcp/udp在内核空间 优势 减少了 TCP 三次握手及 TLS 握手时间。 改进的拥塞控制。 避免队头阻塞的多路复用。 连接迁移。 前向安"><meta itemprop="datePublished" content="2024-01-17T09:01:23+08:00" />
+<meta itemprop="dateModified" content="2024-01-17T09:20:30+08:00" />
+<meta itemprop="wordCount" content="1812">
+<meta itemprop="keywords" content="internet,linux,quic," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="quic协议"/>
+<meta name="twitter:description" content="QUIC QUIC在用户空间实现，tcp/udp在内核空间 优势 减少了 TCP 三次握手及 TLS 握手时间。 改进的拥塞控制。 避免队头阻塞的多路复用。 连接迁移。 前向安"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">quic协议</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2024-01-17
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/internet/">internet</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/linux/">linux</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/quic/">quic</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="quic">QUIC</h2>
+<p>QUIC在用户空间实现，tcp/udp在内核空间</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/UikhnzBXEy1xG6C-50eac1da60ec.png" alt="image.png"></p>
+<h2 id="优势">优势</h2>
+<ol>
+<li>减少了 TCP 三次握手及 TLS 握手时间。</li>
+<li>改进的拥塞控制。</li>
+<li>避免队头阻塞的多路复用。</li>
+<li>连接迁移。</li>
+<li>前向安全。</li>
+</ol>
+<h2 id="过程">过程</h2>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/YOqf5nwXm2REe8z-4263209d8a6e.png" alt="image.png"></p>
+<p>传统需要TCP3握手，TLS4握手（一个用户空间一个内核无法合并）</p>
+<h3 id="1-rtt">1-RTT</h3>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/dsaHwFMNtqVSnmR-0e3363352c23.png" alt="image.png"></p>
+<p>第一次握手：</p>
+<p>客户端主动向服务器发送Inchoate CHLO报文</p>
+<p>服务器会向客户端发送REJ报文。REJ报文包含了服务器的配置信息，如长期的Diffie-Hellman值，服务器配置的签名，source-address-token(stk, 用于验证的加密块，包含有服务器看到的客户端的IP地址和服务器当前的时间戳，之后客户端会将该stk发回)等，为了进行身份证明还会使用私钥进行签名，同时也可以防篡改；</p>
+<p>在收到服务器的配置信息后，客户端会通过证书链机制验签，并实现对服务器的身份认证。</p>
+<p>第二次握手：</p>
+<p>客户端在通过对服务器的验证之后，客户端会生成一个Diffie-Hellman值。此时客户端有了自身和对方的Diffie-Hellman值，就可以计算出初始密钥（initial key, ik）；</p>
+<p>客户端将包含有DH公开之的明文Complete CHLO发送至服务器；</p>
+<p>客户端使用ik对请求数据加密，发送至服务器；</p>
+<p>服务器收到Complete CHLO之后就可以获得客户端的Diffie-Hellman的值，就可以计算出初始密钥。</p>
+<p>服务器立即向客户端发送SHLO报文（ik加密的）。SHLO报文含有一个服务器临时Diffie-Hellman值，可以用于计算前向安全的密钥（会话密钥）；</p>
+<p>服务器收到加密的请求数据，使用初始密钥进行解密； 服务器使用会话密钥对响应数据进行加密，发回给客户端。</p>
+<p>客户端在收到SHLO之后使用初始密钥解密得到服务器的临时DH公开值，根据该临时值计算出会话密钥； 客户端收到加密的响应数据后，使用会话密钥进行解密。 整个握手过程会在2个RTT内完成。</p>
+<h3 id="tls13">TLS1.3</h3>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/aKxcprIlAsGzCDZ-28160042a1fc.png" alt="image.png"></p>
+<h3 id="0-rtt">0-rtt</h3>
+<p>客户端在重连同一个服务器时，会使用已经缓存的服务器相关配置信息（stk，DH公开值等信息），并直接向服务器发送Complete CHLO报文，并使用ik对请求报文进行加密。但是服务器方面会标识相应的stk等信息已经过期，这时服务器会发送REJ信息，客户端需要重新与服务器进行连接。</p>
+<p>如果没有过期的话，就可以直接建立连接，省下了重新建立连接的开销。</p>
+<h2 id="前向安全">前向安全</h2>
+<p>在最后一次握手时，会生成一个会话密钥sk。这样即使服务器的长期DH值被破获，且生成了初始密钥ik，也无法对会话中的数据进行解密。</p>
+<h2 id="多路复用">多路复用</h2>
+<p>可以在QUIC流上构建任意大小的应用程序报文，最多支持 2^64的字节。并且stream的实现是轻量级的，即使消息报文很小也可以为它们使用单独的流。每一个Stream都有stream ID唯一标识。这些流ID由客户端/服务器进行静态分配。客户端主动发起的流的ID永远是奇数，服务器发起的流的ID是偶数。这样可以避免冲突。当在一个未使用过的流上发送数据时，流会自动创建；当需要关闭时，就会在最后一帧数据上设置一个FIN的标志指示接收方关闭流。如果发送方或接收方确定不再需要流上的数据，则可以取消流，而无需断开整个 QUIC 连接。尽管流是可靠的抽象，但 QUIC 不会为已取消的流重新传输数据。</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/i3jEPlsMhtR5BHg-02ad352ae301.png" alt="image.png"></p>
+<h2 id="重传">重传</h2>
+<p>TCP 序列号有助于提高可靠性，并表示在接收方传送字节的顺序。这种混淆会导致“重传模糊”（retransmission ambiguity）问题，因为重传的 TCP 段携带与原始数据包相同的序列号 。 TCP ACK 的接收者无法确定 ACK 是为原始传输还是为重传而发送，并且通常通过昂贵的超时来检测重传段的丢失。每个 QUIC 数据包都携带一个新的数据包编号，包括那些携带重传数据的数据包。这种设计不需要单独的机制来区分重传的 ACK 和原始传输的 ACK，从而避免了 TCP 的重传模糊问题。流帧中的流偏移用于传递排序，数据包编号表示一个明确的时间顺序，这使得丢失检测比 TCP 更简单、更准确。</p>
+<h2 id="流量控制">流量控制</h2>
+<p>QUIC在连接有流量控制，在流这个级别也有流量控制</p>
+<h2 id="拥塞控制">拥塞控制</h2>
+<p>由于QUIC 通过 Packet Number 来标识包的序号，而且规定 Packet Number 只能单调递增，这也就解决了初始包和重传包的二义性。从而保证 RTT 的值是准确的。</p>
+<h2 id="连接迁移">连接迁移</h2>
+<p>QUIC连接使用随机生成的64bit的cid唯一确定。cid允许客户机在网络之间漫游，而不受网络或传输层参数变化的影响。</p>
+<p>cid使得客户端能够独立于网络地址转换（network address translation, NAT）之外。cid 在路由中起着重要作用，特别是用于连接标识的目的。此外，使用 cids 可以通过探测连接的新路径实现多路径。</p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

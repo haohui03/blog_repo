@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>golang-tcmalloc · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="TCmalloc 为了解决中大对象的内存申请，TCmalloc有一个全局共享内存堆 Page 每个 Page 默认是 8KB。这里的page就像是虚拟内存的page Span Span是包" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-tcmalloc/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="golang-tcmalloc" />
+<meta property="og:description" content="TCmalloc 为了解决中大对象的内存申请，TCmalloc有一个全局共享内存堆 Page 每个 Page 默认是 8KB。这里的page就像是虚拟内存的page Span Span是包" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-tcmalloc/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-01-01T13:01:23+08:00" />
+<meta property="article:modified_time" content="2024-01-01T12:27:30+08:00" />
+
+<meta itemprop="name" content="golang-tcmalloc">
+<meta itemprop="description" content="TCmalloc 为了解决中大对象的内存申请，TCmalloc有一个全局共享内存堆 Page 每个 Page 默认是 8KB。这里的page就像是虚拟内存的page Span Span是包"><meta itemprop="datePublished" content="2024-01-01T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2024-01-01T12:27:30+08:00" />
+<meta itemprop="wordCount" content="99">
+<meta itemprop="keywords" content="basic,golang,language," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="golang-tcmalloc"/>
+<meta name="twitter:description" content="TCmalloc 为了解决中大对象的内存申请，TCmalloc有一个全局共享内存堆 Page 每个 Page 默认是 8KB。这里的page就像是虚拟内存的page Span Span是包"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">golang-tcmalloc</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2024-01-01
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/basic/">basic</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/golang/">golang</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/language/">language</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="tcmalloc">TCmalloc</h2>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/DWdNm4x8Ig-d1e1801280a5.png" alt="tomalloc"></p>
+<p>为了解决中大对象的内存申请，TCmalloc有一个全局共享内存堆</p>
+<h3 id="page">Page</h3>
+<p>每个 Page 默认是 8KB。这里的page就像是虚拟内存的page</p>
+<h3 id="span">Span</h3>
+<p>Span是包含了不同数量的page的单位 <img src="https://haohui03.github.io/blog_repo/images/restored/ivmjaMfAeU-9a5f3533a90a.png" alt="span"></p>
+<h3 id="size-class">Size Class</h3>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/TxIGJR26fZ-81d5bc8f52ee.png" alt=""></p>
+<h3 id="threadcache">ThreadCache</h3>
+<p>每个线程有单独的缓存 <img src="https://haohui03.github.io/blog_repo/images/restored/V85EFusAJ5-4d55db101be4.png" alt=""></p>
+<h3 id="参考">参考</h3>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>desgin-pattern-go · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="设计原则 设计模式的golang实现 单例模式 饿汉模式 就是应用开始的时候就初始化 懒汉模式 这个是带双重检查的，不用每次都调用once的那个，我看o" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/desgin-pattern-go/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="desgin-pattern-go" />
+<meta property="og:description" content="设计原则 设计模式的golang实现 单例模式 饿汉模式 就是应用开始的时候就初始化 懒汉模式 这个是带双重检查的，不用每次都调用once的那个，我看o" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/desgin-pattern-go/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-13T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-10-13T13:27:30+08:00" />
+
+<meta itemprop="name" content="desgin-pattern-go">
+<meta itemprop="description" content="设计原则 设计模式的golang实现 单例模式 饿汉模式 就是应用开始的时候就初始化 懒汉模式 这个是带双重检查的，不用每次都调用once的那个，我看o"><meta itemprop="datePublished" content="2023-09-13T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-10-13T13:27:30+08:00" />
+<meta itemprop="wordCount" content="2273">
+<meta itemprop="keywords" content="design-pattern,golang," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="desgin-pattern-go"/>
+<meta name="twitter:description" content="设计原则 设计模式的golang实现 单例模式 饿汉模式 就是应用开始的时候就初始化 懒汉模式 这个是带双重检查的，不用每次都调用once的那个，我看o"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">desgin-pattern-go</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-09-13
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/design-pattern/">design-pattern</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/golang/">golang</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="设计原则">设计原则</h2>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/x76rIT2LUKjFapc-8ad528ad4a01.png" alt="image.png"></p>
+<h2 id="设计模式的golang实现">设计模式的golang实现</h2>
+<h3 id="单例模式">单例模式</h3>
+<h4 id="饿汉模式">饿汉模式</h4>
+<p>就是应用开始的时候就初始化</p>
+<h4 id="懒汉模式">懒汉模式</h4>
+<p>这个是带双重检查的，不用每次都调用once的那个，我看osproxy的也是这样写的。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">singleton</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;sync&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">lazySingleton</span> <span class="o">*</span><span class="nx">Singleton</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">once</span>          <span class="p">=</span> <span class="o">&amp;</span><span class="nx">sync</span><span class="p">.</span><span class="nx">Once</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// GetLazyInstance 懒汉式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">GetLazyInstance</span><span class="p">()</span> <span class="o">*</span><span class="nx">Singleton</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">lazySingleton</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">once</span><span class="p">.</span><span class="nf">Do</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">lazySingleton</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">Singleton</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">		<span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">lazySingleton</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="工厂模式">工厂模式</h3>
+<h4 id="简单工厂">简单工厂</h4>
+<p>其实就是只能生产一种对象的工厂。比如在go中自定义一个简单的NewXXX函数</p>
+<h4 id="普通工厂">普通工厂</h4>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/TGDrnA8jOyvZJpb-0684bd5fba16.png" alt="image.png"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// IRuleConfigParserFactory 工厂方法接口
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">IRuleConfigParserFactory</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">CreateParser</span><span class="p">()</span> <span class="nx">IRuleConfigParser</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// yamlRuleConfigParserFactory yamlRuleConfigParser 的工厂类
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">yamlRuleConfigParserFactory</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// CreateParser CreateParser
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">y</span> <span class="nx">yamlRuleConfigParserFactory</span><span class="p">)</span> <span class="nf">CreateParser</span><span class="p">()</span> <span class="nx">IRuleConfigParser</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">yamlRuleConfigParser</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// jsonRuleConfigParserFactory jsonRuleConfigParser 的工厂类
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">jsonRuleConfigParserFactory</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// CreateParser CreateParser
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">j</span> <span class="nx">jsonRuleConfigParserFactory</span><span class="p">)</span> <span class="nf">CreateParser</span><span class="p">()</span> <span class="nx">IRuleConfigParser</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">jsonRuleConfigParser</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// NewIRuleConfigParserFactory 用一个简单工厂封装工厂方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">NewIRuleConfigParserFactory</span><span class="p">(</span><span class="nx">t</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">IRuleConfigParserFactory</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">switch</span> <span class="nx">t</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">case</span> <span class="s">&#34;json&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nx">jsonRuleConfigParserFactory</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">case</span> <span class="s">&#34;yaml&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nx">yamlRuleConfigParserFactory</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="抽象工厂">抽象工厂</h4>
+<p>这是比较难理解的，但是可以举一个例子就是：</p>
+<p>简单工厂有两个实现：生产狗和生产猫</p>
+<p>但是如果这个时候来了一个区分性别的要求，如果还是按照简单工厂的方法的话需要将性别和产品进行组合，那就是两倍的工厂，但是如果使用抽象工厂，可以把产品分成两类：雄&amp;雌，然后再在这两类工厂中调用特定的工厂。</p>
+<p>下图的例子是建造不同风格的家具</p>
+<p>每种家具都要有两种接口</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/SZihMyX3aNgFdjv-d4bdb0d558f2.png" alt="image.png"></p>
+<p>抽象工厂</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/solution2-87dab200787a.png" alt=""></p>
+<h3 id="creator">creator</h3>
+<p>一图以蔽之 <img src="https://haohui03.github.io/blog_repo/images/restored/4WmJlwZtN25sOyM-42f24df48e74.png" alt="image.png"></p>
+<p>但是值得注意的是：</p>
+<p>在golang中一般不这么使用，而是通过可变长参数来传递option这在很多框架中见到</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">builder</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ResourcePoolConfigOption option
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">ResourcePoolConfigOption</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">maxTotal</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">maxIdle</span>  <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">minIdle</span>  <span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ResourcePoolConfigOptFunc to set option
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">ResourcePoolConfigOptFunc</span> <span class="kd">func</span><span class="p">(</span><span class="nx">option</span> <span class="o">*</span><span class="nx">ResourcePoolConfigOption</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// NewResourcePoolConfig NewResourcePoolConfig
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">NewResourcePoolConfig</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">opts</span> <span class="o">...</span><span class="nx">ResourcePoolConfigOptFunc</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">ResourcePoolConfig</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">name</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;name can not be empty&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">option</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">ResourcePoolConfigOption</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">maxTotal</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">maxIdle</span><span class="p">:</span>  <span class="mi">9</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">minIdle</span><span class="p">:</span>  <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">opt</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">opts</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">opt</span><span class="p">(</span><span class="nx">option</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">option</span><span class="p">.</span><span class="nx">maxTotal</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">option</span><span class="p">.</span><span class="nx">maxIdle</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">option</span><span class="p">.</span><span class="nx">minIdle</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;args err, option: %v&#34;</span><span class="p">,</span> <span class="nx">option</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">option</span><span class="p">.</span><span class="nx">maxTotal</span> <span class="p">&lt;</span> <span class="nx">option</span><span class="p">.</span><span class="nx">maxIdle</span> <span class="o">||</span> <span class="nx">option</span><span class="p">.</span><span class="nx">minIdle</span> <span class="p">&gt;</span> <span class="nx">option</span><span class="p">.</span><span class="nx">maxIdle</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;args err, option: %v&#34;</span><span class="p">,</span> <span class="nx">option</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">ResourcePoolConfig</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">name</span><span class="p">:</span>     <span class="nx">name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">maxTotal</span><span class="p">:</span> <span class="nx">option</span><span class="p">.</span><span class="nx">maxTotal</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">maxIdle</span><span class="p">:</span>  <span class="nx">option</span><span class="p">.</span><span class="nx">maxIdle</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">minIdle</span><span class="p">:</span>  <span class="nx">option</span><span class="p">.</span><span class="nx">minIdle</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">},</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="原型模式">原型模式</h3>
+<p>其实就是克隆，类比java里面的cloneable接口</p>
+<h3 id="适配器模式">适配器模式</h3>
+<p>这个还是比较常见</p>
+<p>比如json和xml的适配器</p>
+<h3 id="桥接模式">桥接模式</h3>
+<p>其实就是将一些属性从类中剥离，用组合的方式来解耦</p>
+<p>抽象与实现分离，并且可以独立变化</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/AdjtqPcyGipL3xv-dfc0a12d5ebd.png" alt="image.png"> 变成-》</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/CDznGvFIhaE78sS-114d673de616.png" alt="image.png"></p>
+<h3 id="组合模式">组合模式</h3>
+<p>组合模式就是用树状结构组织对象，让调用者可以统一看待单一和组合，最经典的就是打折策略的组合</p>
+<p>实现起来就是，一些打折的子类会有一个children数组保存打折类，然后遍历打折。 <img src="https://haohui03.github.io/blog_repo/images/restored/1hEY4Wn3xPdXUQG-a805c0e3fe82.png" alt="image.png"></p>
+<h3 id="装饰模式">装饰模式</h3>
+<p>装饰模式是一种结构型设计模式， 允许你通过将对象放入包含行为的特殊封装对象中来为原对象绑定新的行为。</p>
+<p>也就是说不通过所有属性组合来实现组合，而是通过不断包含（装饰）来实现组合</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/MYrofdRqlQJFjWO-88a66309bba6.png" alt="image.png"></p>
+<p>这个在Python还是蛮常见的（@cache）</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">decorator</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// IDraw IDraw
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">IDraw</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Draw</span><span class="p">()</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Square 正方形
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Square</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Draw Draw
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Square</span><span class="p">)</span> <span class="nf">Draw</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="s">&#34;this is a square&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ColorSquare 有颜色的正方形
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">ColorSquare</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">square</span> <span class="nx">IDraw</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">color</span>  <span class="kt">string</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// NewColorSquare NewColorSquare
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">NewColorSquare</span><span class="p">(</span><span class="nx">square</span> <span class="nx">IDraw</span><span class="p">,</span> <span class="nx">color</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">ColorSquare</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">ColorSquare</span><span class="p">{</span><span class="nx">color</span><span class="p">:</span> <span class="nx">color</span><span class="p">,</span> <span class="nx">square</span><span class="p">:</span> <span class="nx">square</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Draw Draw
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="nx">ColorSquare</span><span class="p">)</span> <span class="nf">Draw</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nx">square</span><span class="p">.</span><span class="nf">Draw</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;, color is &#34;</span> <span class="o">+</span> <span class="nx">c</span><span class="p">.</span><span class="nx">color</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="外观模式">外观模式</h3>
+<p>比如一个第三方库，实现一个功能可能需要这个第三方库的很多组件一起联动，但是可以为这个功能创建一个方法，在这个方法内部进行这个组件的初始化和调用</p>
+<blockquote>
+<p>例如， 上传猫咪搞笑短视频到社交媒体网站的应用可能会用到专业的视频转换库， 但它只需使用一个包含 encode­(filename, format)方法 （以文件名与文件格式为参数进行编码的方法） 的类即可。 在创建这个类并将其连接到视频转换库后， 你就拥有了自己的第一个外观。</p>
+</blockquote>
+<blockquote>
+<p>当你通过电话给商店下达订单时， 接线员就是该商店的所有服务和部门的外观。 接线员为你提供了一个同购物系统、 支付网关和各种送货服务进行互动的简单语音接口。</p>
+</blockquote>
+<h3 id="享元模式">享元模式</h3>
+<p>其实就是共享对象，而非复制</p>
+<p>经典的就是java的String和go 的string，这两个都是不可变的共享的。</p>
+<h3 id="代理模式">代理模式</h3>
+<p>代理和外观和装饰模式差不多</p>
+<p>区别：</p>
+<ol>
+<li>外观 代理模式是创建一个与目标类有个同样接口的类</li>
+<li>装饰 代理模式会管理类的生命周期，但是装饰的话是由客户端管理的。</li>
+</ol>
+<h3 id="责任链模式">责任链模式</h3>
+<p>责任链模式是一种行为设计模式， 允许你将请求沿着处理者链进行发送。 收到请求后， 每个处理者均可对请求进行处理， 或将其传递给链上的下个处理者。 <img src="https://haohui03.github.io/blog_repo/images/restored/E91kwX5R6tWxe73-a1c9f2b93ca0.png" alt="image.png"></p>
+<p>和装饰模式很像，区别点在于责任链模式可以在某个节点中终止不再传递。</p>
+<p>经典的例子就是GIN中中间件的设计</p>
+<h3 id="命令模式">命令模式</h3>
+<p>命令模式是一种行为设计模式， 它可将请求转换为一个包含与请求相关的所有信息的独立对象。 该转换让你能根据不同的请求将方法参数化、 延迟请求执行或将其放入队列中， 且能实现可撤销操作。</p>
+<p>其实也是内聚的表现，就拿按钮来说，具体命令的执行和按钮应该是分开的，按钮只应该用来发送命令</p>
+<p>就比如说游戏的三个按钮，设置，开始，退出。 他们都是按钮对象，只是在初始化的时候为其设置了不同的事件（命令）</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/fn3h19EePN68yRt-653478df7a24.png" alt="image.png"></p>
+<h3 id="迭代器模式">迭代器模式</h3>
+<p>迭代器模式是一种行为设计模式， 让你能在不暴露集合底层表现形式 （列表、 栈和树等） 的情况下遍历集合中所有的元素。</p>
+<p>其实就是封装了一个遍历的接口</p>
+<h3 id="中介者模式">中介者模式</h3>
+<p>其实和代理或者适配器有点像，但是这个强调的是模块之前的通信，应该解耦不应该直接调用。（修改困难，中介者模式还可以用来提高测试性（mock测试））和可修改性</p>
+<p>类比消息队列</p>
+<h3 id="备忘录模式快照">备忘录模式（快照）</h3>
+<p>备忘录模式是一种行为设计模式， 允许在不暴露对象实现细节的情况下保存和恢复对象之前的状态。</p>
+<p>就是现在有一个需求是保存状态（编辑器撤回）</p>
+<p>实现起来就是需要保存状态的对象自身实现保存和读取文本序列化自己的方法。</p>
+<p>类比824里面的snapshot的实现</p>
+<h3 id="观察者模式">观察者模式</h3>
+<p>这个还是比较熟悉的</p>
+<h3 id="状态模式">状态模式</h3>
+<p>状态模式是一种行为设计模式， 让你能在一个对象的内部状态变化时改变其行为， 使其看上去就像改变了自身所属的类一样。</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/nGVoe4BprKZY921-64fe8f99fe7e.png" alt="image.png"></p>
+<p>实现上用多个状态类来实现context的接口，然后就好像context有多个状态一样，状态内部还可以通过引用context来改变状态</p>
+<h3 id="策略模式">策略模式</h3>
+<p>就是通过上下文来选择实际应该执行的类</p>
+<p>这可以用来大大减少if else switch</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/qprZK3NuwgWcoIS-2ff7285ea7f9.png" alt="image.png"></p>
+<h3 id="模板模式">模板模式</h3>
+<p>参考mapreduce，通过实现一套流程但是具体的方法可以通过参数传入，实现了模板方法</p>
+<p>这样可以去除很多重复代码提高代码重用</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://github.com/mohuishou/go-design-pattern">go-design-pattern</a></p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

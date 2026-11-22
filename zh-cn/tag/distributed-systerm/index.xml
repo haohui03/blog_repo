@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>distributed systerm on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/distributed-systerm/</link>
+    <description>Recent content in distributed systerm on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 08 Mar 2023 08:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/distributed-systerm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Raft implementation</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/03/08/category/raft_implementation/</link>
+      <pubDate>Wed, 08 Mar 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/03/08/category/raft_implementation/</guid>
+      <description>本文记录一下搭建MiT6.824 Raft的实现过程 注意本文基于6.824 2020年版。 写下此文主要是为了记录一下自己的实现过程，以及一些遇到</description>
+    </item>
+    
+  </channel>
+</rss>

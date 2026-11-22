@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>字符串 · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="字符串 剑指offer 5 请实现一个函数，把字符串 s 中的每个空格替换成&amp;quot;%20&amp;quot;。 题目不难 要注意首先拓展长度,必须遍历,无论" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/02/15/leetcode_day5/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="字符串" />
+<meta property="og:description" content="字符串 剑指offer 5 请实现一个函数，把字符串 s 中的每个空格替换成&quot;%20&quot;。 题目不难 要注意首先拓展长度,必须遍历,无论" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/02/15/leetcode_day5/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-02-15T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-02-15T13:27:30+08:00" />
+
+<meta itemprop="name" content="字符串">
+<meta itemprop="description" content="字符串 剑指offer 5 请实现一个函数，把字符串 s 中的每个空格替换成&quot;%20&quot;。 题目不难 要注意首先拓展长度,必须遍历,无论"><meta itemprop="datePublished" content="2023-02-15T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-02-15T13:27:30+08:00" />
+<meta itemprop="wordCount" content="1394">
+<meta itemprop="keywords" content="leetcode,jobs,algorithm," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="字符串"/>
+<meta name="twitter:description" content="字符串 剑指offer 5 请实现一个函数，把字符串 s 中的每个空格替换成&quot;%20&quot;。 题目不难 要注意首先拓展长度,必须遍历,无论"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">字符串</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-02-15
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/algorithm/">algorithm</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/jobs/">jobs</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/leetcode/">leetcode</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="字符串">字符串</h2>
+<p><a href="https://leetcode.cn/problems/ti-huan-kong-ge-lcof/">剑指offer 5</a></p>
+<blockquote>
+<p>请实现一个函数，把字符串 s 中的每个空格替换成&quot;%20&quot;。</p>
+</blockquote>
+<p>题目不难</p>
+<ol>
+<li>要注意首先拓展长度,必须遍历,无论怎么样都是O(n),所以不要怕,大胆遍历</li>
+<li>双指针从后往前替换，这样不会覆盖，因为新的空间是在后面的。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">replaceSpace</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">b</span> <span class="o">:=</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">length</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">spaceCount</span> <span class="o">:=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 计算空格数量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">b</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">v</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">spaceCount</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 扩展原有切片
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">resizeCount</span> <span class="o">:=</span> <span class="nx">spaceCount</span> <span class="o">*</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">tmp</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">resizeCount</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">b</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">tmp</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">i</span> <span class="o">:=</span> <span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">j</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">b</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">&#39; &#39;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">b</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="p">=</span> <span class="nx">b</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">i</span><span class="o">--</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">j</span><span class="o">--</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">b</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="p">=</span> <span class="sc">&#39;0&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">b</span><span class="p">[</span><span class="nx">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">=</span> <span class="sc">&#39;2&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">b</span><span class="p">[</span><span class="nx">j</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="p">=</span> <span class="sc">&#39;%&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">i</span><span class="o">--</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">j</span> <span class="p">=</span> <span class="nx">j</span> <span class="o">-</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">string</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><a href="https://leetcode.cn/problems/reverse-words-in-a-string/solution/fan-zhuan-zi-fu-chuan-li-de-dan-ci-by-leetcode-sol/">151 反转单词</a></p>
+<blockquote>
+<p>给你一个字符串 s ，请你反转字符串中 单词 的顺序。</p>
+</blockquote>
+<blockquote>
+<p>单词 是由非空格字符组成的字符串。s 中使用至少一个空格将字符串中的 单词 分隔开。</p>
+</blockquote>
+<blockquote>
+<p>返回 单词 顺序颠倒且 单词 之间用单个空格连接的结果字符串。</p>
+</blockquote>
+<blockquote>
+<p>注意：输入字符串 s中可能会存在前导空格、尾随空格或者单词间的多个空格。返回的结果字符串中，单词间应当仅用单个空格分隔，且不包含任何额外的空格。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">reverseWords</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">s</span><span class="p">=</span><span class="nx">strings</span><span class="p">.</span><span class="nf">Trim</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span><span class="s">&#34; &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">cnt</span><span class="o">:=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">!=</span><span class="sc">&#39; &#39;</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">cnt</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span><span class="sc">&#39; &#39;</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">cnt</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">str</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">cnt</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">i</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">j</span><span class="o">:=</span><span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="nx">j</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">i</span><span class="p">=</span><span class="nx">j</span><span class="p">;</span><span class="nx">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">--</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">==</span><span class="sc">&#39; &#39;</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">str</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,[]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="nx">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">str</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span><span class="sc">&#39; &#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">==</span><span class="sc">&#39; &#39;</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">i</span><span class="o">--</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">j</span><span class="p">=</span><span class="nx">i</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">string</span><span class="p">(</span><span class="nx">str</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ul>
+<li>我的方法是去首尾空格，然后从后遍历填入新字符串。</li>
+<li>但是如果考虑O(1)的空间复杂的话，还是应该像题解那样全部反转然后再每个每个单词反转。</li>
+</ul>
+<p><a href="https://leetcode.cn/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/">leetcode 剑指offer 58</a></p>
+<blockquote>
+<p>字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串&quot;abcdefg&quot;和数字2，该函数将返回左旋转两位得到的结果&quot;cdefgab&quot;。</p>
+</blockquote>
+<p>我的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">reverseLeftWords</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">str</span><span class="o">:=</span><span class="p">[]</span><span class="kt">byte</span> <span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">subStr</span><span class="o">:=</span><span class="nx">str</span><span class="p">[:</span><span class="nx">n</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">str</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">[</span><span class="nx">n</span><span class="p">:],</span><span class="nx">subStr</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">string</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>进阶:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">reverseLeftWords</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">b</span> <span class="o">:=</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 1. 反转前n个字符
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 2. 反转第n到end字符
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 3. 反转整个字符
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">reverse</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">reverse</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">reverse</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">string</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 切片是引用传递
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">reverse</span><span class="p">(</span><span class="nx">b</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">left</span><span class="p">,</span> <span class="nx">right</span> <span class="kt">int</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">left</span> <span class="p">&lt;</span> <span class="nx">right</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">b</span><span class="p">[</span><span class="nx">left</span><span class="p">],</span> <span class="nx">b</span><span class="p">[</span><span class="nx">right</span><span class="p">]</span> <span class="p">=</span> <span class="nx">b</span><span class="p">[</span><span class="nx">right</span><span class="p">],</span><span class="nx">b</span><span class="p">[</span><span class="nx">left</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">left</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">right</span><span class="o">--</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这样就不会浪费空间，都是inplace的操作，但是我的队列的方法其实也不错的。</p>
+<p><a href="https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/">28 找出字符串中第一个匹配项的下标</a></p>
+<blockquote>
+<p>给你两个字符串 haystack 和 needle ，请你在 haystack 字符串中找出 needle 字符串的第一个匹配项的下标（下标从 0 开始）。如果 needle 不是 haystack 的一部分，则返回  -1 。</p>
+</blockquote>
+<p>实在是有点难的,KMP算法。</p>
+<ul>
+<li>核心思想：通过挖掘needle本身的信息，在遍历到不符合的情况的时候回退到下一个匹配的地方。</li>
+<li>实现:
+<ul>
+<li>前缀表<em>next</em>:与needle长度一样的数组记录当i的下一个不匹配的时候回退到哪里。</li>
+</ul>
+</li>
+</ul>
+<p>在理解了以后自己写的解法，next以-1为不匹配。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">strStr</span><span class="p">(</span><span class="nx">haystack</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">needle</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">next</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="nx">needle</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="nx">needle</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">j</span><span class="o">:=-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">next</span><span class="p">[</span><span class="mi">0</span><span class="p">]=</span><span class="nx">j</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="mi">1</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">needle</span><span class="p">);</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">j</span><span class="o">&gt;=</span><span class="mi">0</span><span class="o">&amp;&amp;</span><span class="nx">needle</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">!=</span><span class="nx">needle</span><span class="p">[</span><span class="nx">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">j</span><span class="p">=</span><span class="nx">next</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">needle</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">==</span><span class="nx">needle</span><span class="p">[</span><span class="nx">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]{</span>
+</span></span><span class="line"><span class="cl">           <span class="nx">j</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">next</span><span class="p">[</span><span class="nx">i</span><span class="p">]=</span><span class="nx">j</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">j</span><span class="p">,</span><span class="nx">i</span><span class="o">:=-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">haystack</span><span class="p">);</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">j</span><span class="o">&gt;=</span><span class="mi">0</span><span class="o">&amp;&amp;</span><span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">!=</span><span class="nx">needle</span><span class="p">[</span><span class="nx">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">j</span><span class="p">=</span><span class="nx">next</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">==</span><span class="nx">needle</span><span class="p">[</span><span class="nx">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">j</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">j</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="nx">needle</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nx">i</span><span class="o">-</span><span class="nx">j</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><img src="https://haohui03.github.io/blog_repo/images/restored/CPxoeJkuLG7R2Zn-7ba2422a50e4.jpg" alt="527ea3ee04f0d1ef5b88088320d65de.jpg"> <img src="https://haohui03.github.io/blog_repo/images/restored/ACrvs562eY1SxbK-8ccc6d29bc43.jpg" alt="f20512dd15e285cb0ec1406892710ce.jpg"></p>
+<p>差不多也是用KMP的一道题: <a href="https://leetcode.cn/problems/repeated-substring-pattern/">459. 重复的子字符串</a></p>
+<blockquote>
+<p>给定一个非空的字符串 s ，检查是否可以通过由它的一个子串重复多次构成。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">repeatedSubstringPattern</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">next</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">j</span><span class="o">:=-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">next</span><span class="p">[</span><span class="mi">0</span><span class="p">]=</span><span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="mi">1</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">j</span><span class="o">&gt;=</span><span class="mi">0</span><span class="o">&amp;&amp;</span><span class="nx">s</span><span class="p">[</span><span class="nx">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span><span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="p">]{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">j</span><span class="p">=</span><span class="nx">next</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">s</span><span class="p">[</span><span class="nx">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="p">]{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">j</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">next</span><span class="p">[</span><span class="nx">i</span><span class="p">]=</span><span class="nx">j</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">next</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">next</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">!=-</span><span class="mi">1</span><span class="o">&amp;&amp;</span><span class="nb">len</span><span class="p">(</span><span class="nx">next</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">next</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="nx">next</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">next</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">==</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>学到的东西</p>
+<ul>
+<li>在这里KMP的next数组在遇到true的情况下一般是
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-1</td>
+<td>-1</td>
+<td>-1</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td></td>
+</tr>
+<tr>
+<td>可以发现的在第一个重复之后后面的都是不断增加，因为前后缀都是一样的，所以如果是true的情况，最后一个的next[len(next)-1]后面的就是最小子字符串。</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>正确性分析: 一些数学的验证在<a href="https://programmercarl.com/0459.%E9%87%8D%E5%A4%8D%E7%9A%84%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2.html#kmp">代码随想录</a></li>
+<li>我说说我的理解:
+<ul>
+<li>next[len(next)-1]==-1:直接否定</li>
+<li>next[len(next)-1]&lt;len(next): 按照上面的假设(next[len(next)-1]后面的就是最小子字符串)这样的话len(s)整除不了这个最小子字符串</li>
+<li>next[len(next)-1]&gt;=len(next): 按照上面的假设(next[len(next)-1]后面的就是最小子字符串) <img src="https://haohui03.github.io/blog_repo/images/restored/xh5u2AebFYisyaV-d7b7d97adb56.jpg" alt="0797d040c71e6efcf263347f4aa37cc.jpg"></li>
+</ul>
+</li>
+</ul>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

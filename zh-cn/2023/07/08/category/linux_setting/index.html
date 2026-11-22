@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>Linux设置 · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Linux设置 apt-get 设置代理 修改环境变量 export http_proxy=http://127.0.0.1:7890 sudo apt-get update Systemd 配置 Unit Service unit：系统服务 Target unit：多个 Unit 构成的一个组 Device Unit：硬件设备 Mount Unit：文件" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/linux_setting/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="Linux设置" />
+<meta property="og:description" content="Linux设置 apt-get 设置代理 修改环境变量 export http_proxy=http://127.0.0.1:7890 sudo apt-get update Systemd 配置 Unit Service unit：系统服务 Target unit：多个 Unit 构成的一个组 Device Unit：硬件设备 Mount Unit：文件" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/linux_setting/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-07-08T08:01:23+08:00" />
+<meta property="article:modified_time" content="2023-07-08T08:27:30+08:00" />
+
+<meta itemprop="name" content="Linux设置">
+<meta itemprop="description" content="Linux设置 apt-get 设置代理 修改环境变量 export http_proxy=http://127.0.0.1:7890 sudo apt-get update Systemd 配置 Unit Service unit：系统服务 Target unit：多个 Unit 构成的一个组 Device Unit：硬件设备 Mount Unit：文件"><meta itemprop="datePublished" content="2023-07-08T08:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-07-08T08:27:30+08:00" />
+<meta itemprop="wordCount" content="1601">
+<meta itemprop="keywords" content="linux," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux设置"/>
+<meta name="twitter:description" content="Linux设置 apt-get 设置代理 修改环境变量 export http_proxy=http://127.0.0.1:7890 sudo apt-get update Systemd 配置 Unit Service unit：系统服务 Target unit：多个 Unit 构成的一个组 Device Unit：硬件设备 Mount Unit：文件"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">Linux设置</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-07-08
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/linux/">linux</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h1 id="linux设置">Linux设置</h1>
+<h2 id="apt-get">apt-get</h2>
+<h3 id="设置代理">设置代理</h3>
+<ol>
+<li>修改环境变量</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">http_proxy</span><span class="o">=</span>http://127.0.0.1:7890
+</span></span><span class="line"><span class="cl">sudo apt-get update
+</span></span></code></pre></div><h2 id="systemd-配置">Systemd 配置</h2>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/AIKjXbSkMipBONZ-11bb1e95d423.png" alt="image.png"></p>
+<h3 id="unit">Unit</h3>
+<ul>
+<li>Service unit：系统服务</li>
+<li>Target unit：多个 Unit 构成的一个组</li>
+<li>Device Unit：硬件设备</li>
+<li>Mount Unit：文件系统的挂载点</li>
+<li>Automount Unit：自动挂载点</li>
+<li>Path Unit：文件或路径</li>
+<li>Scope Unit：不是由 Systemd 启动的外部进程</li>
+<li>Slice Unit：进程组</li>
+<li>Snapshot Unit：Systemd 快照，可以切回某个快照</li>
+<li>Socket Unit：进程间通信的 socket</li>
+<li>Swap Unit：swap 文件</li>
+<li>Timer Unit：定时器</li>
+</ul>
+<h3 id="配置文件的格式">配置文件的格式</h3>
+<h4 id="区块">区块</h4>
+<h5 id="unit区块">Unit区块</h5>
+<p>[Unit]区块通常是配置文件的第一个区块，用来定义 Unit 的元数据，以及配置与其他 Unit 的关系。</p>
+<ul>
+<li>Description：简短描述</li>
+<li>Documentation：文档地址</li>
+<li>Requires：当前 Unit 依赖的其他 Unit，如果它们没有运行，当前 Unit 会启动失败</li>
+<li>Wants：与当前 Unit 配合的其他 Unit，如果它们没有运行，当前 Unit 不会启动失败</li>
+<li>BindsTo：与Requires类似，它指定的 Unit 如果退出，会导致当前 Unit 停止运行</li>
+<li>Before：如果该字段指定的 Unit 也要启动，那么必须在当前 Unit 之后启动</li>
+<li>After：如果该字段指定的 Unit 也要启动，那么必须在当前 Unit 之前启动</li>
+<li>Conflicts：这里指定的 Unit 不能与当前 Unit 同时运行</li>
+<li>Condition…：当前 Unit 运行必须满足的条件，否则不会运行</li>
+<li>Assert…：当前 Unit 运行必须满足的条件，否则会报启动失败</li>
+</ul>
+<h5 id="install区块">install区块</h5>
+<p>[Install]通常是配置文件的最后一个区块，用来定义如何启动，以及是否开机启动。</p>
+<ul>
+<li>WantedBy：它的值是一个或多个 Target，当前 Unit 激活时（enable）符号链接会放入/etc/systemd/system目录下面以 Target 名 + .wants后缀构成的子目录中</li>
+<li>RequiredBy：它的值是一个或多个 Target，当前 Unit 激活时，符号链接会放入/etc/systemd/system目录下面以 Target 名 + .required后缀构成的子目录中</li>
+<li>Alias：当前 Unit 可用于启动的别名</li>
+<li>Also：当前 Unit 激活（enable）时，会被同时激活的其他 Unit</li>
+</ul>
+<h5 id="service区块">Service区块</h5>
+<p>[Service]区块用来 Service 的配置，只有 Service 类型的 Unit 才有这个区块。它的主要字段如下。</p>
+<ul>
+<li>Type：定义启动时的进程行为。它有以下几种值。</li>
+<li>Type=simple：默认值，执行ExecStart指定的命令，启动主进程</li>
+<li>Type=forking：以 fork 方式从父进程创建子进程，创建后父进程会立即退出</li>
+<li>Type=oneshot：一次性进程，Systemd 会等当前服务退出，再继续往下执行</li>
+<li>Type=dbus：当前服务通过D-Bus启动</li>
+<li>Type=notify：当前服务启动完毕，会通知Systemd，再继续往下执行</li>
+<li>Type=idle：若有其他任务执行完毕，当前服务才会运行</li>
+<li>ExecStart：启动当前服务的命令</li>
+<li>ExecStartPre：启动当前服务之前执行的命令</li>
+<li>ExecStartPost：启动当前服务之后执行的命令</li>
+<li>ExecReload：重启当前服务时执行的命令</li>
+<li>ExecStop：停止当前服务时执行的命令</li>
+<li>ExecStopPost：停止当其服务之后执行的命令</li>
+<li>RestartSec：自动重启当前服务间隔的秒数</li>
+<li>Restart：定义何种情况 Systemd 会自动重启当前服务，可能的值包括always（总是重启）、on-success、on-failure、on-abnormal、on-abort、on-watchdog</li>
+<li>TimeoutSec：定义 Systemd 停止当前服务之前等待的秒数</li>
+<li>Environment：指定环境变量</li>
+<li>EnviromentFile: 指定当前服务的环境参数文件。</li>
+</ul>
+<h3 id="target">Target</h3>
+<p>传统的init启动模式里面，有 RunLevel 的概念，跟 Target 的作用很类似。不同的是，RunLevel 是互斥的，不可能多个 RunLevel 同时启动，但是多个 Target 可以同时启动。</p>
+<h3 id="journald">journald</h3>
+<p>Systemd 统一管理所有 Unit 的启动日志。带来的好处就是，可以只用journalctl一个命令，查看所有日志（内核日志和应用日志）。日志的配置文件是/etc/systemd/journald.conf。</p>
+<h2 id="shell脚本">shell脚本</h2>
+<p><a href="https://cloud.tencent.com/developer/article/1691052">脚本练习100</a></p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

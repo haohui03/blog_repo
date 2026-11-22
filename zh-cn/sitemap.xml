@@ -1,0 +1,935 @@
+<?xml-stylesheet type="text/xsl" href="https://haohui03.github.io/blog_repo/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/about/</loc>
+    <lastmod>2017-08-28T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/categories/</loc>
+    <lastmod>2024-01-17T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/category/code/</loc>
+    <lastmod>2024-01-17T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/internet/</loc>
+    <lastmod>2024-01-17T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/linux/</loc>
+    <lastmod>2024-01-17T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/posts/</loc>
+    <lastmod>2024-01-17T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/quic/</loc>
+    <lastmod>2024-01-17T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2024/01/17/category/quic%E5%8D%8F%E8%AE%AE/</loc>
+    <lastmod>2024-01-17T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tags/</loc>
+    <lastmod>2024-01-17T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/</loc>
+    <lastmod>2024-01-17T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/infra/</loc>
+    <lastmod>2024-01-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/k8s/</loc>
+    <lastmod>2024-01-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2024/01/08/category/k8s-day2/</loc>
+    <lastmod>2024-01-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/middleware/</loc>
+    <lastmod>2024-01-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/basic/</loc>
+    <lastmod>2024-01-01T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/golang/</loc>
+    <lastmod>2024-01-01T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-lock/</loc>
+    <lastmod>2024-01-01T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-tcmalloc/</loc>
+    <lastmod>2024-01-01T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/language/</loc>
+    <lastmod>2024-01-01T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/12/12/category/golang-gc-optimization/</loc>
+    <lastmod>2023-12-12T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/23/category/golang-map/</loc>
+    <lastmod>2023-11-23T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/grpc/</loc>
+    <lastmod>2023-11-20T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/20/category/grpc-advanced/</loc>
+    <lastmod>2023-11-20T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/go-zero/</loc>
+    <lastmod>2023-11-19T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/go-zero-goctl/</loc>
+    <lastmod>2023-11-19T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/grpc-intro/</loc>
+    <lastmod>2023-11-19T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/protobuf/</loc>
+    <lastmod>2023-11-19T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/protobuf-intro/</loc>
+    <lastmod>2023-11-19T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/assembly/</loc>
+    <lastmod>2023-11-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/plan9-go-assembler/</loc>
+    <lastmod>2023-11-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/redis/</loc>
+    <lastmod>2023-11-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/redis-single/</loc>
+    <lastmod>2023-11-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/13/category/golang-%E7%BC%96%E8%AF%91%E5%99%A8%E4%BB%A3%E7%A0%81%E6%B5%85%E6%9E%90%E9%98%85%E8%AF%BB/</loc>
+    <lastmod>2023-11-13T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/algorithm/</loc>
+    <lastmod>2023-11-13T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/jobs/</loc>
+    <lastmod>2023-11-13T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/leetcode/</loc>
+    <lastmod>2023-11-13T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-base-structure/</loc>
+    <lastmod>2023-11-09T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-pprof/</loc>
+    <lastmod>2023-11-09T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-snowflake/</loc>
+    <lastmod>2023-11-09T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-unsafe/</loc>
+    <lastmod>2023-11-09T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/11/08/category/bloom-filter/</loc>
+    <lastmod>2023-11-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/10/31/category/leetcode_record3/</loc>
+    <lastmod>2023-11-07T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/rocksdb/</loc>
+    <lastmod>2023-10-17T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/10/17/category/rocksdb-principal/</loc>
+    <lastmod>2023-10-17T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/docker/</loc>
+    <lastmod>2023-10-15T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/10/15/category/docker-images/</loc>
+    <lastmod>2023-10-15T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/images/</loc>
+    <lastmod>2023-10-15T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/10/08/category/go-redis-note/</loc>
+    <lastmod>2023-10-08T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/life/</loc>
+    <lastmod>2023-09-20T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/category/life/</loc>
+    <lastmod>2023-09-20T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/record/</loc>
+    <lastmod>2023-09-20T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/09/20/category/%E5%A4%A7%E4%B8%89%E4%B8%8A-%E7%AC%AC%E5%9B%9B%E5%91%A8/</loc>
+    <lastmod>2023-09-20T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/interview/</loc>
+    <lastmod>2023-09-17T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/09/17/category/interview-%E5%85%AB%E8%82%A1/</loc>
+    <lastmod>2023-09-17T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/network/</loc>
+    <lastmod>2023-09-17T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/category/notes/</loc>
+    <lastmod>2023-09-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/wiki/</loc>
+    <lastmod>2023-09-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/09/16/category/yehh-wiki/</loc>
+    <lastmod>2023-09-16T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/books/</loc>
+    <lastmod>2023-09-14T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/09/14/category/ddia-note/</loc>
+    <lastmod>2023-09-14T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/reading/</loc>
+    <lastmod>2023-09-14T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/desgin-pattern-go/</loc>
+    <lastmod>2023-10-13T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/design-pattern/</loc>
+    <lastmod>2023-10-13T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/interview-golang/</loc>
+    <lastmod>2023-09-13T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/kafka/</loc>
+    <lastmod>2023-10-13T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/kafka-day1/</loc>
+    <lastmod>2023-10-13T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/redis_basic/</loc>
+    <lastmod>2023-09-13T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/mysql/</loc>
+    <lastmod>2023-09-12T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/09/12/category/high_perfermance_mysql_ch1_2/</loc>
+    <lastmod>2023-09-12T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/25/category/leetcode_record2/</loc>
+    <lastmod>2023-10-10T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/containerd/</loc>
+    <lastmod>2023-08-23T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/23/category/containerd-intro/</loc>
+    <lastmod>2023-08-23T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/go-%E8%AF%AD%E8%A8%80%E9%AB%98%E6%80%A7%E8%83%BD%E7%BC%96%E7%A8%8B%E9%98%85%E8%AF%BB/</loc>
+    <lastmod>2023-08-19T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/gee-intro/</loc>
+    <lastmod>2023-08-19T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/golang-test/</loc>
+    <lastmod>2023-08-19T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/project/</loc>
+    <lastmod>2023-08-19T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/test/</loc>
+    <lastmod>2023-08-19T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/16/category/net/http/</loc>
+    <lastmod>2023-08-16T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/16/category/zero-copy/</loc>
+    <lastmod>2023-08-16T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/13/category/golang-detail/</loc>
+    <lastmod>2023-08-13T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/13/category/leetcode_record1/</loc>
+    <lastmod>2023-08-13T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb1/</loc>
+    <lastmod>2023-08-05T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb2/</loc>
+    <lastmod>2023-08-05T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb3/</loc>
+    <lastmod>2023-08-05T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/08/01/category/golang-interview-gmp/</loc>
+    <lastmod>2023-08-01T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/07/11/category/net/http/</loc>
+    <lastmod>2023-07-11T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/cni/</loc>
+    <lastmod>2023-07-08T13:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/interview-linux/</loc>
+    <lastmod>2023-07-08T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/k8s-day1/</loc>
+    <lastmod>2023-07-08T13:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/redis-note1/</loc>
+    <lastmod>2023-07-08T13:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/linux_setting/</loc>
+    <lastmod>2023-07-08T08:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/</loc>
+    <lastmod>2023-06-19T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/net/</loc>
+    <lastmod>2023-06-19T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/http/</loc>
+    <lastmod>2023-06-19T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/05/27/category/%E5%A4%A7%E4%BA%8C%E4%B8%8B-13-14%E5%91%A8/</loc>
+    <lastmod>2023-05-27T10:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/05/27/category/leetcode_day13/</loc>
+    <lastmod>2023-05-27T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/04/23/category/leetcode_day12/</loc>
+    <lastmod>2023-04-23T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/03/27/category/leetcode_day11/</loc>
+    <lastmod>2023-03-27T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/distributed-systerm/</loc>
+    <lastmod>2023-03-08T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/mit6.824/</loc>
+    <lastmod>2023-03-08T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/03/08/category/raft_implementation/</loc>
+    <lastmod>2023-03-08T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/03/05/category/%E5%A4%A7%E4%BA%8C%E4%B8%8B-3-4%E5%91%A8/</loc>
+    <lastmod>2023-03-05T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/03/02/category/%E5%A4%A7%E4%BA%8C%E4%B8%8B-1-2%E5%91%A8/</loc>
+    <lastmod>2023-03-02T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/03/01/category/leetcode_day10/</loc>
+    <lastmod>2023-03-01T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/28/category/leetcode_day9/</loc>
+    <lastmod>2023-02-28T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/25/category/net/rpc/</loc>
+    <lastmod>2023-11-25T09:20:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/23/category/leetcode_day8/</loc>
+    <lastmod>2023-02-23T09:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/22/category/leetcode_day7/</loc>
+    <lastmod>2023-02-22T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/17/category/golang-blog/</loc>
+    <lastmod>2023-07-11T12:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/17/category/leetcode_day6/</loc>
+    <lastmod>2023-02-17T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/15/category/2022_review/</loc>
+    <lastmod>2023-02-15T16:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/annual-review/</loc>
+    <lastmod>2023-02-15T16:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/15/leetcode_day5/</loc>
+    <lastmod>2023-02-15T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/12/leetcode_day3/</loc>
+    <lastmod>2023-02-12T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/09/leetcode_day3/</loc>
+    <lastmod>2023-02-09T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/07/leetcode_day2/</loc>
+    <lastmod>2023-02-07T13:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2023/02/05/leetcode_day1/</loc>
+    <lastmod>2023-02-06T16:27:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/category/demos/</loc>
+    <lastmod>2018-03-05T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2018/03/05/%E6%A8%99%E9%A0%AD%E5%9C%96%E7%89%87/</loc>
+    <lastmod>2018-03-05T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/notes/</loc>
+    <lastmod>2018-03-04T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2018/03/04/%E7%AD%86%E8%A8%98-2/</loc>
+    <lastmod>2018-03-04T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/2018/03/03/%E7%AD%86%E8%A8%98-1/</loc>
+    <lastmod>2018-03-03T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/links/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/docker-dockerfile/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/dockerfile/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/efk/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/filebeat/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/filebeat/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/golang-panic-recover/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/io/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/kafka-interview/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/leetcode_record4/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/linux-io/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/tag/system-design/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/system-design/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+</urlset>

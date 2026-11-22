@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>golang on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/golang/</link>
+    <description>Recent content in golang on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 01 Jan 2024 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>golang-lock</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-lock/</link>
+      <pubDate>Mon, 01 Jan 2024 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-lock/</guid>
+      <description>基本概念 互斥锁会将操作串行化，可以保证操作完全有序，适合资源只能由一个协程进行操作的情况，并发能力弱； 读写锁适合读多写少的情况，并发能有比较</description>
+    </item>
+    
+    <item>
+      <title>golang-tcmalloc</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-tcmalloc/</link>
+      <pubDate>Mon, 01 Jan 2024 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-tcmalloc/</guid>
+      <description>TCmalloc 为了解决中大对象的内存申请，TCmalloc有一个全局共享内存堆 Page 每个 Page 默认是 8KB。这里的page就像是虚拟内存的page Span Span是包</description>
+    </item>
+    
+    <item>
+      <title>golang-gc-optimization</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/12/12/category/golang-gc-optimization/</link>
+      <pubDate>Tue, 12 Dec 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/12/12/category/golang-gc-optimization/</guid>
+      <description>golang 是如何运行起来的</description>
+    </item>
+    
+    <item>
+      <title>golang-map</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/23/category/golang-map/</link>
+      <pubDate>Thu, 23 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/23/category/golang-map/</guid>
+      <description>map map是一个很重要的数据结构，本篇文章记录学习golang中map源码的过程。 图多取自别人的博客，非原创请注意 基本的概念不在赘述了 以下分析</description>
+    </item>
+    
+    <item>
+      <title>grpc-advanced</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/20/category/grpc-advanced/</link>
+      <pubDate>Mon, 20 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/20/category/grpc-advanced/</guid>
+      <description>grpc-tsl server side TLS 有关TLS的知识结合这个看体验更佳 Interceptor 有4种拦截器 type UnaryClientInterceptor func(ctx context.Context, method string, req, reply interface{}, cc *ClientConn, invoker UnaryInvoker, opts ...CallOption) error type UnaryServerInterceptor func(ctx context.Context, req interface{}, info *UnaryServerInfo, handler UnaryHandler) (resp interface{}, err error) type StreamClientInterceptor func(ctx context.Context, desc *StreamDesc, cc *ClientConn, method string, streamer Streamer,</description>
+    </item>
+    
+    <item>
+      <title>go-zero goctl</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/go-zero-goctl/</link>
+      <pubDate>Sun, 19 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/go-zero-goctl/</guid>
+      <description>goctl </description>
+    </item>
+    
+    <item>
+      <title>grpc-intro</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/grpc-intro/</link>
+      <pubDate>Sun, 19 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/grpc-intro/</guid>
+      <description>grpc 简单使用 这次这次实践的目录 . ├── client │ └── hello-client │ └── client.go ├── go.mod ├── go.sum ├── proto │ └── hello │ ├── hello_grpc.pb.go │ ├── hello.pb.go │ └── hello.proto └── server └── hello-server └</description>
+    </item>
+    
+    <item>
+      <title>protobuf-intro</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/protobuf-intro/</link>
+      <pubDate>Sun, 19 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/protobuf-intro/</guid>
+      <description>本篇文章记录学习protobuf的过程 定义消息 syntax = &amp;#34;proto3&amp;#34;; message name { body } syntax = &amp;#34;proto3&amp;#34;; message SearchRequest { string query = 1; int32 page_number = 2; int32 result_per_page = 3; } 通常把message定义在一个单独的文件</description>
+    </item>
+    
+    <item>
+      <title>plan9&#43;go-assembler</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/plan9-go-assembler/</link>
+      <pubDate>Thu, 16 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/plan9-go-assembler/</guid>
+      <description>plan9 本文记录plan9汇编的学习过程，sorry全是抄的，只能说抄一遍印象深一点而且好复盘。 基本指令 栈调整 SUBQ $0x18, SP // 对 SP 做减法，为函数分配函数栈</description>
+    </item>
+    
+    <item>
+      <title>golang-base-structure</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-base-structure/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-base-structure/</guid>
+      <description>记录golang中的底层数据结构 slice 基础的东西比如len，cap，ptr这些东西就不说了 从slice中获取内存地址和从内存中构造slice 从s</description>
+    </item>
+    
+    <item>
+      <title>golang-pprof</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-pprof/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-pprof/</guid>
+      <description>简单介绍 是什么 pprof 是用于可视化和分析性能分析数据的工具 pprof 以 profile.proto 读取分析样本的集合，并生成报告以可视化并帮助分析数据（支持文本和图形报告） profile.proto 是一个</description>
+    </item>
+    
+    <item>
+      <title>golang-snowflake</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-snowflake/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-snowflake/</guid>
+      <description>雪花算法 1.第一位 占用1bit，其值始终是0，没有实际作用。 2.时间戳 占用41bit，精确到毫秒，总共可以容纳约69年的时间。 3.工作机器i</description>
+    </item>
+    
+    <item>
+      <title>golang-unsafe</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-unsafe/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-unsafe/</guid>
+      <description>unsafe包介绍 首先，unsafe正如其名是不安全的。 来自go语言官方文档的警告 unsafe包的文档是这么说的： 导入unsafe的软件包可</description>
+    </item>
+    
+    <item>
+      <title>desgin-pattern-go</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/desgin-pattern-go/</link>
+      <pubDate>Wed, 13 Sep 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/desgin-pattern-go/</guid>
+      <description>设计原则 设计模式的golang实现 单例模式 饿汉模式 就是应用开始的时候就初始化 懒汉模式 这个是带双重检查的，不用每次都调用once的那个，我看o</description>
+    </item>
+    
+    <item>
+      <title>interview-golang</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/interview-golang/</link>
+      <pubDate>Wed, 13 Sep 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/interview-golang/</guid>
+      <description>golang问题 init的执行顺序 Golang中变量的分配位置是堆or栈可以看看这个和刘丹冰的 GC[典藏版]Golang三色标记、混合写屏障</description>
+    </item>
+    
+    <item>
+      <title>gee-intro</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/gee-intro/</link>
+      <pubDate>Sat, 19 Aug 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/gee-intro/</guid>
+      <description>gee 本项目模仿极客兔兔的7天项目进行学习 gee-web 简介 这是一个简单的web框架，实现了路由、中间件、静态文件服务、模板渲染等功能。主要是模仿gin框架</description>
+    </item>
+    
+    <item>
+      <title>golang test</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/golang-test/</link>
+      <pubDate>Sat, 19 Aug 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/golang-test/</guid>
+      <description>标准库 testing 标准测试使用go test 来编译运行测试*_test.go文件，这些文件不是go build命令编译的对象。 *_test.go 中，有三种测试 功能测试 每一个测试</description>
+    </item>
+    
+    <item>
+      <title>go-package-overview</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/16/category/net/http/</link>
+      <pubDate>Wed, 16 Aug 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/16/category/net/http/</guid>
+      <description>i/o io constants const ( SeekStart = 0 // seek relative to the origin of the file SeekCurrent = 1 // seek relative to the current offset SeekEnd = 2 // seek relative to the end ) 和c++的seekg一样，有三种相对寻找方式 variables 几种错误 //要注意E</description>
+    </item>
+    
+    <item>
+      <title>golang-detail</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/13/category/golang-detail/</link>
+      <pubDate>Sun, 13 Aug 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/13/category/golang-detail/</guid>
+      <description>空结构体 type EST stuct{ } func main(){ var b EST var c struct{}; fmt.Printf(&amp;#34;b address %P size %d\n&amp;#34;,&amp;amp;b,unsafe.size(b)) fmt.Printf(&amp;#34;c address %P size %d\n&amp;#34;,&amp;amp;c,unsafe.size(c)) //两者地址相同，空间占用都是0 } 自定义的和struct{}是等价 用法set可以用值为空</description>
+    </item>
+    
+    <item>
+      <title>golang-interview-gmp</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/01/category/golang-interview-gmp/</link>
+      <pubDate>Tue, 01 Aug 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/01/category/golang-interview-gmp/</guid>
+      <description>golang 调度器的由来 如果把并发交给os来完成，首先是CPU的调度消耗，其次进程占用4GB(虚拟内存)，线程占用4MB这些都是比较高的内存占用。 协程</description>
+    </item>
+    
+  </channel>
+</rss>

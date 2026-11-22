@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>interview on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/interview/</link>
+    <description>Recent content in interview on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 17 Sep 2023 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/interview/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>interview-八股</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/17/category/interview-%E5%85%AB%E8%82%A1/</link>
+      <pubDate>Sun, 17 Sep 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/17/category/interview-%E5%85%AB%E8%82%A1/</guid>
+      <description>汇总 很多 必看 这个很也顶 network 工具： tcpdump Wireshark 具体一些没背八股前不清晰的问题： Cookie&amp;amp;session 你真的了解cookie和session吗 鉴权&amp;amp;Token 鉴权界的</description>
+    </item>
+    
+    <item>
+      <title>interview-golang</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/interview-golang/</link>
+      <pubDate>Wed, 13 Sep 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/interview-golang/</guid>
+      <description>golang问题 init的执行顺序 Golang中变量的分配位置是堆or栈可以看看这个和刘丹冰的 GC[典藏版]Golang三色标记、混合写屏障</description>
+    </item>
+    
+    <item>
+      <title>interview-linux-epoll</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/interview-linux/</link>
+      <pubDate>Sat, 08 Jul 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/interview-linux/</guid>
+      <description>Linux面试题 io多路复用 epoll poll select 这个讲的很详细非常好 为什么要使用io多路复用 既能阻塞等待不占用cpu，又能在同一时刻监听多个IO请求。 几个</description>
+    </item>
+    
+  </channel>
+</rss>

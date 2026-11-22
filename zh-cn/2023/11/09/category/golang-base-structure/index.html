@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>golang-base-structure · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="记录golang中的底层数据结构 slice 基础的东西比如len，cap，ptr这些东西就不说了 从slice中获取内存地址和从内存中构造slice 从s" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-base-structure/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="golang-base-structure" />
+<meta property="og:description" content="记录golang中的底层数据结构 slice 基础的东西比如len，cap，ptr这些东西就不说了 从slice中获取内存地址和从内存中构造slice 从s" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-base-structure/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-09T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-11-09T12:27:30+08:00" />
+
+<meta itemprop="name" content="golang-base-structure">
+<meta itemprop="description" content="记录golang中的底层数据结构 slice 基础的东西比如len，cap，ptr这些东西就不说了 从slice中获取内存地址和从内存中构造slice 从s"><meta itemprop="datePublished" content="2023-11-09T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-11-09T12:27:30+08:00" />
+<meta itemprop="wordCount" content="1359">
+<meta itemprop="keywords" content="basic,golang,language," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="golang-base-structure"/>
+<meta name="twitter:description" content="记录golang中的底层数据结构 slice 基础的东西比如len，cap，ptr这些东西就不说了 从slice中获取内存地址和从内存中构造slice 从s"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">golang-base-structure</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-11-09
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/basic/">basic</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/golang/">golang</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/language/">language</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h1 id="记录golang中的底层数据结构">记录golang中的底层数据结构</h1>
+<h2 id="slice">slice</h2>
+<p>基础的东西比如len，cap，ptr这些东西就不说了 <img src="https://haohui03.github.io/blog_repo/images/restored/57_2-da76c8aa2ad2.png" alt="go slice"></p>
+<h3 id="从slice中获取内存地址和从内存中构造slice">从slice中获取内存地址和从内存中构造slice</h3>
+<h4 id="从slice中获取内存地址">从slice中获取内存地址</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">s</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">ptr</span> <span class="o">:=</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">s</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span></code></pre></div><h4 id="从内存中构造slice">从内存中构造slice</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">ptr</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">s1</span> <span class="p">=</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">addr</span> <span class="kt">uintptr</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">len</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">cap</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="p">}{</span><span class="nx">ptr</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">length</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">s</span> <span class="o">:=</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="p">[]</span><span class="kt">byte</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">s1</span><span class="p">))</span>
+</span></span></code></pre></div><p>或者使用go的反射包中的SliceHeader</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">o</span> <span class="p">[]</span><span class="kt">byte</span>
+</span></span><span class="line"><span class="cl"><span class="nx">sliceHeader</span> <span class="o">:=</span> <span class="p">(</span><span class="o">*</span><span class="nx">reflect</span><span class="p">.</span><span class="nx">SliceHeader</span><span class="p">)((</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">o</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl"><span class="nx">sliceHeader</span><span class="p">.</span><span class="nx">Cap</span> <span class="p">=</span> <span class="nx">length</span>
+</span></span><span class="line"><span class="cl"><span class="nx">sliceHeader</span><span class="p">.</span><span class="nx">Len</span> <span class="p">=</span> <span class="nx">length</span>
+</span></span><span class="line"><span class="cl"><span class="nx">sliceHeader</span><span class="p">.</span><span class="nx">Data</span> <span class="p">=</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">ptr</span><span class="p">)</span>
+</span></span></code></pre></div><blockquote>
+<p>BTW 为了看懂上面的代码我还去学了下unsafe包(还是蛮简单的)</p>
+</blockquote>
+<p>值得注意的是reflect.SliceHeader已经被弃用了，下面是go的官方解释</p>
+<blockquote>
+<p>SliceHeader is the runtime representation of a slice. It cannot be used safely or portably and its representation may change in a later release. Moreover, the Data field is not sufficient to guarantee the data it references will not be garbage collected, so programs must keep a separate, correctly typed pointer to the underlying data.</p>
+</blockquote>
+<p>其实就是uintptr是不能保证数据不被GC掉，然后SliceHeader已经被移到unsafe里面去了。</p>
+<h3 id="空切片和nil切片的区别">空切片和nil切片的区别</h3>
+<p>空切片 <img src="https://haohui03.github.io/blog_repo/images/restored/57_7-2b38c11e64b9.png" alt="空"></p>
+<p>nil切片 <img src="https://haohui03.github.io/blog_repo/images/restored/57_8-56cb095a25cc.png" alt="nil切片"></p>
+<p>一个是指向一个空的数组，一个是指向nil</p>
+<p>Go 中切片扩容的策略是这样的：</p>
+<ul>
+<li>首先判断，如果新申请容量（cap）大于2倍的旧容量（old.cap），最终容量（newcap）就是新申请的容量（cap）</li>
+<li>否则判断，如果旧切片的长度小于1024，则最终容量(newcap)就是旧容量(old.cap)的两倍，即（newcap=doublecap）</li>
+<li>否则判断，如果旧切片长度大于等于1024，则最终容量（newcap）从旧容量（old.cap）开始循环增加原来的 1/4，即（newcap=old.cap,for {newcap += newcap/4}）直到最终容量（newcap）大于等于新申请的容量(cap)，即（newcap &gt;= cap）</li>
+<li>如果最终容量（cap）计算值溢出，则最终容量（cap）就是新申请容量（cap）</li>
+</ul>
+<h2 id="map">map</h2>
+<p>比较复杂，见另一篇文章。</p>
+<h3 id="参考">参考</h3>
+<ol>
+<li><a href="https://eddycjy.com/posts/go/map-con/">Go 为什么不在语言层面支持 map 并发？</a></li>
+</ol>
+<h2 id="syncmap">sync.map</h2>
+<p>为了并发的map而被设计出来，在两种情况下他的性能是最好的</p>
+<ol>
+<li>when the entry for a given key is only ever written once but read many times, as in caches that only grow.</li>
+<li>when multiple goroutines read, write, and overwrite entries for disjoint sets of keys.</li>
+</ol>
+<p>同时定义了两大类操作：</p>
+<ol>
+<li>Load, LoadAndDelete, LoadOrStore, Swap, CompareAndSwap, and CompareAndDelete are read operations;</li>
+<li>Delete, LoadAndDelete, Store, and Swap are write operations;</li>
+</ol>
+<p>而且<strong>LoadOrStore is a write operation when it returns loaded set to false; CompareAndSwap is a write operation when it returns swapped set to true; and CompareAndDelete is a write operation when it returns deleted set to true.</strong></p>
+<p>在go的内存模型中<em>Map arranges that a write operation “synchronizes before” any read operation that observes the effect of the write</em></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">//即使old设成nil也不能判断空的是删除成功，所以返回true的语义很强（本身存在key，并且和old一样）
+</span></span></span><span class="line"><span class="cl"><span class="c1">//CompareAndDelete deletes the entry for key if its value is equal to old. The old value must be of a comparable type.
+</span></span></span><span class="line"><span class="cl"><span class="c1">//If there is no current value for key in the map, CompareAndDelete returns false (even if the old value is the nil interface value).
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Map</span><span class="p">)</span> <span class="nf">CompareAndDelete</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">old</span> <span class="nx">any</span><span class="p">)</span> <span class="p">(</span><span class="nx">deleted</span> <span class="kt">bool</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//nil是不可比较的，所以同样不可以把 old设成nil
+</span></span></span><span class="line"><span class="cl"><span class="c1">//CompareAndSwap swaps the old and new values for key if the value stored in the map is equal to old. The old value must be of a comparable type.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Map</span><span class="p">)</span> <span class="nf">CompareAndSwap</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">old</span><span class="p">,</span> <span class="nx">new</span> <span class="nx">any</span><span class="p">)</span> <span class="kt">bool</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//无法从返回值中得到信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Map</span><span class="p">)</span> <span class="nf">Delete</span><span class="p">(</span><span class="nx">key</span> <span class="nx">any</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//这个倒是和普通map挺像的
+</span></span></span><span class="line"><span class="cl"><span class="c1">//Load returns the value stored in the map for a key, or nil if no value is present. The ok result indicates whether value was found in the map.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Map</span><span class="p">)</span> <span class="nf">Load</span><span class="p">(</span><span class="nx">key</span> <span class="nx">any</span><span class="p">)</span> <span class="p">(</span><span class="nx">value</span> <span class="nx">any</span><span class="p">,</span> <span class="nx">ok</span> <span class="kt">bool</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//本来在单线程的话是可以分两个操作的，但是在并发场景下就只能合在一起形成新的primitive
+</span></span></span><span class="line"><span class="cl"><span class="c1">//LoadAndDelete deletes the value for a key, returning the previous value if any. The loaded result reports whether the key was present.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Map</span><span class="p">)</span> <span class="nf">LoadAndDelete</span><span class="p">(</span><span class="nx">key</span> <span class="nx">any</span><span class="p">)</span> <span class="p">(</span><span class="nx">value</span> <span class="nx">any</span><span class="p">,</span> <span class="nx">loaded</span> <span class="kt">bool</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//和上面差不多
+</span></span></span><span class="line"><span class="cl"><span class="c1">//LoadOrStore returns the existing value for the key if present. Otherwise, it stores and returns the given value. The loaded result is true if the value was loaded, false if stored.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Map</span><span class="p">)</span> <span class="nf">LoadOrStore</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="nx">any</span><span class="p">)</span> <span class="p">(</span><span class="nx">actual</span> <span class="nx">any</span><span class="p">,</span> <span class="nx">loaded</span> <span class="kt">bool</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//遍历的方式，可以在其中删除map中的元素
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Map</span><span class="p">)</span> <span class="nf">Range</span><span class="p">(</span><span class="nx">f</span> <span class="kd">func</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="nx">any</span><span class="p">)</span> <span class="kt">bool</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//常规
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Map</span><span class="p">)</span> <span class="nf">Store</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="nx">any</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Map</span><span class="p">)</span> <span class="nf">Swap</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="nx">any</span><span class="p">)</span> <span class="p">(</span><span class="nx">previous</span> <span class="nx">any</span><span class="p">,</span> <span class="nx">loaded</span> <span class="kt">bool</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="channel">channel</h2>
+<h3 id="数据结构">数据结构</h3>
+<h3 id="参考-1">参考</h3>
+<ol>
+<li><a href="https://www.bilibili.com/video/BV1uv4y187p6/?spm_id_from=333.337.search-card.all.click&amp;vd_source=7d9aad84add3e8bea9beb1d04c53f57e">go channel视频</a></li>
+</ol>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

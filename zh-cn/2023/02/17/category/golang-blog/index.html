@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>golang-blog · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="阅读golang的官方blog做的一些笔记 pipeline fan-in fan-out Multiple functions can read from the same channel until that channel is closed; this is called fan-out. This provides a way to distribute work amongst a group of workers to parallelize CPU use and I/O. A function can read from multiple inputs and proceed until all" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/02/17/category/golang-blog/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="golang-blog" />
+<meta property="og:description" content="阅读golang的官方blog做的一些笔记 pipeline fan-in fan-out Multiple functions can read from the same channel until that channel is closed; this is called fan-out. This provides a way to distribute work amongst a group of workers to parallelize CPU use and I/O. A function can read from multiple inputs and proceed until all" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/02/17/category/golang-blog/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-02-17T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-07-11T12:27:30+08:00" />
+
+<meta itemprop="name" content="golang-blog">
+<meta itemprop="description" content="阅读golang的官方blog做的一些笔记 pipeline fan-in fan-out Multiple functions can read from the same channel until that channel is closed; this is called fan-out. This provides a way to distribute work amongst a group of workers to parallelize CPU use and I/O. A function can read from multiple inputs and proceed until all"><meta itemprop="datePublished" content="2023-02-17T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-07-11T12:27:30+08:00" />
+<meta itemprop="wordCount" content="527">
+<meta itemprop="keywords" content="algorithm,golang,language," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="golang-blog"/>
+<meta name="twitter:description" content="阅读golang的官方blog做的一些笔记 pipeline fan-in fan-out Multiple functions can read from the same channel until that channel is closed; this is called fan-out. This provides a way to distribute work amongst a group of workers to parallelize CPU use and I/O. A function can read from multiple inputs and proceed until all"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">golang-blog</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-02-17
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/algorithm/">algorithm</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/golang/">golang</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/language/">language</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h1 id="阅读golang的官方blog做的一些笔记">阅读golang的官方blog做的一些笔记</h1>
+<h2 id="pipelinehttpsgodevblogpipelines"><a href="https://go.dev/blog/pipelines">pipeline</a></h2>
+<h3 id="fan-in-fan-out">fan-in fan-out</h3>
+<blockquote>
+<p>Multiple functions can read from the same channel until that channel is closed; this is called fan-out. This provides a way to distribute work amongst a group of workers to parallelize CPU use and I/O.</p>
+</blockquote>
+<blockquote>
+<p>A function can read from multiple inputs and proceed until all are closed by multiplexing the input channels onto a single channel that’s closed when all the inputs are closed. This is called fan-in.</p>
+</blockquote>
+<p>example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">gen</span><span class="p">(</span><span class="nx">nums</span> <span class="o">...</span><span class="kt">int</span><span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">out</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">n</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">nums</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">out</span> <span class="o">&lt;-</span> <span class="nx">n</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">close</span><span class="p">(</span><span class="nx">out</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">out</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">sq</span><span class="p">(</span><span class="nx">in</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">out</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">n</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">in</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">out</span> <span class="o">&lt;-</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">n</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">close</span><span class="p">(</span><span class="nx">out</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">out</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">in</span> <span class="o">:=</span> <span class="nf">gen</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Distribute the sq work across two goroutines that both read from in.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">c1</span> <span class="o">:=</span> <span class="nf">sq</span><span class="p">(</span><span class="nx">in</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">c2</span> <span class="o">:=</span> <span class="nf">sq</span><span class="p">(</span><span class="nx">in</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Consume the merged output from c1 and c2.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="nx">n</span> <span class="o">:=</span> <span class="k">range</span> <span class="nf">merge</span><span class="p">(</span><span class="nx">c1</span><span class="p">,</span> <span class="nx">c2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="c1">// 4 then 9, or 9 then 4
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//merge 是一个 fan-in 的函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">merge</span><span class="p">(</span><span class="nx">cs</span> <span class="o">...&lt;-</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">wg</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">out</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Start an output goroutine for each input channel in cs.  output
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// copies values from c to out until c is closed, then calls wg.Done.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">output</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">n</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">c</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">out</span> <span class="o">&lt;-</span> <span class="nx">n</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">cs</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">cs</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">go</span> <span class="nf">output</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Start a goroutine to close out once all the output goroutines are
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// done.  This must start after the wg.Add call.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">close</span><span class="p">(</span><span class="nx">out</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">out</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="better-pattern">better pattern</h3>
+<blockquote>
+<p>There is a pattern to our pipeline functions:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>stages close their outbound channels when all the send operations are done.</li>
+<li>stages keep receiving values from inbound channels until those channels are closed.</li>
+</ul>
+</blockquote>
+<p>有时候下游stage不需要上游的所有数据，但是上游stage不知道下游需要多少，所以下游需要一个办法来阻止上游继续发送</p>
+<ol>
+<li>第一个就是close channel，上游使用select，如果done被关闭就变成可以receive 到zero type 再在case语句中处理不继续发送的东西然后关闭goroutine（其实这个在mit6.824 lab中还算常用）。</li>
+</ol>
+<h2 id="reference">Reference</h2>
+<p><a href="https://go.dev/blog/pipelines">pipeline</a></p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

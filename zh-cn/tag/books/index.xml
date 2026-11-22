@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>books on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/books/</link>
+    <description>Recent content in books on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 14 Sep 2023 08:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/books/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DDIA-note</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/14/category/ddia-note/</link>
+      <pubDate>Thu, 14 Sep 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/14/category/ddia-note/</guid>
+      <description>Reference DDIA chinese</description>
+    </item>
+    
+    <item>
+      <title>高性能Mysql-ch1、2</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/12/category/high_perfermance_mysql_ch1_2/</link>
+      <pubDate>Tue, 12 Sep 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/12/category/high_perfermance_mysql_ch1_2/</guid>
+      <description>高性能Mysql 该系列主要是记录阅读高性能Mysql的一些笔记。 Mysql架构 架构的逻辑视图 连接管理和安全 每个客户端连接都会有一个线程，连接</description>
+    </item>
+    
+  </channel>
+</rss>

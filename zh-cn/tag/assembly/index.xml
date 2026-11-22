@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>assembly on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/assembly/</link>
+    <description>Recent content in assembly on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 16 Nov 2023 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/assembly/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>plan9&#43;go-assembler</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/plan9-go-assembler/</link>
+      <pubDate>Thu, 16 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/plan9-go-assembler/</guid>
+      <description>plan9 本文记录plan9汇编的学习过程，sorry全是抄的，只能说抄一遍印象深一点而且好复盘。 基本指令 栈调整 SUBQ $0x18, SP // 对 SP 做减法，为函数分配函数栈</description>
+    </item>
+    
+  </channel>
+</rss>

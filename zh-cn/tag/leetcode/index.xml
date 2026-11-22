@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>leetcode on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/leetcode/</link>
+    <description>Recent content in leetcode on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 13 Nov 2023 08:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/leetcode/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>《Golang 编译器代码浅析》阅读</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/13/category/golang-%E7%BC%96%E8%AF%91%E5%99%A8%E4%BB%A3%E7%A0%81%E6%B5%85%E6%9E%90%E9%98%85%E8%AF%BB/</link>
+      <pubDate>Mon, 13 Nov 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/13/category/golang-%E7%BC%96%E8%AF%91%E5%99%A8%E4%BB%A3%E7%A0%81%E6%B5%85%E6%9E%90%E9%98%85%E8%AF%BB/</guid>
+      <description>Golang 编译器代码浅析</description>
+    </item>
+    
+    <item>
+      <title>leetcode_record3&#43;顶级线段树</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/10/31/category/leetcode_record3/</link>
+      <pubDate>Tue, 31 Oct 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/10/31/category/leetcode_record3/</guid>
+      <description>2003. 每棵子树内缺失的最小基因值 这题只给了parent数组，不像以往的题目给了根节点，以及对应的树结构。所以首先就是要建树，后面才好后序遍历。 然</description>
+    </item>
+    
+    <item>
+      <title>leetcode_record2</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/25/category/leetcode_record2/</link>
+      <pubDate>Fri, 25 Aug 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/25/category/leetcode_record2/</guid>
+      <description>力扣记录2 剑指 Offer 51. 数组中的逆序对 我对这题的评价是逆天 class Solution { public: int mergeSort(vector&amp;lt;int&amp;gt;&amp;amp; nums, vector&amp;lt;int&amp;gt;&amp;amp; tmp, int l, int r) { if (l &amp;gt;= r) { return 0; } int mid = (l + r) / 2; int inv_count = mergeSort(nums, tmp, l, mid) + mergeSort(nums, tmp, mid + 1, r);</description>
+    </item>
+    
+    <item>
+      <title>《Go 语言高性能编程》阅读</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/go-%E8%AF%AD%E8%A8%80%E9%AB%98%E6%80%A7%E8%83%BD%E7%BC%96%E7%A8%8B%E9%98%85%E8%AF%BB/</link>
+      <pubDate>Sat, 19 Aug 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/go-%E8%AF%AD%E8%A8%80%E9%AB%98%E6%80%A7%E8%83%BD%E7%BC%96%E7%A8%8B%E9%98%85%E8%AF%BB/</guid>
+      <description>这个系列是记录阅读《Go 语言高性能编程》这本书的一些笔记 第一章：Go 语言性能分析 在学生时期，测试很难被重视起来，但是写好测试是程序员的进阶之</description>
+    </item>
+    
+    <item>
+      <title>leetcode_record1</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/13/category/leetcode_record1/</link>
+      <pubDate>Sun, 13 Aug 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/13/category/leetcode_record1/</guid>
+      <description>剑指offer 剑指 Offer 12. 矩阵中的路径 一眼看出是回溯，其实还是挺简单的，但是要主要一开始遍历来找到起点。 剪绳子II 不能用动态规划，只能贪心，但是</description>
+    </item>
+    
+    <item>
+      <title>动态规划</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/05/27/category/leetcode_day13/</link>
+      <pubDate>Sat, 27 May 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/05/27/category/leetcode_day13/</guid>
+      <description>发现好久没有写刷题记录了(博客也好久没有更新了) 718. 最长重复子数组 输入：nums1 = [1,2,3,2,1], nums2 = [3,2,1,4,7] 输出：3 解释：长度最长的公共子数组是 [3,2,1] 。 虽然说一开</description>
+    </item>
+    
+    <item>
+      <title>贪心(2)</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/04/23/category/leetcode_day12/</link>
+      <pubDate>Sun, 23 Apr 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/04/23/category/leetcode_day12/</guid>
+      <description>贪心算法(2) leetcode 135 分发糖果 这题我本来根据题目意思，三个三个来看一步一步来赋值，但是还是不对。原因在于:上一个山，你从左边上山是不知道山顶距离</description>
+    </item>
+    
+    <item>
+      <title>贪心</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/03/27/category/leetcode_day11/</link>
+      <pubDate>Mon, 27 Mar 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/03/27/category/leetcode_day11/</guid>
+      <description>贪心算法 摆动序列 如果连续数字之间的差严格地在正数和负数之间交替，则数字序列称为 摆动序列 。第一个差（如果存在的话）可能是正数或负数。仅有一个元</description>
+    </item>
+    
+    <item>
+      <title>回溯[上]</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/03/01/category/leetcode_day10/</link>
+      <pubDate>Wed, 01 Mar 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/03/01/category/leetcode_day10/</guid>
+      <description>回溯 思想 回溯其实就是穷举的一种方式，但是这种穷举可以把之前举过的信息保存(传递)给后面使用。 适用范围 组合问题：N个数里面按一定规则找出k个数</description>
+    </item>
+    
+    <item>
+      <title>二叉树（下）</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/02/28/category/leetcode_day9/</link>
+      <pubDate>Tue, 28 Feb 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/02/28/category/leetcode_day9/</guid>
+      <description>二叉树(下) 二叉搜索树 二叉搜索树的话最重要就是中序遍历，普通的中序遍历用stack存值，然后用pointer遍历，每次pop的时候存入然后p</description>
+    </item>
+    
+    <item>
+      <title>二叉树（中）</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/02/23/category/leetcode_day8/</link>
+      <pubDate>Thu, 23 Feb 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/02/23/category/leetcode_day8/</guid>
+      <description>二叉树(中) 层序遍历 和广度优先差不多 需要注意的是：要判断这层什么时候结束 我的方法是通过置一个nil作为结束，其实可以一趟一趟地看，先获取qu</description>
+    </item>
+    
+    <item>
+      <title>二叉树（上）</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/02/22/category/leetcode_day7/</link>
+      <pubDate>Wed, 22 Feb 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/02/22/category/leetcode_day7/</guid>
+      <description>二叉树(上) 二叉树的递归遍历: 这里帮助大家确定下来递归算法的三个要素。每次写递归，都按照这三要素来写，可以保证大家写出正确的递归算法！ 确定递</description>
+    </item>
+    
+    <item>
+      <title>栈与队列</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/02/17/category/leetcode_day6/</link>
+      <pubDate>Fri, 17 Feb 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/02/17/category/leetcode_day6/</guid>
+      <description>栈与队列 用栈实现队列 用两个栈实现队列 比较简单，就是一个输入一个输出。可以理解为负负得正(先进后出*2=先进先出) 用队列实现栈 用队列实现栈 这个</description>
+    </item>
+    
+    <item>
+      <title>字符串</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/02/15/leetcode_day5/</link>
+      <pubDate>Wed, 15 Feb 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/02/15/leetcode_day5/</guid>
+      <description>字符串 剑指offer 5 请实现一个函数，把字符串 s 中的每个空格替换成&amp;quot;%20&amp;quot;。 题目不难 要注意首先拓展长度,必须遍历,无论</description>
+    </item>
+    
+    <item>
+      <title>哈希表</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/02/12/leetcode_day3/</link>
+      <pubDate>Sun, 12 Feb 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/02/12/leetcode_day3/</guid>
+      <description>哈希表 哈希碰撞的两个解决方法: 拉链法 线性探测 常见的哈希表: 数组 set map 有关红黑树，见红黑树深入剖析及Java实现 RBTree的定义 RBTree的</description>
+    </item>
+    
+    <item>
+      <title>链表(下)</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/02/09/leetcode_day3/</link>
+      <pubDate>Thu, 09 Feb 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/02/09/leetcode_day3/</guid>
+      <description>链表(下) leetcode 206. 简单一遍过 给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。 /** * Definition for singly-linked list. * type ListNode struct { * Val int * Next *ListNode * } */ func reverseList(head *ListNode) *ListNode { if head==nil || head.Next==nil{ return</description>
+    </item>
+    
+    <item>
+      <title>模拟，链表(上)</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/02/07/leetcode_day2/</link>
+      <pubDate>Tue, 07 Feb 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/02/07/leetcode_day2/</guid>
+      <description>模拟，链表(上) 模拟 以leetcode 59.螺旋矩阵为例: 相信很多同学刚开始做这种题目的时候，上来就是一波判断猛如虎。 结果运行的时候各种问题</description>
+    </item>
+    
+    <item>
+      <title>二分查找，双指针，滑动窗口</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/02/05/leetcode_day1/</link>
+      <pubDate>Sun, 05 Feb 2023 16:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/02/05/leetcode_day1/</guid>
+      <description>23-02-05 刷题记录 基本是跟着代码随想录刷的，day1刷了二分查找，滑窗还有双指针。记录一下当时的思路。 二分查找 二分查找突出的是一个熟练，针对已有的两</description>
+    </item>
+    
+    <item>
+      <title>leetcode_record4-随机算法</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/leetcode_record4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/leetcode_record4/</guid>
+      <description>记几个网站： 1 2 随机算法 打乱（Shuffle） Fisher–Yates shuffle -- To shuffle an array a of n elements (indices 0..n-1): for i from n−1 downto 1 do j ← random integer such that 0 ≤ j ≤ i exchange a[j] and</description>
+    </item>
+    
+  </channel>
+</rss>

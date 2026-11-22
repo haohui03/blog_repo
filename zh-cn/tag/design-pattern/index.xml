@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>design-pattern on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/design-pattern/</link>
+    <description>Recent content in design-pattern on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 13 Sep 2023 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/design-pattern/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>desgin-pattern-go</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/desgin-pattern-go/</link>
+      <pubDate>Wed, 13 Sep 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/desgin-pattern-go/</guid>
+      <description>设计原则 设计模式的golang实现 单例模式 饿汉模式 就是应用开始的时候就初始化 懒汉模式 这个是带双重检查的，不用每次都调用once的那个，我看o</description>
+    </item>
+    
+  </channel>
+</rss>

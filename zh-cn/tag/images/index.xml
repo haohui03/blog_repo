@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>images on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/images/</link>
+    <description>Recent content in images on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 15 Oct 2023 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/images/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>docker-images</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/10/15/category/docker-images/</link>
+      <pubDate>Sun, 15 Oct 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/10/15/category/docker-images/</guid>
+      <description>几个概念 rootfs 在linux的视角下，这是指第一个挂载的文件系统，这个文件系统是基于内存的，而且其包括了/Sbin /etc等重要目录,在挂载后其会</description>
+    </item>
+    
+    <item>
+      <title>標頭圖片</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2018/03/05/%E6%A8%99%E9%A0%AD%E5%9C%96%E7%89%87/</link>
+      <pubDate>Mon, 05 Mar 2018 16:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2018/03/05/%E6%A8%99%E9%A0%AD%E5%9C%96%E7%89%87/</guid>
+      <description>這是一個簡單的筆記。</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kafka on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/kafka/</link>
+    <description>Recent content in kafka on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 13 Sep 2023 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/kafka/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kafka-day1</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/kafka-day1/</link>
+      <pubDate>Wed, 13 Sep 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/kafka-day1/</guid>
+      <description>Kafka入门 基本概念 Apache Kafka 核心组件和流程 控制器 控制器也叫leader broker,负责分区leader的选取,也就是负责选举partitio</description>
+    </item>
+    
+    <item>
+      <title>kafka-interview</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/kafka-interview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/kafka-interview/</guid>
+      <description>ISR机制 ISR： 是指同步副本集，我们可以理解为和 leader 保持同步的所有副本的集合。 AR： 一个分区的所有副本集合叫做 AR（ Assigned Repllicas ） OSR：与 leader-replica 未能保</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>go-zero on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/go-zero/</link>
+    <description>Recent content in go-zero on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 19 Nov 2023 09:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/go-zero/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>go-zero goctl</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/go-zero-goctl/</link>
+      <pubDate>Sun, 19 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/go-zero-goctl/</guid>
+      <description>goctl </description>
+    </item>
+    
+  </channel>
+</rss>

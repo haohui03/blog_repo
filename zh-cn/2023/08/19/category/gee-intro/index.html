@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>gee-intro · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="gee 本项目模仿极客兔兔的7天项目进行学习 gee-web 简介 这是一个简单的web框架，实现了路由、中间件、静态文件服务、模板渲染等功能。主要是模仿gin框架" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/gee-intro/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="gee-intro" />
+<meta property="og:description" content="gee 本项目模仿极客兔兔的7天项目进行学习 gee-web 简介 这是一个简单的web框架，实现了路由、中间件、静态文件服务、模板渲染等功能。主要是模仿gin框架" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/gee-intro/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-08-19T08:01:23+08:00" />
+<meta property="article:modified_time" content="2023-08-19T09:27:30+08:00" />
+
+<meta itemprop="name" content="gee-intro">
+<meta itemprop="description" content="gee 本项目模仿极客兔兔的7天项目进行学习 gee-web 简介 这是一个简单的web框架，实现了路由、中间件、静态文件服务、模板渲染等功能。主要是模仿gin框架"><meta itemprop="datePublished" content="2023-08-19T08:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-08-19T09:27:30+08:00" />
+<meta itemprop="wordCount" content="2376">
+<meta itemprop="keywords" content="golang,project," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="gee-intro"/>
+<meta name="twitter:description" content="gee 本项目模仿极客兔兔的7天项目进行学习 gee-web 简介 这是一个简单的web框架，实现了路由、中间件、静态文件服务、模板渲染等功能。主要是模仿gin框架"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">gee-intro</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-08-19
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/golang/">golang</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/project/">project</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h3 id="gee">gee</h3>
+<p>本项目模仿极客兔兔的7天项目进行学习</p>
+<h3 id="gee-web">gee-web</h3>
+<h4 id="简介">简介</h4>
+<p>这是一个简单的web框架，实现了路由、中间件、静态文件服务、模板渲染等功能。主要是模仿gin框架进行实现，下面就来说说从中学到的东西。</p>
+<h5 id="context">context</h5>
+<ol>
+<li>
+<p>每次请求都会创建一个context，所以在context中存储一些请求相关的信息是很有必要的，比如说请求的method、path、响应的writer等等，这些信息都是在请求过程中会用到的，所以在context中存储这些信息是很有必要的。</p>
+</li>
+<li>
+<p>比如restful接口的构建，如果每次都要json然后encode会有很多重复代码。</p>
+</li>
+</ol>
+<p>实现上</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Context</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// origin objects
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Writer</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Req</span>    <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// request info
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Path</span>   <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Method</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// response info
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">StatusCode</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>基本就是把Writer req Path Method 等常用属性封装，然后提供一些常用的方法，比如说PostForm、Query、Status、SetHeader、String、JSON等等。</p>
+<h5 id="router">router</h5>
+<p>基于前缀树实现，</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">router</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">roots</span>    <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">node</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">handlers</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">HandlerFunc</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">node</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">pattern</span>  <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">part</span>     <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">children</span> <span class="p">[]</span><span class="o">*</span><span class="nx">node</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">isWild</span>   <span class="kt">bool</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>注意每个方法(GET POST)都有对应Node 根节点，然后看node的结构，包含pattern part children isWild，pattern是完整的路径，part是当前节点的路径，children是子节点，isWild表示是否精确匹配。</p>
+<p>搜索时通过Path找到节点，然后根据patten来找到对应handler。</p>
+<h5 id="group">group</h5>
+<p>分组这个功能还是很有用的</p>
+<ol>
+<li>提供了逻辑上的隔离，使得每个分组中的路由都有相同的前缀，这样就可以提取公共的前缀，减少冗余代码。</li>
+<li>中间件可以基于组来设置，这样就可以对某个组的路由设置中间件，而不是每个路由都设置中间件。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">RouterGroup</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">prefix</span>      <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">middlewares</span> <span class="p">[]</span><span class="nx">HandlerFunc</span> <span class="c1">// support middleware
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">parent</span>      <span class="o">*</span><span class="nx">RouterGroup</span>  <span class="c1">// support nesting
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">engine</span>      <span class="o">*</span><span class="nx">Engine</span>       <span class="c1">// all groups share a Engine instance
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">Engine</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="o">*</span><span class="nx">RouterGroup</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">router</span> <span class="o">*</span><span class="nx">router</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">groups</span> <span class="p">[]</span><span class="o">*</span><span class="nx">RouterGroup</span> <span class="c1">// store all groups
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">}</span>
+</span></span></code></pre></div><p>实现就有点意思了，每个分组为了保持对engine的可见性(可能表述有问题),需要有一个engine的引用这样添加路由时才能添加到engine中，所以每个分组都有一个engine的引用，然后engine中有一个groups的属性，用来存储所有的分组，这样就可以通过engine来访问所有的分组了。</p>
+<h5 id="middleware">middleware</h5>
+<p>中间件的设计也很精巧</p>
+<p>它是基于这样一种情景:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">A</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">part1</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">c</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">part2</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">B</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">part3</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">c</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">part4</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>所以context需要添加一个index属性，用来记录当前执行到哪个中间件了，然后在Next方法中，先把index加1，然后执行中间件，然后再执行Next方法，这样就可以实现中间件的执行了。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">Next</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nx">index</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">s</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">;</span> <span class="nx">c</span><span class="p">.</span><span class="nx">index</span> <span class="p">&lt;</span> <span class="nx">s</span><span class="p">;</span> <span class="nx">c</span><span class="p">.</span><span class="nx">index</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">c</span><span class="p">.</span><span class="nx">handlers</span><span class="p">[</span><span class="nx">c</span><span class="p">.</span><span class="nx">index</span><span class="p">](</span><span class="nx">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这个next设计很有意思，这个是从当前中间件的下一个进行遍历操作，而不是只执行下一个。这是因为有些中间件的操作是不调用next的，比如说logger中间件，它只是打印日志，然后就不需要执行下一个中间件了，所以这样设计是很合理的。然后与之配套的Context.Fail方法，用来中断中间件的执行也很有意思。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">Fail</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nx">index</span> <span class="p">=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">handlers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">H</span><span class="p">{</span><span class="s">&#34;message&#34;</span><span class="p">:</span> <span class="nx">err</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>他这里会把index直接设置为最后，那么堆栈中嵌套调用的next都会立刻退出而不会继续执行下去。</p>
+<p>差点漏说了，这个URL本身的Handler也被当成一个中间件放在最后，这样代码连贯性比较好。servehttp的时候就是调用next就开始执行了。</p>
+<h5 id="panic-recover">panic-recover</h5>
+<p>这个也是http框架必不可少的，因为http框架是一个长期运行的服务，所以必须要有panic-recover机制，不然一旦出现panic，整个服务就会挂掉，这是不允许的。</p>
+<p>这gee(gin)中这是通过设置recover中间件来实现的也是一种很不错的方法。</p>
+<h3 id="gee-cache">gee-cache</h3>
+<h4 id="day1-lru">Day1 LRU</h4>
+<p>基本上是用Map和list.List来实现LRU，要注意的是链表里面不止存value，还要存key因为这样删除的时候才可以O(1)删除map</p>
+<h4 id="day2">Day2</h4>
+<ol>
+<li>byteview: 一个只读的数据结构，实现了查询长度和拷贝的功能。</li>
+<li>回调 Getter，这一部分是为了实现缓存中找不到去更深层的数据源查找的功能。</li>
+</ol>
+<p>有意思的是这里用了一个Getter接口，然后用GetterFunc来实现这个接口，这样就可以用函数来实现这个接口了，这样就可以不用每次都实现一个结构体了(当然实现结构体也可以)。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// A Getter loads data for a key.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Getter</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Get</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// A GetterFunc implements Getter with a function.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">GetterFunc</span> <span class="kd">func</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Get implements Getter interface function
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="nx">GetterFunc</span><span class="p">)</span> <span class="nf">Get</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nf">f</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ol start="3">
+<li>Group</li>
+</ol>
+<p>group可以看成是命名空间，每个group有一个名字，然后每个group有一个cache，然后每个group有一个getter，这样就可以实现不同的group有不同的cache和getter了。</p>
+<h4 id="day3-http-服务端">Day3 HTTP 服务端</h4>
+<p>其实比较简单，就是写了一个HTTPPool的结构体，实现ServeHttp方法。要注意现在的HTTPPool是一个单机的，所以只能用来做单机的缓存。</p>
+<h4 id="一致性哈希">一致性哈希</h4>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/geecache-add-peer.webp" alt=""></p>
+<p>避免数据倾斜，一个真实节点可能对应多个缓存节点。</p>
+<h4 id="实现">实现</h4>
+<p>首先就是节点的添加，主要就是用一个数组有序存放各个虚拟节点hash值，再用一个hashmap存虚拟节点和真实节点的对应关系。 在根据key获取节点的时候就把key的hash值用来二分查找，然后找到第一个大于等于key的hash值，然后就可以找到对应的节点了。</p>
+<h4 id="分布式节点">分布式节点</h4>
+<ol>
+<li>定义接口</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// PeerPicker is the interface that must be implemented to locate
+</span></span></span><span class="line"><span class="cl"><span class="c1">// the peer that owns a specific key.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">PeerPicker</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">PickPeer</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="nx">peer</span> <span class="nx">PeerGetter</span><span class="p">,</span> <span class="nx">ok</span> <span class="kt">bool</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// PeerGetter is the interface that must be implemented by a peer.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">PeerGetter</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Get</span><span class="p">(</span><span class="nx">group</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ol start="2">
+<li>由httppool实现peerPicker接口，利用其内部的一致性哈希模块选择真实节点。</li>
+<li>httpgetter实现peergetter接口，利用http客户端从远程节点获取缓存值(其实就是封装了http请求)。</li>
+<li>集成httppool到group中，就是修改一下load方法使其先pick再get。</li>
+</ol>
+<h4 id="day6">day6</h4>
+<p>防止缓存击穿：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">singleflight</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;sync&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">call</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">wg</span>  <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">val</span> <span class="kd">interface</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Group</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">mu</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>       <span class="c1">// protects m
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">m</span>  <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">call</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ul>
+<li>call 代表正在进行中，或已经结束的请求。使用 sync.WaitGroup 锁避免重入。</li>
+<li>Group 是 singleflight 的主数据结构，管理不同 key 的请求(call)。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">Group</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">fn</span> <span class="kd">func</span><span class="p">()</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">))</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">g</span><span class="p">.</span><span class="nx">m</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">g</span><span class="p">.</span><span class="nx">m</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">call</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">g</span><span class="p">.</span><span class="nx">m</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">g</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">c</span><span class="p">.</span><span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">//提前返回结果
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nx">val</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">err</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">call</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">m</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="p">=</span> <span class="nx">c</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//唯一一次调用fn
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">c</span><span class="p">.</span><span class="nx">val</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">err</span> <span class="p">=</span> <span class="nf">fn</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">.</span><span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">delete</span><span class="p">(</span><span class="nx">g</span><span class="p">.</span><span class="nx">m</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nx">val</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">err</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

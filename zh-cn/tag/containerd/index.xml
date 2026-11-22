@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Containerd on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/containerd/</link>
+    <description>Recent content in Containerd on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 23 Aug 2023 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/containerd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>containerd-intro</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/23/category/containerd-intro/</link>
+      <pubDate>Wed, 23 Aug 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/23/category/containerd-intro/</guid>
+      <description>Containerd 可以做什么 管理容器的生命周期（从创建容器到销毁容器） 拉取/推送容器镜像 存储管理（管理镜像及容器数据的存储） 调用 runc 运行容器（与 runc 等容器运行时</description>
+    </item>
+    
+    <item>
+      <title>CNI</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/cni/</link>
+      <pubDate>Sat, 08 Jul 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/cni/</guid>
+      <description>CNI Reference 从零开始入门 K8s：理解 CNI 和 CNI 插件</description>
+    </item>
+    
+  </channel>
+</rss>

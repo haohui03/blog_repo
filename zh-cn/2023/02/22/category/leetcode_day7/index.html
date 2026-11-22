@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>二叉树（上） · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="二叉树(上) 二叉树的递归遍历: 这里帮助大家确定下来递归算法的三个要素。每次写递归，都按照这三要素来写，可以保证大家写出正确的递归算法！ 确定递" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/02/22/category/leetcode_day7/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="二叉树（上）" />
+<meta property="og:description" content="二叉树(上) 二叉树的递归遍历: 这里帮助大家确定下来递归算法的三个要素。每次写递归，都按照这三要素来写，可以保证大家写出正确的递归算法！ 确定递" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/02/22/category/leetcode_day7/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-02-22T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-02-22T13:27:30+08:00" />
+
+<meta itemprop="name" content="二叉树（上）">
+<meta itemprop="description" content="二叉树(上) 二叉树的递归遍历: 这里帮助大家确定下来递归算法的三个要素。每次写递归，都按照这三要素来写，可以保证大家写出正确的递归算法！ 确定递"><meta itemprop="datePublished" content="2023-02-22T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-02-22T13:27:30+08:00" />
+<meta itemprop="wordCount" content="1079">
+<meta itemprop="keywords" content="algorithm,jobs,leetcode," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="二叉树（上）"/>
+<meta name="twitter:description" content="二叉树(上) 二叉树的递归遍历: 这里帮助大家确定下来递归算法的三个要素。每次写递归，都按照这三要素来写，可以保证大家写出正确的递归算法！ 确定递"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">二叉树（上）</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-02-22
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/algorithm/">algorithm</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/jobs/">jobs</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/leetcode/">leetcode</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h1 id="二叉树上">二叉树(上)</h1>
+<h3 id="二叉树的递归遍历">二叉树的递归遍历:</h3>
+<blockquote>
+<p>这里帮助大家确定下来递归算法的三个要素。每次写递归，都按照这三要素来写，可以保证大家写出正确的递归算法！</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>确定递归函数的参数和返回值： 确定哪些参数是递归的过程中需要处理的，那么就在递归函数里加上这个参数， 并且还要明确每次递归的返回值是什么进而确定递归函数的返回类型。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>确定终止条件： 写完了递归算法, 运行的时候，经常会遇到栈溢出的错误，就是没写终止条件或者终止条件写的不对，操作系统也是用一个栈的结构来保存每一层递归的信息，如果递归没有终止，操作系统的内存栈必然就会溢出。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>确定单层递归的逻辑： 确定每一层递归需要处理的信息。在这里也就会重复调用自己来实现递归的过程。</li>
+</ol>
+</blockquote>
+<p>理解下来就是:</p>
+<ul>
+<li>终止条件</li>
+<li>返回(其实也是循环入口)</li>
+<li>单层的处理</li>
+</ul>
+<h4 id="前序遍历">前序遍历</h4>
+<p>递归法</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Definition for a binary tree node.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * type TreeNode struct {
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Val int
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Left *TreeNode
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Right *TreeNode
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * }
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">preorderTraversal</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">root</span> <span class="o">==</span> <span class="kc">nil</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">left</span><span class="o">:=</span><span class="nf">preorderTraversal</span><span class="p">((</span><span class="o">*</span><span class="nx">root</span><span class="p">).</span><span class="nx">Left</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">right</span><span class="o">:=</span><span class="nf">preorderTraversal</span><span class="p">((</span><span class="o">*</span><span class="nx">root</span><span class="p">).</span><span class="nx">Right</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ans</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="nx">left</span><span class="p">)</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="nx">right</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ans</span><span class="p">[</span><span class="mi">0</span><span class="p">]=(</span><span class="o">*</span><span class="nx">root</span><span class="p">).</span><span class="nx">Val</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">copy</span><span class="p">(</span><span class="nx">ans</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="nx">left</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span><span class="nx">left</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">copy</span><span class="p">(</span><span class="nx">ans</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">left</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:],</span><span class="nx">right</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">ans</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>迭代法:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">preorderTraversal</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">root</span><span class="o">==</span><span class="kc">nil</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">stack</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">TreeNode</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">stack</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span><span class="nx">root</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ans</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">pointer</span><span class="o">:=*</span><span class="nx">stack</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">ans</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">ans</span><span class="p">,</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">Val</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">stack</span><span class="p">=</span><span class="nx">stack</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">Right</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span> <span class="nx">stack</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">Right</span><span class="p">)}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">Left</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span> <span class="nx">stack</span><span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">Left</span><span class="p">)}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">ans</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>对于迭代法来说，重要的是找到如何入栈和出栈。</p>
+<ul>
+<li>一开始想的是不断把遍历到的节点入栈，但其实只要把右节点和左节点先后入就可以了。这样每次遇到新的节点都是一样的处理逻辑，而不用考虑是新节点还是回溯的节点。</li>
+<li>代码随想录里面的理解是:插入节点的值（插入ans）和处理节点（记录左右子节点的地址）都可以一起完成。</li>
+</ul>
+<h4 id="中序遍历">中序遍历:</h4>
+<ul>
+<li>这个就很不一样了，因为他就是不符合上面说的插入值和处理节点同时完成。</li>
+<li>也像我说的，新遇到一个节点还是回溯遇到节点是不一样的，所以我们要把他的这两步分开处理,而且可能回溯遇到两次同一个节点。</li>
+</ul>
+<p>具体来说，也就是一直入栈的时候处理，出栈的时候记录值，并且这个时候把这个根出栈了就不会再遇到了。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">inorderTraversal</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">root</span><span class="o">==</span><span class="kc">nil</span><span class="p">{</span>  <span class="k">return</span> <span class="kc">nil</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">stack</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">TreeNode</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ans</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">pointer</span><span class="o">:=</span><span class="nx">root</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="o">||</span><span class="nx">pointer</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">pointer</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">stack</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span><span class="nx">pointer</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">pointer</span> <span class="p">=</span> <span class="p">(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Left</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">            <span class="nx">pointer</span><span class="p">=</span><span class="nx">stack</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">ans</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">ans</span><span class="p">,</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">Val</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">((</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Val</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">            <span class="nx">pointer</span><span class="p">=(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Right</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">            <span class="nx">stack</span><span class="p">=</span><span class="nx">stack</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">ans</span> 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="后序遍历">后序遍历</h4>
+<p>后序遍历的话符合我们之前说的要求，所以第一次遇到的时候就可以处理并记录。 但是要注意记录的时候本来应该把它放在最后面的，但是具体实现起来不好从后向前append，所以采用从前向后然后reverse</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">postorderTraversal</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">root</span><span class="o">==</span><span class="kc">nil</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">record</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">TreeNode</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">record</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span><span class="nx">root</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ans</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">pointer</span><span class="o">:=</span><span class="nx">record</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">record</span><span class="p">=</span> <span class="nx">record</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">ans</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">ans</span><span class="p">,(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Val</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Left</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span> <span class="nx">record</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">record</span><span class="p">,(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Left</span><span class="p">)}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Right</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span> <span class="nx">record</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">record</span><span class="p">,(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Right</span><span class="p">)}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">reverse</span><span class="p">(</span><span class="nx">ans</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">ans</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">reverse</span><span class="p">(</span><span class="nx">in</span> <span class="p">[]</span><span class="kt">int</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">i</span><span class="o">:=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">j</span><span class="o">:=</span><span class="nb">len</span><span class="p">(</span><span class="nx">in</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span><span class="p">&lt;</span><span class="nx">j</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">in</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span><span class="nx">in</span><span class="p">[</span><span class="nx">j</span><span class="p">]=</span><span class="nx">in</span><span class="p">[</span><span class="nx">j</span><span class="p">],</span><span class="nx">in</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">i</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">j</span><span class="o">--</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="三种遍历的统一写法">三种遍历的统一写法:</h4>
+<ul>
+<li>核心思想是标记法: 实际上人在遍历的回溯的时候会下意识的辨别出这个节点是新的还是已经见过的。</li>
+<li>所以在stack中我们就是要把上面的两种操作分开，没有标记的是新节点，前面有个null标记的就是只存值的节点。(和转义的思想差不多)</li>
+</ul>
+<p>浅浅模仿写了个中序遍历的，不同的遍历只需要在遇到新节点后改变左中右的插入顺序。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">inorderTraversal</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">root</span><span class="o">==</span><span class="kc">nil</span><span class="p">{</span> <span class="k">return</span> <span class="kc">nil</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">record</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">TreeNode</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">record</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span><span class="nx">root</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ans</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">pointer</span><span class="o">:=</span><span class="nx">record</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">pointer</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">record</span><span class="p">=</span><span class="nx">record</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Right</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span> <span class="nx">record</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">record</span><span class="p">,(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Right</span><span class="p">)}</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="nx">record</span><span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span><span class="nx">pointer</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">record</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span><span class="kc">nil</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Left</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span><span class="nx">record</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">record</span><span class="p">,(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Left</span><span class="p">)}</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">pointer</span><span class="p">=</span><span class="nx">record</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">ans</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">ans</span><span class="p">,(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Val</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">record</span><span class="p">=</span><span class="nx">record</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">ans</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>quic on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/quic/</link>
+    <description>Recent content in quic on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 17 Jan 2024 09:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/quic/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>quic协议</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/17/category/quic%E5%8D%8F%E8%AE%AE/</link>
+      <pubDate>Wed, 17 Jan 2024 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/17/category/quic%E5%8D%8F%E8%AE%AE/</guid>
+      <description>QUIC QUIC在用户空间实现，tcp/udp在内核空间 优势 减少了 TCP 三次握手及 TLS 握手时间。 改进的拥塞控制。 避免队头阻塞的多路复用。 连接迁移。 前向安</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>language on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/language/</link>
+    <description>Recent content in language on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 01 Jan 2024 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/language/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>golang-lock</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-lock/</link>
+      <pubDate>Mon, 01 Jan 2024 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-lock/</guid>
+      <description>基本概念 互斥锁会将操作串行化，可以保证操作完全有序，适合资源只能由一个协程进行操作的情况，并发能力弱； 读写锁适合读多写少的情况，并发能有比较</description>
+    </item>
+    
+    <item>
+      <title>golang-tcmalloc</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-tcmalloc/</link>
+      <pubDate>Mon, 01 Jan 2024 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-tcmalloc/</guid>
+      <description>TCmalloc 为了解决中大对象的内存申请，TCmalloc有一个全局共享内存堆 Page 每个 Page 默认是 8KB。这里的page就像是虚拟内存的page Span Span是包</description>
+    </item>
+    
+    <item>
+      <title>golang-gc-optimization</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/12/12/category/golang-gc-optimization/</link>
+      <pubDate>Tue, 12 Dec 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/12/12/category/golang-gc-optimization/</guid>
+      <description>golang 是如何运行起来的</description>
+    </item>
+    
+    <item>
+      <title>golang-map</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/23/category/golang-map/</link>
+      <pubDate>Thu, 23 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/23/category/golang-map/</guid>
+      <description>map map是一个很重要的数据结构，本篇文章记录学习golang中map源码的过程。 图多取自别人的博客，非原创请注意 基本的概念不在赘述了 以下分析</description>
+    </item>
+    
+    <item>
+      <title>golang-base-structure</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-base-structure/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-base-structure/</guid>
+      <description>记录golang中的底层数据结构 slice 基础的东西比如len，cap，ptr这些东西就不说了 从slice中获取内存地址和从内存中构造slice 从s</description>
+    </item>
+    
+    <item>
+      <title>golang-pprof</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-pprof/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-pprof/</guid>
+      <description>简单介绍 是什么 pprof 是用于可视化和分析性能分析数据的工具 pprof 以 profile.proto 读取分析样本的集合，并生成报告以可视化并帮助分析数据（支持文本和图形报告） profile.proto 是一个</description>
+    </item>
+    
+    <item>
+      <title>golang-snowflake</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-snowflake/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-snowflake/</guid>
+      <description>雪花算法 1.第一位 占用1bit，其值始终是0，没有实际作用。 2.时间戳 占用41bit，精确到毫秒，总共可以容纳约69年的时间。 3.工作机器i</description>
+    </item>
+    
+    <item>
+      <title>golang-unsafe</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-unsafe/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-unsafe/</guid>
+      <description>unsafe包介绍 首先，unsafe正如其名是不安全的。 来自go语言官方文档的警告 unsafe包的文档是这么说的： 导入unsafe的软件包可</description>
+    </item>
+    
+    <item>
+      <title>go-package-overview</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/16/category/net/http/</link>
+      <pubDate>Wed, 16 Aug 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/16/category/net/http/</guid>
+      <description>i/o io constants const ( SeekStart = 0 // seek relative to the origin of the file SeekCurrent = 1 // seek relative to the current offset SeekEnd = 2 // seek relative to the end ) 和c++的seekg一样，有三种相对寻找方式 variables 几种错误 //要注意E</description>
+    </item>
+    
+    <item>
+      <title>golang-interview-gmp</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/01/category/golang-interview-gmp/</link>
+      <pubDate>Tue, 01 Aug 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/01/category/golang-interview-gmp/</guid>
+      <description>golang 调度器的由来 如果把并发交给os来完成，首先是CPU的调度消耗，其次进程占用4GB(虚拟内存)，线程占用4MB这些都是比较高的内存占用。 协程</description>
+    </item>
+    
+    <item>
+      <title>context</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/07/11/category/net/http/</link>
+      <pubDate>Tue, 11 Jul 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/07/11/category/net/http/</guid>
+      <description>Overview: Package context defines the Context type, which carries deadlines, cancellation signals, and other request-scoped values across API boundaries and between processes. Incoming requests to a server should create a Context, and outgoing calls to servers should accept a Context. The chain of function calls between them must propagate the Context, optionally replacing it with a derived Context created using WithCancel, WithDeadline, WithTimeout, or WithValue. When a Context is canceled,</description>
+    </item>
+    
+    <item>
+      <title>go net package</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/</link>
+      <pubDate>Mon, 19 Jun 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/</guid>
+      <description>Reference 源码分析go</description>
+    </item>
+    
+    <item>
+      <title>net/http</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/http/</link>
+      <pubDate>Mon, 19 Jun 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/http/</guid>
+      <description>learn http 前置知识: HTTP 1.1 / 2 基于TCP ， HTTP/3 可以基于TCP UDP 和QUIC. HTTP HTTP 报文的常见格式: GET / HTTP/1.1 User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT) Host: draveness.me Accept-Language: en-us Accept-Encoding: gzip, deflate Content-Type: text/html; charset=UTF-8 Content-Length: 138 Connection: Keep-Alive &amp;lt;html&amp;gt; ... &amp;lt;/html&amp;gt; TCP 粘</description>
+    </item>
+    
+    <item>
+      <title>net/rpc</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/02/25/category/net/rpc/</link>
+      <pubDate>Sat, 25 Feb 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/02/25/category/net/rpc/</guid>
+      <description>net/rpc 简介: 远程过程调用 (Remote Procedure Call，RPC) 是一种计算机通信协议。允许运行在一台计算机的程序调用另一个地址空间的子程序（一般是开放网络中的一台</description>
+    </item>
+    
+    <item>
+      <title>golang-blog</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/02/17/category/golang-blog/</link>
+      <pubDate>Fri, 17 Feb 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/02/17/category/golang-blog/</guid>
+      <description>阅读golang的官方blog做的一些笔记 pipeline fan-in fan-out Multiple functions can read from the same channel until that channel is closed; this is called fan-out. This provides a way to distribute work amongst a group of workers to parallelize CPU use and I/O. A function can read from multiple inputs and proceed until all</description>
+    </item>
+    
+    <item>
+      <title>golang-panic-recover</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/golang-panic-recover/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/golang-panic-recover/</guid>
+      <description>panic和recover 问题来源于一个面试问题： 父协程能否recover子协程的panic 经过实验：是不能的 而且子协程的panic如果没有</description>
+    </item>
+    
+  </channel>
+</rss>

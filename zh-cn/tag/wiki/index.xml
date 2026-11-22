@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>wiki on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/wiki/</link>
+    <description>Recent content in wiki on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 Sep 2023 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/wiki/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>yehh-wiki</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/16/category/yehh-wiki/</link>
+      <pubDate>Sat, 16 Sep 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/16/category/yehh-wiki/</guid>
+      <description>???? 设计一个软件(服务)的原则/最佳实践-12factors Standard Go Project Layout golang 有用的库 viper 配置库 fsnotify 跨平台的文件提醒(一般是文件修改的提醒吧) zap/zapcore zap get-started 云原生</description>
+    </item>
+    
+  </channel>
+</rss>

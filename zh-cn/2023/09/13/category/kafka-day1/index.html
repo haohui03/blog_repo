@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>kafka-day1 · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Kafka入门 基本概念 Apache Kafka 核心组件和流程 控制器 控制器也叫leader broker,负责分区leader的选取,也就是负责选举partitio" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/kafka-day1/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="kafka-day1" />
+<meta property="og:description" content="Kafka入门 基本概念 Apache Kafka 核心组件和流程 控制器 控制器也叫leader broker,负责分区leader的选取,也就是负责选举partitio" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/kafka-day1/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-13T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-10-13T13:27:30+08:00" />
+
+<meta itemprop="name" content="kafka-day1">
+<meta itemprop="description" content="Kafka入门 基本概念 Apache Kafka 核心组件和流程 控制器 控制器也叫leader broker,负责分区leader的选取,也就是负责选举partitio"><meta itemprop="datePublished" content="2023-09-13T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-10-13T13:27:30+08:00" />
+<meta itemprop="wordCount" content="709">
+<meta itemprop="keywords" content="infra,kafka,Middleware," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="kafka-day1"/>
+<meta name="twitter:description" content="Kafka入门 基本概念 Apache Kafka 核心组件和流程 控制器 控制器也叫leader broker,负责分区leader的选取,也就是负责选举partitio"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">kafka-day1</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-09-13
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/infra/">infra</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/kafka/">kafka</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/middleware/">Middleware</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="kafka入门">Kafka入门</h2>
+<h3 id="基本概念">基本概念</h3>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/58c35d3ab0921bf0476e3ba14069d291-7cab2435486d.jpg" alt=""></p>
+<h3 id="apache-kafka-核心组件和流程">Apache Kafka 核心组件和流程</h3>
+<h4 id="控制器">控制器</h4>
+<p>控制器也叫leader broker,负责分区leader的选取,也就是负责选举partition的leader replica.</p>
+<h5 id="控制器选举">控制器选举</h5>
+<p>实际上就是借助Zookeeper分布式锁实现选主。</p>
+<p>包括集群启动在内，有三种情况触发控制器选举：</p>
+<ol>
+<li>
+<p>集群启动</p>
+</li>
+<li>
+<p>控制器所在代理发生故障</p>
+</li>
+<li>
+<p>zookeeper心跳感知，控制器与自己的session过期</p>
+</li>
+</ol>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/8356635553_237707-fd1b53be6b1e.webp" alt=""></p>
+<p>假设此集群有三个broker，同时启动。</p>
+<p>（一）3个broker从zookeeper获取/controller临时节点信息。/controller存储的是选举出来的leader信息。此举是为了确认是否已经存在leader。</p>
+<p>（二）如果还没有选举出leader，那么此节点是不存在的，返回-1。如果返回的不是-1，而是leader的json数据，那么说明已经有leader存在，选举结束。</p>
+<p>（三）三个broker发现返回-1，了解到目前没有leader，于是均会触发向临时节点/controller写入自己的信息。最先写入的就会成为leader。</p>
+<p>（四）假设broker 0的速度最快，他先写入了/controller节点，那么他就成为了leader。而broker1、broker2很不幸，因为晚了一步，他们在写/controller的过程中会抛出ZkNodeExistsException，也就是zk告诉他们，此节点已经存在了。</p>
+<p>经过以上四步，broker 0成功写入/controller节点，其它broker写入失败了，所以broker 0成功当选leader。</p>
+<h5 id="控制器初始化">控制器初始化</h5>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/8356635524_366679-55b24c797e7c.webp" alt=""></p>
+<h3 id="reference">Reference</h3>
+<p><a href="https://xie.infoq.cn/article/06024c2b556636be0e57fe1ed">一篇并不起眼的 Kafka 面试题</a> <a href="https://blog.nowcoder.net/n/802b6a3bbcb2486b9c74dca048bd720b">Kafka面试，看这一篇就够了</a> <a href="https://cloud.tencent.com/developer/article/1853417">《面试八股文》之 Kafka 21卷</a> <a href="https://bbs.huaweicloud.com/blogs/302496">华为云kafka入门教学</a></p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

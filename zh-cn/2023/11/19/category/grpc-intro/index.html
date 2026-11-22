@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>grpc-intro · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="grpc 简单使用 这次这次实践的目录 . ├── client │ └── hello-client │ └── client.go ├── go.mod ├── go.sum ├── proto │ └── hello │ ├── hello_grpc.pb.go │ ├── hello.pb.go │ └── hello.proto └── server └── hello-server └" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/grpc-intro/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="grpc-intro" />
+<meta property="og:description" content="grpc 简单使用 这次这次实践的目录 . ├── client │ └── hello-client │ └── client.go ├── go.mod ├── go.sum ├── proto │ └── hello │ ├── hello_grpc.pb.go │ ├── hello.pb.go │ └── hello.proto └── server └── hello-server └" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/grpc-intro/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-19T09:01:23+08:00" />
+<meta property="article:modified_time" content="2023-11-19T09:20:30+08:00" />
+
+<meta itemprop="name" content="grpc-intro">
+<meta itemprop="description" content="grpc 简单使用 这次这次实践的目录 . ├── client │ └── hello-client │ └── client.go ├── go.mod ├── go.sum ├── proto │ └── hello │ ├── hello_grpc.pb.go │ ├── hello.pb.go │ └── hello.proto └── server └── hello-server └"><meta itemprop="datePublished" content="2023-11-19T09:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-11-19T09:20:30+08:00" />
+<meta itemprop="wordCount" content="2099">
+<meta itemprop="keywords" content="golang,grpc," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="grpc-intro"/>
+<meta name="twitter:description" content="grpc 简单使用 这次这次实践的目录 . ├── client │ └── hello-client │ └── client.go ├── go.mod ├── go.sum ├── proto │ └── hello │ ├── hello_grpc.pb.go │ ├── hello.pb.go │ └── hello.proto └── server └── hello-server └"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">grpc-intro</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-11-19
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/golang/">golang</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/grpc/">grpc</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h1 id="grpc">grpc</h1>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/m3zX4BjgTlOneyY-90e9c146e57c.png" alt="image.png"></p>
+<h2 id="简单使用">简单使用</h2>
+<p>这次这次实践的目录</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">.
+</span></span><span class="line"><span class="cl">├── client
+</span></span><span class="line"><span class="cl">│   └── hello-client
+</span></span><span class="line"><span class="cl">│       └── client.go
+</span></span><span class="line"><span class="cl">├── go.mod
+</span></span><span class="line"><span class="cl">├── go.sum
+</span></span><span class="line"><span class="cl">├── proto
+</span></span><span class="line"><span class="cl">│   └── hello
+</span></span><span class="line"><span class="cl">│       ├── hello_grpc.pb.go
+</span></span><span class="line"><span class="cl">│       ├── hello.pb.go
+</span></span><span class="line"><span class="cl">│       └── hello.proto
+</span></span><span class="line"><span class="cl">└── server
+</span></span><span class="line"><span class="cl">    └── hello-server
+</span></span><span class="line"><span class="cl">        └── server.go
+</span></span></code></pre></div><p>proto</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="n">syntax</span> <span class="o">=</span> <span class="s">&#34;proto3&#34;</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c1">// 定义go生成后的包名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">option</span> <span class="n">go_package</span> <span class="o">=</span> <span class="s">&#34;./;hello&#34;</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="kn">package</span> <span class="nn">proto</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c1">// 定义入参
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">message</span> <span class="nc">Request</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="kt">string</span> <span class="n">name</span> <span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c1">// 定义返回
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">message</span> <span class="nc">Response</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="kt">string</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c1">// 定义接口
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">service</span> <span class="n">UserService</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="k">rpc</span> <span class="n">Say</span><span class="p">(</span><span class="n">Request</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">Response</span><span class="p">);</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><h3 id="server">server</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">HelloService</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 必须嵌入UnimplementedUserServiceServer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">hello</span><span class="p">.</span><span class="nx">UnimplementedUserServiceServer</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 实现SayHi方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">h</span> <span class="o">*</span><span class="nx">HelloService</span><span class="p">)</span> <span class="nf">Say</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">req</span> <span class="o">*</span><span class="nx">hello</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">(</span><span class="nx">res</span> <span class="o">*</span><span class="nx">hello</span><span class="p">.</span><span class="nx">Response</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">format</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Format</span><span class="p">(</span><span class="s">&#34;2006-01-02 15:04:05&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">hello</span><span class="p">.</span><span class="nx">Response</span><span class="p">{</span><span class="nx">Result</span><span class="p">:</span> <span class="s">&#34;hi &#34;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nf">GetName</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;---&#34;</span> <span class="o">+</span> <span class="nx">format</span><span class="p">},</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">const</span> <span class="nx">PORT</span> <span class="p">=</span> <span class="s">&#34;8888&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 创建grpc服务
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">server</span> <span class="o">:=</span> <span class="nx">grpc</span><span class="p">.</span><span class="nf">NewServer</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 注册服务
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">hello</span><span class="p">.</span><span class="nf">RegisterUserServiceServer</span><span class="p">(</span><span class="nx">server</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">HelloService</span><span class="p">{})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 监听端口
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">lis</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">net</span><span class="p">.</span><span class="nf">Listen</span><span class="p">(</span><span class="s">&#34;tcp&#34;</span><span class="p">,</span> <span class="s">&#34;:&#34;</span><span class="o">+</span><span class="nx">PORT</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;net.Listen err: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">server</span><span class="p">.</span><span class="nf">Serve</span><span class="p">(</span><span class="nx">lis</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>分析上面的代码：</p>
+<p>服务端需要实现在protobuf定义的函数，具体为定义一个结构体组合UnimplementedUserServiceServer,然后实现对应的方法。注意pb生成的golang函数与go本身的rpc不同的地方在于有一个context入参和返回值是通过返回来获取而不是作为一个参数的。</p>
+<h3 id="client">client</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">const</span> <span class="nx">PORT</span> <span class="p">=</span> <span class="s">&#34;8888&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 建立链接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">conn</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">grpc</span><span class="p">.</span><span class="nf">Dial</span><span class="p">(</span><span class="s">&#34;:&#34;</span><span class="o">+</span><span class="nx">PORT</span><span class="p">,</span> <span class="nx">grpc</span><span class="p">.</span><span class="nf">WithTransportCredentials</span><span class="p">(</span><span class="nx">insecure</span><span class="p">.</span><span class="nf">NewCredentials</span><span class="p">()))</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;grpc.Dial err: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 一定要记得关闭链接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">defer</span> <span class="nx">conn</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 实例化客户端
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">client</span> <span class="o">:=</span> <span class="nx">hello</span><span class="p">.</span><span class="nf">NewUserServiceClient</span><span class="p">(</span><span class="nx">conn</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 发起请求
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">response</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">client</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="o">&amp;</span><span class="nx">hello</span><span class="p">.</span><span class="nx">Request</span><span class="p">{</span><span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;lin钟一&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;client.SayHi err: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;resp: %s&#34;</span><span class="p">,</span> <span class="nx">response</span><span class="p">.</span><span class="nf">GetResult</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>客户端代码也很简单，首先建立链接，然后实例化客户端，最后发起请求。</p>
+<h2 id="grpc-streaming-client-and-server">gRPC Streaming, Client and Server</h2>
+<ul>
+<li>Server-side streaming RPC—— 客户端向服务器发送单个请求并接收回数据序列流（读回一系列消息）。客户端从返回的流中读取，直到没有更多消息为止。</li>
+<li>Client-side streaming RPC—— 客户端向服务器发送数据序列流（写入一系列消息），一旦客户端完成了消息的写入，它会等待服务器读取所有消息并返回其响应结果。</li>
+<li>Bidirectional streaming RPC—— 它是双向流式传输，客户端和服务器使用读写流发送一系列消息。两个流独立运行；因此，因此客户端和服务器可以按照他们喜欢的任何顺序读取和写入。保留每个流中消息的顺序。例如，服务器可以在写入响应之前等待接收所有客户端消息，或者它可以交替读取消息然后写入消息，或其他一些读取和写入的组合。</li>
+</ul>
+<h3 id="server-stream">server stream</h3>
+<p>这个是服务端发送stream类型的数据</p>
+<h4 id="proto">proto</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="kd">service</span> <span class="n">StreamService</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">rpc</span> <span class="n">List</span><span class="p">(</span><span class="n">StreamRequest</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">stream</span> <span class="n">StreamResponse</span><span class="p">)</span> <span class="p">{};</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><h4 id="服务端">服务端</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">1. 建立连接 获取client
+</span></span></span><span class="line"><span class="cl"><span class="cm">2. 通过 client 获取stream
+</span></span></span><span class="line"><span class="cl"><span class="cm">3. for循环中通过stream.Recv()依次获取服务端推送的消息
+</span></span></span><span class="line"><span class="cl"><span class="cm">4. err==io.EOF则表示服务端关闭stream了
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">StreamService</span><span class="p">)</span> <span class="nf">List</span><span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">pb</span><span class="p">.</span><span class="nx">StreamRequest</span><span class="p">,</span> <span class="nx">stream</span> <span class="nx">pb</span><span class="p">.</span><span class="nx">StreamService_ListServer</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 具体返回多少个response根据业务逻辑调整
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="nx">n</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">n</span> <span class="o">&lt;=</span> <span class="mi">6</span><span class="p">;</span> <span class="nx">n</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 通过 send 方法不断推送数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">err</span> <span class="o">:=</span> <span class="nx">stream</span><span class="p">.</span><span class="nf">Send</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">pb</span><span class="p">.</span><span class="nx">StreamResponse</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">Pt</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">pb</span><span class="p">.</span><span class="nx">StreamPoint</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">Name</span><span class="p">:</span>  <span class="nx">r</span><span class="p">.</span><span class="nx">Pt</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">Value</span><span class="p">:</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Pt</span><span class="p">.</span><span class="nx">Value</span> <span class="o">+</span> <span class="nb">int32</span><span class="p">(</span><span class="nx">n</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">})</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 返回nil表示已经完成响应
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>StreamService_ListServer是pb-grpc为 stream 类型的生成的类型，他的公开函数为</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">StreamService_ListServer</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Send</span><span class="p">(</span><span class="o">*</span><span class="nx">StreamResponse</span><span class="p">)</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">grpc</span><span class="p">.</span><span class="nx">ServerStream</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//内部一般有一个私有结构体来实现这个Send，Send一般就是调用ServerStream的SendMsg方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">streamServiceListServer</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">grpc</span><span class="p">.</span><span class="nx">ServerStream</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">x</span> <span class="o">*</span><span class="nx">streamServiceListServer</span><span class="p">)</span> <span class="nf">Send</span><span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">StreamResponse</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">x</span><span class="p">.</span><span class="nx">ServerStream</span><span class="p">.</span><span class="nf">SendMsg</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="客户端">客户端</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">1. 建立连接 获取client
+</span></span></span><span class="line"><span class="cl"><span class="cm">2. 通过 client 获取stream
+</span></span></span><span class="line"><span class="cl"><span class="cm">3. for循环中通过stream.Recv()依次获取服务端推送的消息
+</span></span></span><span class="line"><span class="cl"><span class="cm">4. err==io.EOF则表示服务端关闭stream了
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">printLists</span><span class="p">(</span><span class="nx">client</span> <span class="nx">pb</span><span class="p">.</span><span class="nx">StreamServiceClient</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">pb</span><span class="p">.</span><span class="nx">StreamRequest</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 调用获取stream
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">stream</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">client</span><span class="p">.</span><span class="nf">List</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="nx">r</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// for循环获取服务端推送的消息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 通过 Recv() 不断获取服务端send()推送的消息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">stream</span><span class="p">.</span><span class="nf">Recv</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// err==io.EOF则表示服务端关闭stream了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="nx">io</span><span class="p">.</span><span class="nx">EOF</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;resp: pj.name: %s, pt.value: %d&#34;</span><span class="p">,</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Pt</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Pt</span><span class="p">.</span><span class="nx">Value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="探究生成的代码">探究生成的代码</h3>
+<h4 id="client-1">client</h4>
+<p>对于Client端来说，先生成一个xxxServiceClient实现pb中定义的函数。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">StreamServiceClient</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//List：服务器端流式 RPC
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">List</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">in</span> <span class="o">*</span><span class="nx">StreamRequest</span><span class="p">,</span> <span class="nx">opts</span> <span class="o">...</span><span class="nx">grpc</span><span class="p">.</span><span class="nx">CallOption</span><span class="p">)</span> <span class="p">(</span><span class="nx">StreamService_ListClient</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//Record：客户端流式 RPC
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">Record</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">opts</span> <span class="o">...</span><span class="nx">grpc</span><span class="p">.</span><span class="nx">CallOption</span><span class="p">)</span> <span class="p">(</span><span class="nx">StreamService_RecordClient</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//Route：双向流式 RPC
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">Route</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">opts</span> <span class="o">...</span><span class="nx">grpc</span><span class="p">.</span><span class="nx">CallOption</span><span class="p">)</span> <span class="p">(</span><span class="nx">StreamService_RouteClient</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>一旦有需要流式传输的都是通过返回一个xxx_funcClient结构体（实现了Recv或者Send+CloseAndRecv或者Send+Recv）而Send或者别的函数都是调用grpc.ClientStream.SendMsg或者RecvMsg。拦截器就是通过重写这两个函数来实现流式拦截</p>
+<h3 id="server-1">Server</h3>
+<p>生成的xxxserver一般包括</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">UserServiceServer</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Say</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="o">*</span><span class="nx">Request</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">Response</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span><span class="c1">//用户定义的函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">mustEmbedUnimplementedUserServiceServer</span><span class="p">()</span><span class="c1">//检查是否嵌入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>正常来说还是一样嵌入一个UnimplementedUserServiceServer，原理就是UnimplementedUserServiceServer定义了未实现的接口和一个mustEmbedUnimplementedUserServiceServer函数，通过嵌入这个结构体并重写用户定义函数来实现接口。</p>
+<p>而对于流式传输</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">StreamServiceServer</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//List：服务器端流式 RPC
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">List</span><span class="p">(</span><span class="o">*</span><span class="nx">StreamRequest</span><span class="p">,</span> <span class="nx">StreamService_ListServer</span><span class="p">)</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//Record：客户端流式 RPC
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">Record</span><span class="p">(</span><span class="nx">StreamService_RecordServer</span><span class="p">)</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//Route：双向流式 RPC
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">Route</span><span class="p">(</span><span class="nx">StreamService_RouteServer</span><span class="p">)</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">mustEmbedUnimplementedStreamServiceServer</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>在这里流式传输的东西都是通过xxx_funcServer的参数来获得，要注意的是其实方法都差不多，然后如果有获取一次或者说发送一次就关闭的一般会变成xxxAndClose比如这里的RecordServer就是SendAndClose，Client的CloseAndRecv</p>
+<h2 id="参考">参考</h2>
+<ol>
+<li><a href="https://learnku.com/articles/73104">入门grpc非常好的文章</a></li>
+</ol>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

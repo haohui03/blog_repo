@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>basic on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/basic/</link>
+    <description>Recent content in basic on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 01 Jan 2024 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/basic/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>golang-lock</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-lock/</link>
+      <pubDate>Mon, 01 Jan 2024 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-lock/</guid>
+      <description>基本概念 互斥锁会将操作串行化，可以保证操作完全有序，适合资源只能由一个协程进行操作的情况，并发能力弱； 读写锁适合读多写少的情况，并发能有比较</description>
+    </item>
+    
+    <item>
+      <title>golang-tcmalloc</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-tcmalloc/</link>
+      <pubDate>Mon, 01 Jan 2024 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-tcmalloc/</guid>
+      <description>TCmalloc 为了解决中大对象的内存申请，TCmalloc有一个全局共享内存堆 Page 每个 Page 默认是 8KB。这里的page就像是虚拟内存的page Span Span是包</description>
+    </item>
+    
+    <item>
+      <title>golang-gc-optimization</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/12/12/category/golang-gc-optimization/</link>
+      <pubDate>Tue, 12 Dec 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/12/12/category/golang-gc-optimization/</guid>
+      <description>golang 是如何运行起来的</description>
+    </item>
+    
+    <item>
+      <title>golang-map</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/23/category/golang-map/</link>
+      <pubDate>Thu, 23 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/23/category/golang-map/</guid>
+      <description>map map是一个很重要的数据结构，本篇文章记录学习golang中map源码的过程。 图多取自别人的博客，非原创请注意 基本的概念不在赘述了 以下分析</description>
+    </item>
+    
+    <item>
+      <title>golang-base-structure</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-base-structure/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-base-structure/</guid>
+      <description>记录golang中的底层数据结构 slice 基础的东西比如len，cap，ptr这些东西就不说了 从slice中获取内存地址和从内存中构造slice 从s</description>
+    </item>
+    
+    <item>
+      <title>golang-pprof</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-pprof/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-pprof/</guid>
+      <description>简单介绍 是什么 pprof 是用于可视化和分析性能分析数据的工具 pprof 以 profile.proto 读取分析样本的集合，并生成报告以可视化并帮助分析数据（支持文本和图形报告） profile.proto 是一个</description>
+    </item>
+    
+    <item>
+      <title>golang-snowflake</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-snowflake/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-snowflake/</guid>
+      <description>雪花算法 1.第一位 占用1bit，其值始终是0，没有实际作用。 2.时间戳 占用41bit，精确到毫秒，总共可以容纳约69年的时间。 3.工作机器i</description>
+    </item>
+    
+    <item>
+      <title>golang-interview-gmp</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/01/category/golang-interview-gmp/</link>
+      <pubDate>Tue, 01 Aug 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/01/category/golang-interview-gmp/</guid>
+      <description>golang 调度器的由来 如果把并发交给os来完成，首先是CPU的调度消耗，其次进程占用4GB(虚拟内存)，线程占用4MB这些都是比较高的内存占用。 协程</description>
+    </item>
+    
+    <item>
+      <title>golang-panic-recover</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/golang-panic-recover/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/golang-panic-recover/</guid>
+      <description>panic和recover 问题来源于一个面试问题： 父协程能否recover子协程的panic 经过实验：是不能的 而且子协程的panic如果没有</description>
+    </item>
+    
+  </channel>
+</rss>

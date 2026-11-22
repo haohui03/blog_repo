@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>protobuf-intro · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇文章记录学习protobuf的过程 定义消息 syntax = &amp;#34;proto3&amp;#34;; message name { body } syntax = &amp;#34;proto3&amp;#34;; message SearchRequest { string query = 1; int32 page_number = 2; int32 result_per_page = 3; } 通常把message定义在一个单独的文件" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/protobuf-intro/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="protobuf-intro" />
+<meta property="og:description" content="本篇文章记录学习protobuf的过程 定义消息 syntax = &#34;proto3&#34;; message name { body } syntax = &#34;proto3&#34;; message SearchRequest { string query = 1; int32 page_number = 2; int32 result_per_page = 3; } 通常把message定义在一个单独的文件" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/protobuf-intro/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-19T09:01:23+08:00" />
+<meta property="article:modified_time" content="2023-11-19T09:20:30+08:00" />
+
+<meta itemprop="name" content="protobuf-intro">
+<meta itemprop="description" content="本篇文章记录学习protobuf的过程 定义消息 syntax = &#34;proto3&#34;; message name { body } syntax = &#34;proto3&#34;; message SearchRequest { string query = 1; int32 page_number = 2; int32 result_per_page = 3; } 通常把message定义在一个单独的文件"><meta itemprop="datePublished" content="2023-11-19T09:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-11-19T09:20:30+08:00" />
+<meta itemprop="wordCount" content="1829">
+<meta itemprop="keywords" content="golang,protobuf," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="protobuf-intro"/>
+<meta name="twitter:description" content="本篇文章记录学习protobuf的过程 定义消息 syntax = &#34;proto3&#34;; message name { body } syntax = &#34;proto3&#34;; message SearchRequest { string query = 1; int32 page_number = 2; int32 result_per_page = 3; } 通常把message定义在一个单独的文件"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">protobuf-intro</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-11-19
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/golang/">golang</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/protobuf/">protobuf</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h1 id="本篇文章记录学习protobuf的过程">本篇文章记录学习protobuf的过程</h1>
+<h2 id="定义消息">定义消息</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="n">syntax</span> <span class="o">=</span> <span class="s">&#34;proto3&#34;</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="kd">message</span> <span class="nc">name</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="n">body</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="n">syntax</span> <span class="o">=</span> <span class="s">&#34;proto3&#34;</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span> <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="kd">message</span> <span class="nc">SearchRequest</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="kt">string</span> <span class="n">query</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="kt">int32</span> <span class="n">page_number</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="kt">int32</span> <span class="n">result_per_page</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><blockquote>
+<p>通常把message定义在一个单独的文件中，文件名以.proto结尾。</p>
+</blockquote>
+<ul>
+<li>第一行指定版本，不指定默认是proto2.</li>
+<li>message是消息的关键字，后面跟着消息的名称，名称必须是唯一的。</li>
+</ul>
+<h3 id="字段类型字段标识和字段标签field-type--field-numbers--field-labels">字段类型，字段标识和字段标签（Field Type &amp; Field Numbers &amp; Field labels）</h3>
+<h4 id="字段类型field-type">字段类型Field Type</h4>
+<h5 id="数字类型">数字类型</h5>
+<p>int64,int32,uint32,uint64,sint32,sin64 都是可变长的,然后uint表示无符号,sint在表示负数的时候比较高效</p>
+<p>fixed32,fixed64,sfix32,sfix64 都是固定长度的</p>
+<h5 id="其他常见类型">其他常见类型</h5>
+<p>bool</p>
+<p>string 大小小于2^32</p>
+<p>bytes 大小可能大于2^32</p>
+<h5 id="enum">enum</h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="kd">enum</span> <span class="n">Corpus</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="n">CORPUS_UNSPECIFIED</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="n">CORPUS_UNIVERSAL</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="n">CORPUS_WEB</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="n">CORPUS_IMAGES</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="n">CORPUS_LOCAL</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="n">CORPUS_NEWS</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="n">CORPUS_PRODUCTS</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="n">CORPUS_VIDEO</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="kd">message</span> <span class="nc">SearchRequest</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="kt">string</span> <span class="n">query</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="kt">int32</span> <span class="n">page_number</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="kt">int32</span> <span class="n">results_per_page</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="n">Corpus</span> <span class="n">corpus</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><h5 id="map">map</h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="n">map</span><span class="p">&lt;</span><span class="n">key_type</span><span class="p">,</span> <span class="n">value_type</span><span class="p">&gt;</span> <span class="n">map_field</span> <span class="o">=</span> <span class="n">N</span><span class="p">;</span><span class="err">
+</span></span></span></code></pre></div><blockquote>
+<p>…where the key_type can be any integral or string type (so, any scalar type except for floating point types and bytes). Note that enum is not a valid key_type. The value_type can be any type except another map.</p>
+</blockquote>
+<p>key_type可以是:标量(除bytes和bool),value_type不能是map,不能嵌套map</p>
+<h5 id="any">any</h5>
+<p>Any 消息类型允许您将消息作为嵌入类型使用，而不需要它们的.proto 定义。</p>
+<p>Any 以字节的形式包含任意序列化的消息，以及作为该消息类型的全局唯一标识符并解析为该消息类型的 URL。要使用 Any 类型，您需要 import google/protobuf/any.proto</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="k">import</span> <span class="s">&#34;google/protobuf/any.proto&#34;</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="kd">message</span> <span class="nc">ErrorStatus</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="kt">string</span> <span class="kd">message</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="k">repeated</span> <span class="n">google.protobuf.Any</span> <span class="n">details</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><h5 id="oneof">oneof</h5>
+<p>如果需要一条包含多个字段的消息，并且最多同时设置一个字段，可以强制执行此行为并使用 oneof 功能节省内存。</p>
+<p>oneof 字段与常规字段一样，在 oneof 共享内存中的所有字段，最多可以同时设置一个字段。设置 oneof 的任何成员会自动清除所有其他成员。</p>
+<p>如果设置了多个值，则由 proto 中的 order 确定的最后一个设置的值将覆盖所有以前的设置值。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="kd">message</span> <span class="nc">SampleMessage</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="k">oneof</span> <span class="n">test_oneof</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="kt">string</span> <span class="n">name</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="n">SubMessage</span> <span class="n">sub_message</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="p">}</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><h4 id="field-numbers">Field Numbers</h4>
+<p>每个字段都要有一个标识，这里还是比较复杂的。</p>
+<p>先说基本要求：</p>
+<ol>
+<li>field numbers 必须唯一（指在那个message内）</li>
+<li>19,000-19,999是被pb内部使用的，不能使用</li>
+<li>不能使用reserved的和已经分配给extension的</li>
+<li>Field number不能被reuse，这其实是在说delete的时候要把这个field number和对应的name加到reserved里面去，之后都不能用</li>
+</ol>
+<p>然后是一些tricks：尽量把经常用到的字段分配小的field number因为他们的占用相对小，而且在编码的时候也会更加高效。</p>
+<h4 id="field-labels">Field labels</h4>
+<ul>
+<li>optional
+<ul>
+<li>field is set, 也就是有一个确切值</li>
+<li>field is unset,那么会返回的是default value</li>
+</ul>
+</li>
+<li>repeated 其实就是说这个字段是一个数组</li>
+<li>map</li>
+<li>implicit field message(如果没有label)</li>
+</ul>
+<h3 id="package">package</h3>
+<p>给一个.proto文件指定package, 是为了避免和其他的.proto文件的message名称冲突.</p>
+<p>option go_package = “github.com/TripleCGame/apis/api;api”;—前一个参数用于指定生成文件的位置，后一个参数指定生成的 .go 文件的 package 。具体语法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="k">option</span> <span class="n">go_package</span> <span class="o">=</span> <span class="s">&#34;{out_path};out_go_package&#34;</span><span class="p">;</span><span class="err">
+</span></span></span></code></pre></div><p>注意：这里指定的 out_path 并不是绝对路径，只是相对路径或者说只是路径的一部分，和 protoc 的 –go_out 拼接后才是完整的路径。</p>
+<h2 id="定义service">定义service</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="kd">service</span> <span class="n">SearchService</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="k">rpc</span> <span class="n">Search</span><span class="p">(</span><span class="n">SearchRequest</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">SearchResponse</span><span class="p">);</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><h2 id="命令">命令</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">protoc -I . -I /usr/local/include -I <span class="k">$(</span>GOPATH<span class="k">)</span>/src --go_out<span class="o">=</span>. simple.proto
+</span></span></code></pre></div><p>-I 或 –proto_path: 指定import搜索的文件夹路径</p>
+<p>–go_out : 编译产生的 go代码 的生成位置</p>
+<h3 id="代码生成规则">代码生成规则</h3>
+<p>每个xxx.proto文件, 生成一个xxx.pb.go文件.</p>
+<p>Go文件的package文件的生成规则:</p>
+<ul>
+<li>
+<p>case1: .proto文件不包含package</p>
+<ul>
+<li>如果一个.proto文件中不包含package声明，生成的源代码将会使用.proto文件的文件名(去掉扩展名)作为Go包名，</li>
+<li>其中, 生成的Go的包名中会自动把.转换为_。</li>
+<li>举例来说一个名为high.score.proto不包含package声明的proto文件, 将会生成文件high.score.pb.go，他的Go包名是high_score。</li>
+</ul>
+</li>
+<li>
+<p>case2: .proto文件包含package</p>
+<ul>
+<li>经过编译的Go代码的包名默认使用proto文件的package名称, 除非在.proto文件中使用option go_package显示进行指定Go文件的import path.</li>
+<li>其中, 生成的Go的包名中会自动把.转换为_。</li>
+<li>举例来说proto包名example.high_score将会生成Go包名example_high_score。</li>
+</ul>
+</li>
+<li>
+<p>case3: .proto文件包含package, 同时包含option go_package</p>
+<ul>
+<li>option go_package 的作用是去指定生成的go文件的package的完整导入路径(import path)的, 如:</li>
+</ul>
+<p><code>option go_package = &quot;example.com/foo/bar&quot;; // 生成的foo.pb.go文件的package的import path就是 &quot;example.com/foobar&quot;</code></p>
+</li>
+</ul>
+<h2 id="参考">参考</h2>
+<ol>
+<li><a href="https://protobuf.dev/programming-guides/proto3/">Protocol Buffers Documentation</a></li>
+<li><a href="https://juejin.cn/post/6865126893063471112">这篇文章讲的特别好</a></li>
+</ol>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

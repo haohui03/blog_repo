@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>golang-map · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="map map是一个很重要的数据结构，本篇文章记录学习golang中map源码的过程。 图多取自别人的博客，非原创请注意 基本的概念不在赘述了 以下分析" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/11/23/category/golang-map/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="golang-map" />
+<meta property="og:description" content="map map是一个很重要的数据结构，本篇文章记录学习golang中map源码的过程。 图多取自别人的博客，非原创请注意 基本的概念不在赘述了 以下分析" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/11/23/category/golang-map/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-23T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-11-23T12:27:30+08:00" />
+
+<meta itemprop="name" content="golang-map">
+<meta itemprop="description" content="map map是一个很重要的数据结构，本篇文章记录学习golang中map源码的过程。 图多取自别人的博客，非原创请注意 基本的概念不在赘述了 以下分析"><meta itemprop="datePublished" content="2023-11-23T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-11-23T12:27:30+08:00" />
+<meta itemprop="wordCount" content="1357">
+<meta itemprop="keywords" content="basic,golang,language," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="golang-map"/>
+<meta name="twitter:description" content="map map是一个很重要的数据结构，本篇文章记录学习golang中map源码的过程。 图多取自别人的博客，非原创请注意 基本的概念不在赘述了 以下分析"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">golang-map</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-11-23
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/basic/">basic</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/golang/">golang</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/language/">language</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h1 id="map">map</h1>
+<p>map是一个很重要的数据结构，本篇文章记录学习golang中map源码的过程。</p>
+<p>图多取自别人的博客，非原创请注意</p>
+<p>基本的概念不在赘述了</p>
+<p>以下分析来自go 1.21.0</p>
+<h2 id="使用">使用</h2>
+<h3 id="创建">创建</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">ageMp</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 指定 map 长度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">ageMp</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ageMp 为 nil，不能向其添加元素，会直接panic
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">ageMp</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span>
+</span></span></code></pre></div><h2 id="变量和类型">变量和类型</h2>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/GcFBKTq2ZeuioI8-f2cde4261f38.png" alt="image.png"></p>
+<blockquote>
+<p>map是以bucket来组织键值对的，一个bucket最多8个键值对。</p>
+</blockquote>
+<h3 id="变量常量">变量（常量）</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">const</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// Maximum number of key/elem pairs a bucket can hold.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">bucketCntBits</span> <span class="p">=</span> <span class="nx">abi</span><span class="p">.</span><span class="nx">MapBucketCountBits</span> <span class="c1">//3
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">bucketCnt</span>     <span class="p">=</span> <span class="nx">abi</span><span class="p">.</span><span class="nx">MapBucketCount</span> <span class="c1">//8
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 用loadFactorNum/loadFactorDen来代表负载因子，用两个整数就可以进行整数运算
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// Maximum average load of a bucket that triggers growth is bucketCnt*13/16 (about 80% full)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// Because of minimum alignment rules, bucketCnt is known to be at least 8.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// Represent as loadFactorNum/loadFactorDen, to allow integer math.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">loadFactorDen</span> <span class="p">=</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">loadFactorNum</span> <span class="p">=</span> <span class="p">(</span><span class="nx">bucketCnt</span> <span class="o">*</span> <span class="mi">13</span> <span class="o">/</span> <span class="mi">16</span><span class="p">)</span> <span class="o">*</span> <span class="nx">loadFactorDen</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// key和value size都是128（加起来不超过uint8）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// Maximum key or elem size to keep inline (instead of mallocing per element).
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// Must fit in a uint8.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// Fast versions cannot handle big elems - the cutoff size for
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// fast versions in cmd/compile/internal/gc/walk.go must be at most this elem.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">maxKeySize</span>  <span class="p">=</span> <span class="nx">abi</span><span class="p">.</span><span class="nx">MapMaxKeyBytes</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">maxElemSize</span> <span class="p">=</span> <span class="nx">abi</span><span class="p">.</span><span class="nx">MapMaxElemBytes</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//其实就是bmap结构体的对齐大小（8字节即使是amd64p32）,注意这里是编译期前的，不包括那些奇奇怪怪的后面加的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// data offset should be the size of the bmap struct, but needs to be
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// aligned correctly. For amd64p32 this means 64-bit alignment
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// even though pointers are 32 bit.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">dataOffset</span> <span class="p">=</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Offsetof</span><span class="p">(</span><span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">b</span> <span class="nx">bmap</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">v</span> <span class="kt">int64</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}{}.</span><span class="nx">v</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// Possible tophash values. We reserve a few possibilities for special marks.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// Each bucket (including its overflow buckets, if any) will have either all or none of its
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// entries in the evacuated* states (except during the evacuate() method, which only happens
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// during map writes and thus no one else can observe the map during that time).
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">emptyRest</span>      <span class="p">=</span> <span class="mi">0</span> <span class="c1">// this cell is empty, and there are no more non-empty cells at higher indexes or overflows.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">emptyOne</span>       <span class="p">=</span> <span class="mi">1</span> <span class="c1">// this cell is empty
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">evacuatedX</span>     <span class="p">=</span> <span class="mi">2</span> <span class="c1">// key/elem is valid.  Entry has been evacuated to first half of larger table.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">evacuatedY</span>     <span class="p">=</span> <span class="mi">3</span> <span class="c1">// same as above, but evacuated to second half of larger table.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">evacuatedEmpty</span> <span class="p">=</span> <span class="mi">4</span> <span class="c1">// cell is empty, bucket is evacuated.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">minTopHash</span>     <span class="p">=</span> <span class="mi">5</span> <span class="c1">// minimum tophash for a normal filled cell.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// flags
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">iterator</span>     <span class="p">=</span> <span class="mi">1</span> <span class="c1">// there may be an iterator using buckets
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">oldIterator</span>  <span class="p">=</span> <span class="mi">2</span> <span class="c1">// there may be an iterator using oldbuckets
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">hashWriting</span>  <span class="p">=</span> <span class="mi">4</span> <span class="c1">// a goroutine is writing to the map
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">sameSizeGrow</span> <span class="p">=</span> <span class="mi">8</span> <span class="c1">// the current map growth is to a new map of the same size
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// sentinel bucket ID for iterator checks
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">noCheck</span> <span class="p">=</span> <span class="mi">1</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="nx">goarch</span><span class="p">.</span><span class="nx">PtrSize</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><h3 id="类型">类型</h3>
+<h4 id="hmap">hmap</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// A header for a Go map.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">hmap</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="nx">count</span>     <span class="kt">int</span> <span class="c1">// # live cells == size of map.  Must be first (used by len() builtin)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="nx">flags</span>     <span class="kt">uint8</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">B</span>         <span class="kt">uint8</span>  <span class="c1">// log_2 of # of buckets (can hold up to loadFactor * 2^B items)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">noverflow</span> <span class="kt">uint16</span> <span class="c1">// approximate number of overflow buckets; see incrnoverflow for details
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">hash0</span>     <span class="kt">uint32</span> <span class="c1">// hash seed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="nx">buckets</span>    <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// array of 2^B Buckets. may be nil if count==0.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="nx">oldbuckets</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// previous bucket array of half the size, non-nil only when growing
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	
+</span></span><span class="line"><span class="cl">    <span class="c1">// 指示扩容进度，小于此地址的 buckets 迁移完成
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">nevacuate</span>  <span class="kt">uintptr</span>        <span class="c1">// progress counter for evacuation (buckets less than this have been evacuated)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="nx">extra</span> <span class="o">*</span><span class="nx">mapextra</span> <span class="c1">// optional fields
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>mapextra</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// mapextra holds fields that are not present on all maps.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">mapextra</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// If both key and elem do not contain pointers and are inline, then we mark bucket
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// type as containing no pointers. This avoids scanning such maps.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// However, bmap.overflow is a pointer. In order to keep overflow buckets
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// alive, we store pointers to all overflow buckets in hmap.extra.overflow and hmap.extra.oldoverflow.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// overflow and oldoverflow are only used if key and elem do not contain pointers.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// overflow contains overflow buckets for hmap.buckets.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// oldoverflow contains overflow buckets for hmap.oldbuckets.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// The indirection allows to store a pointer to the slice in hiter.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">overflow</span>    <span class="o">*</span><span class="p">[]</span><span class="o">*</span><span class="nx">bmap</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">oldoverflow</span> <span class="o">*</span><span class="p">[]</span><span class="o">*</span><span class="nx">bmap</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// nextOverflow holds a pointer to a free overflow bucket.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">nextOverflow</span> <span class="o">*</span><span class="nx">bmap</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="bmap">bmap</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// A bucket for a Go map.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">bmap</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// tophash generally contains the top byte of the hash value
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// for each key in this bucket. If tophash[0] &lt; minTopHash,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// tophash[0] is a bucket evacuation state instead.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">tophash</span> <span class="p">[</span><span class="nx">bucketCnt</span><span class="p">]</span><span class="kt">uint8</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// Followed by bucketCnt keys and then bucketCnt elems.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// NOTE: packing all the keys together and then all the elems together makes the
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// code a bit more complicated than alternating key/elem/key/elem/... but it allows
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// us to eliminate padding which would be needed for, e.g., map[int64]int8.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// Followed by an overflow pointer.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>实际上，bmap不止这么简单的东西。bmap会在编译期生成其他东西，相关的东西和cmd/compile/internal/reflectdata有关</p>
+<p>相关函数：cmd/compile/internal/reflectdata/reflect.go/MapBucketType</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">bmap</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">topbits</span>  <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="kt">uint8</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">keys</span>     <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="nx">keytype</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">values</span>   <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="nx">valuetype</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//曾经有padding，现在已经没有了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">overflow</span> <span class="kt">uintptr</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><img src="https://haohui03.github.io/blog_repo/images/restored/87xb5GEeCf1PF6W-52f82892a5ac.png" alt="image.png"> 值得注意的是，当键或值的大小超过128字节时，会使用指针来存储，而不是直接存储在bmap中。而且当key和elme都没有指针类型的时候overflow会变成uintptr类型并且由hmap来管理overflow（不会被GC认为有指针）不然就是unsafe.pointer。</p>
+<h2 id="参考">参考</h2>
+<ol>
+<li><a href="https://golang.design/go-questions/map/principal/">Go 程序员面试笔试宝典</a></li>
+<li><a href="https://draveness.me/golang/docs/part2-foundation/ch03-datastructure/golang-hashmap/#336-%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB">golang设计与实现</a></li>
+</ol>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

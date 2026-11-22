@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>go-redis-note · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="记录go-redis使用过程中的一些事项 分布式锁(一上来就是大菜) 最近在阅读两个项目的时候都发现了分布式锁： osproxy： 分片上传时抢锁 r" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/10/08/category/go-redis-note/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="go-redis-note" />
+<meta property="og:description" content="记录go-redis使用过程中的一些事项 分布式锁(一上来就是大菜) 最近在阅读两个项目的时候都发现了分布式锁： osproxy： 分片上传时抢锁 r" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/10/08/category/go-redis-note/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-10-08T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-10-08T13:27:30+08:00" />
+
+<meta itemprop="name" content="go-redis-note">
+<meta itemprop="description" content="记录go-redis使用过程中的一些事项 分布式锁(一上来就是大菜) 最近在阅读两个项目的时候都发现了分布式锁： osproxy： 分片上传时抢锁 r"><meta itemprop="datePublished" content="2023-10-08T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-10-08T13:27:30+08:00" />
+<meta itemprop="wordCount" content="1321">
+<meta itemprop="keywords" content="infra,Middleware,Redis," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="go-redis-note"/>
+<meta name="twitter:description" content="记录go-redis使用过程中的一些事项 分布式锁(一上来就是大菜) 最近在阅读两个项目的时候都发现了分布式锁： osproxy： 分片上传时抢锁 r"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">go-redis-note</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-10-08
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/infra/">infra</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/middleware/">Middleware</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/redis/">Redis</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="记录go-redis使用过程中的一些事项">记录go-redis使用过程中的一些事项</h2>
+<h3 id="分布式锁一上来就是大菜">分布式锁(一上来就是大菜)</h3>
+<p>最近在阅读两个项目的时候都发现了分布式锁：</p>
+<ol>
+<li>osproxy： 分片上传时抢锁</li>
+<li>redis-tool： 本来就是教你redis操作的。。。。。。</li>
+</ol>
+<p>redis的事务和原子性可以看<a href="https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/redis_basic/">这里记录的一些文章</a></p>
+<p>分布式锁的应用场景: <a href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%9845%E8%AE%B2-%E5%AE%8C/11%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E6%9C%89%E5%93%AA%E4%BA%9B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E5%92%8C%E5%AE%9E%E7%8E%B0%EF%BC%9F.md">分布式锁有哪些应用场景和实现？</a></p>
+<p>于是记录一下go-redis中的实践：</p>
+<p>要注意的几个点：</p>
+<ol>
+<li>是否可重入</li>
+<li>释放锁的方式</li>
+</ol>
+<h4 id="首先来看看osproxy中是怎么做的">首先来看看osproxy中是怎么做的</h4>
+<p>首先是调用接口的例子，这里是一个分片上传的例子，需要抢锁，然后判断是否已经上传过了，如果上传过了就直接返回成功，如果没有上传过就去上传，上传成功后再去释放锁，因为实际上Web 服务器在处理请求的时候是并发的，所以需要抢锁，防止多个请求同时上传同一个文件的同一个分片，这样就会导致文件上传失败。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">lgRedis</span> <span class="p">=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">LangGoRedis</span><span class="p">).</span><span class="nf">NewRedis</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ctx</span> <span class="o">:=</span> <span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">createLock</span> <span class="o">:=</span> <span class="nx">base</span><span class="p">.</span><span class="nf">NewRedisLock</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">lgRedis</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;multi-part-%d-%d-%s&#34;</span><span class="p">,</span> <span class="nx">uid</span><span class="p">,</span> <span class="nx">chunkNum</span><span class="p">,</span> <span class="nx">md5</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">flag</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">createLock</span><span class="p">.</span><span class="nf">Acquire</span><span class="p">();</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="o">||</span> <span class="p">!</span><span class="nx">flag</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">lgLogger</span><span class="p">.</span><span class="nf">WithContext</span><span class="p">(</span><span class="nx">c</span><span class="p">).</span><span class="nf">Error</span><span class="p">(</span><span class="s">&#34;上传多文件抢锁失败&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">web</span><span class="p">.</span><span class="nf">InternalError</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="s">&#34;上传多文件抢锁失败&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">partInfo</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">repo</span><span class="p">.</span><span class="nf">NewMultiPartInfoRepo</span><span class="p">().</span><span class="nf">GetPartInfo</span><span class="p">(</span><span class="nx">lgDB</span><span class="p">,</span> <span class="nx">uid</span><span class="p">,</span> <span class="nx">chunkNum</span><span class="p">,</span> <span class="nx">md5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">lgLogger</span><span class="p">.</span><span class="nf">WithContext</span><span class="p">(</span><span class="nx">c</span><span class="p">).</span><span class="nf">Error</span><span class="p">(</span><span class="s">&#34;多文件上传，查询分片信息失败&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">web</span><span class="p">.</span><span class="nf">InternalError</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="s">&#34;内部异常&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">partInfo</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">web</span><span class="p">.</span><span class="nf">Success</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span><span class="p">,</span> <span class="nx">_</span> <span class="p">=</span> <span class="nx">createLock</span><span class="p">.</span><span class="nf">Release</span><span class="p">()</span>
+</span></span></code></pre></div><p>接下来看一下<code> RedisLock</code>的实现</p>
+<p>创建RedisLock，获取锁其实就是通过Eval命令去执行lua脚本。</p>
+<p>关键就是这个lua脚本通过获取key的值判断是否与自己线程的唯一id对应，如果对应就返回OK，如果不对应就尝试set(不存在才set)，然后通过判断返回值来判断是否获取到锁。</p>
+<p>注意这里还可以完成可重入锁的功能。</p>
+<p>释放锁的时候，通过判断key的值是否与自己线程的唯一id对应，如果对应就删除key，如果不对应(过期或者被别的占了)就返回0。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">const</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">letters</span>     <span class="p">=</span> <span class="s">&#34;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">lockCommand</span> <span class="p">=</span> <span class="s">`if redis.call(&#34;GET&#34;, KEYS[1]) == ARGV[1] then
+</span></span></span><span class="line"><span class="cl"><span class="s">                      redis.call(&#34;SET&#34;, KEYS[1], ARGV[1], &#34;PX&#34;, ARGV[2])
+</span></span></span><span class="line"><span class="cl"><span class="s">                      return &#34;OK&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   else
+</span></span></span><span class="line"><span class="cl"><span class="s">                       return redis.call(&#34;SET&#34;, KEYS[1], ARGV[1], &#34;NX&#34;, &#34;PX&#34;, ARGV[2])
+</span></span></span><span class="line"><span class="cl"><span class="s">                   end`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">delCommand</span> <span class="p">=</span> <span class="s">`if redis.call(&#34;GET&#34;, KEYS[1]) == ARGV[1] then
+</span></span></span><span class="line"><span class="cl"><span class="s">                      return redis.call(&#34;DEL&#34;, KEYS[1])
+</span></span></span><span class="line"><span class="cl"><span class="s">                  else
+</span></span></span><span class="line"><span class="cl"><span class="s">                      return 0
+</span></span></span><span class="line"><span class="cl"><span class="s">                  end`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">randomLen</span> <span class="p">=</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 默认超时时间，防止死锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">tolerance</span>       <span class="p">=</span> <span class="mi">500</span> <span class="c1">// milliseconds
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">millisPerSecond</span> <span class="p">=</span> <span class="mi">1000</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// NewRedisLock returns a RedisLock.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">NewRedisLock</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">store</span> <span class="o">*</span><span class="nx">redis</span><span class="p">.</span><span class="nx">Client</span><span class="p">,</span> <span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">RedisLock</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">RedisLock</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ctx</span><span class="p">:</span>   <span class="nx">c</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">store</span><span class="p">:</span> <span class="nx">store</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">key</span><span class="p">:</span>   <span class="nx">key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 获取锁时，锁的值通过随机字符串生成
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// 实际上go-zero提供更加高效的随机字符串生成方式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// 见core/stringx/random.go：Randn
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">id</span><span class="p">:</span> <span class="nf">randomStr</span><span class="p">(</span><span class="nx">randomLen</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Acquire acquires the lock.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 加锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">rl</span> <span class="o">*</span><span class="nx">RedisLock</span><span class="p">)</span> <span class="nf">Acquire</span><span class="p">()</span> <span class="p">(</span><span class="kt">bool</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取过期时间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">seconds</span> <span class="o">:=</span> <span class="nx">atomic</span><span class="p">.</span><span class="nf">LoadUint32</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">rl</span><span class="p">.</span><span class="nx">seconds</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 默认锁过期时间为500ms，防止死锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">res</span> <span class="o">:=</span> <span class="nx">rl</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">Eval</span><span class="p">(</span><span class="o">*</span><span class="nx">rl</span><span class="p">.</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">lockCommand</span><span class="p">,</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="nx">rl</span><span class="p">.</span><span class="nx">key</span><span class="p">},</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">rl</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Itoa</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nx">seconds</span><span class="p">)</span><span class="o">*</span><span class="nx">millisPerSecond</span> <span class="o">+</span> <span class="nx">tolerance</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">res</span><span class="p">.</span><span class="nf">Result</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="nx">redis</span><span class="p">.</span><span class="nx">Nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;lock failed %s&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">resp</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">reply</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="p">(</span><span class="nx">resp</span><span class="p">).(</span><span class="kt">string</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">ok</span> <span class="o">&amp;&amp;</span> <span class="nx">reply</span> <span class="o">==</span> <span class="s">&#34;OK&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Unknown reply when acquiring lock for %s: %v&#34;</span><span class="p">,</span> <span class="nx">rl</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="nx">resp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Release releases the lock.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 释放锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">rl</span> <span class="o">*</span><span class="nx">RedisLock</span><span class="p">)</span> <span class="nf">Release</span><span class="p">()</span> <span class="p">(</span><span class="kt">bool</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">res</span> <span class="o">:=</span> <span class="nx">rl</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">Eval</span><span class="p">(</span><span class="o">*</span><span class="nx">rl</span><span class="p">.</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">delCommand</span><span class="p">,</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="nx">rl</span><span class="p">.</span><span class="nx">key</span><span class="p">},</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="nx">rl</span><span class="p">.</span><span class="nx">id</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">res</span><span class="p">.</span><span class="nf">Result</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">reply</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="p">(</span><span class="nx">resp</span><span class="p">).(</span><span class="kt">int64</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nx">reply</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="接下来看看redis-tool中是怎么做的">接下来看看redis-tool中是怎么做的</h4>
+<p>首先看调用基本也是传一个client和key。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">client</span> <span class="o">:=</span> <span class="nx">redis</span><span class="p">.</span><span class="nf">NewClient</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">redis</span><span class="p">.</span><span class="nx">Options</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Addr</span><span class="p">:</span>     <span class="s">&#34;localhost:6378&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Password</span><span class="p">:</span> <span class="s">&#34;123456&#34;</span><span class="p">,</span> <span class="c1">// no password set
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">DB</span><span class="p">:</span>       <span class="mi">0</span><span class="p">,</span>        <span class="c1">// use default DB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">disLock</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">tools</span><span class="p">.</span><span class="nf">NewRedisLock</span><span class="p">(</span><span class="nx">client</span><span class="p">,</span> <span class="s">&#34;lock resource&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">succ</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">disLock</span><span class="p">.</span><span class="nf">TryLock</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">succ</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">defer</span> <span class="nx">disLock</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>实现起来,unlock方法其实也是基于上面的那个lua脚本(compare and delete)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">rl</span> <span class="o">*</span><span class="nx">RedisLock</span><span class="p">)</span> <span class="nf">TryLock</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">(</span><span class="kt">bool</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">succ</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">rl</span><span class="p">.</span><span class="nx">Client</span><span class="p">.</span><span class="nf">SetNX</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">rl</span><span class="p">.</span><span class="nx">Key</span><span class="p">,</span> <span class="nx">rl</span><span class="p">.</span><span class="nx">uuid</span><span class="p">,</span> <span class="nx">defaultExp</span><span class="p">).</span><span class="nf">Result</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="o">||</span> <span class="p">!</span><span class="nx">succ</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">c</span><span class="p">,</span> <span class="nx">cancel</span> <span class="o">:=</span> <span class="nx">context</span><span class="p">.</span><span class="nf">WithCancel</span><span class="p">(</span><span class="nx">ctx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">rl</span><span class="p">.</span><span class="nx">cancelFunc</span> <span class="p">=</span> <span class="nx">cancel</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">rl</span><span class="p">.</span><span class="nf">refresh</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">succ</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">rl</span> <span class="o">*</span><span class="nx">RedisLock</span><span class="p">)</span> <span class="nf">Unlock</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">(</span><span class="kt">bool</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">NewTools</span><span class="p">(</span><span class="nx">rl</span><span class="p">.</span><span class="nx">Client</span><span class="p">).</span><span class="nf">Cad</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">rl</span><span class="p">.</span><span class="nx">Key</span><span class="p">,</span> <span class="nx">rl</span><span class="p">.</span><span class="nx">uuid</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">resp</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">rl</span><span class="p">.</span><span class="nf">cancelFunc</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">resp</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

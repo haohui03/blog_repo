@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>模拟，链表(上) · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="模拟，链表(上) 模拟 以leetcode 59.螺旋矩阵为例: 相信很多同学刚开始做这种题目的时候，上来就是一波判断猛如虎。 结果运行的时候各种问题" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/02/07/leetcode_day2/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="模拟，链表(上)" />
+<meta property="og:description" content="模拟，链表(上) 模拟 以leetcode 59.螺旋矩阵为例: 相信很多同学刚开始做这种题目的时候，上来就是一波判断猛如虎。 结果运行的时候各种问题" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/02/07/leetcode_day2/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-02-07T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-02-07T13:27:30+08:00" />
+
+<meta itemprop="name" content="模拟，链表(上)">
+<meta itemprop="description" content="模拟，链表(上) 模拟 以leetcode 59.螺旋矩阵为例: 相信很多同学刚开始做这种题目的时候，上来就是一波判断猛如虎。 结果运行的时候各种问题"><meta itemprop="datePublished" content="2023-02-07T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-02-07T13:27:30+08:00" />
+<meta itemprop="wordCount" content="2041">
+<meta itemprop="keywords" content="leetcode,jobs,algorithm," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="模拟，链表(上)"/>
+<meta name="twitter:description" content="模拟，链表(上) 模拟 以leetcode 59.螺旋矩阵为例: 相信很多同学刚开始做这种题目的时候，上来就是一波判断猛如虎。 结果运行的时候各种问题"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">模拟，链表(上)</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-02-07
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/algorithm/">algorithm</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/jobs/">jobs</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/leetcode/">leetcode</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="模拟链表上">模拟，链表(上)</h2>
+<h3 id="模拟">模拟</h3>
+<p>以leetcode 59.螺旋矩阵为例:</p>
+<blockquote>
+<p>相信很多同学刚开始做这种题目的时候，上来就是一波判断猛如虎。</p>
+</blockquote>
+<blockquote>
+<p>结果运行的时候各种问题，然后开始各种修修补补，最后发现改了这里那里有问题，改了那里这里又跑不起来了。</p>
+</blockquote>
+<p>说的就是我了(捂脸)</p>
+<p>题目：</p>
+<blockquote>
+<p>给你一个正整数 n ，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的 n x n 正方形矩阵 matrix 。</p>
+</blockquote>
+<p>我的answer</p>
+<p>值得注意的是二维切片的创建与初始化</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">//golang
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">generateMatrix</span><span class="p">(</span><span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">number</span><span class="o">:=</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">out</span><span class="o">:=</span><span class="nb">make</span><span class="p">([][]</span><span class="kt">int</span><span class="p">,</span><span class="nx">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="k">range</span><span class="p">(</span><span class="nx">out</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">out</span><span class="p">[</span><span class="nx">i</span><span class="p">]=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="nx">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">terms</span><span class="o">:=</span><span class="p">(</span><span class="nx">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">t</span><span class="o">:=</span><span class="mi">0</span><span class="p">;</span><span class="nx">t</span><span class="p">&lt;</span><span class="nx">terms</span><span class="p">;</span><span class="nx">t</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="nx">t</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nx">n</span><span class="o">-</span><span class="nx">t</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">           <span class="nx">out</span><span class="p">[</span><span class="nx">t</span><span class="p">][</span><span class="nx">i</span><span class="p">]=</span><span class="nx">number</span>
+</span></span><span class="line"><span class="cl">           <span class="nx">number</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">           
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">j</span><span class="o">:=</span><span class="nx">t</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="nx">j</span><span class="p">&lt;</span><span class="nx">n</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">;</span><span class="nx">j</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">out</span><span class="p">[</span><span class="nx">j</span><span class="p">][</span><span class="nx">n</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">]=</span><span class="nx">number</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">number</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="nx">n</span><span class="o">-</span><span class="nx">t</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="nx">i</span><span class="o">&gt;=</span><span class="nx">t</span><span class="p">;</span><span class="nx">i</span><span class="o">--</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nx">number</span><span class="o">==</span><span class="nx">n</span><span class="o">*</span><span class="nx">n</span><span class="o">+</span><span class="mi">1</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">out</span><span class="p">[</span><span class="nx">n</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">][</span><span class="nx">i</span><span class="p">]=</span><span class="nx">number</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">number</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">           
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">j</span><span class="o">:=</span><span class="nx">n</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="nx">t</span><span class="p">;</span><span class="nx">j</span><span class="o">&gt;=</span><span class="nx">t</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="nx">j</span><span class="o">--</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">out</span><span class="p">[</span><span class="nx">j</span><span class="p">][</span><span class="nx">t</span><span class="p">]=</span><span class="nx">number</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">number</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">out</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>和我的思路一样但是更清晰的代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">generateMatrix</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">res</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span> <span class="c1">// 使用vector定义一个二维数组
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">startx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">starty</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 定义每循环一个圈的起始位置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// 每个圈循环几次，例如n为奇数3，那么loop = 1 只是循环一圈，矩阵中间的值需要单独处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// 矩阵中间的位置，例如：n为3， 中间的位置就是(1，1)，n为5，中间位置为(2, 2)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// 用来给矩阵中每一个空格赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// 需要控制每一条边遍历的长度，每次循环右边界收缩一位
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="n">loop</span> <span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">i</span> <span class="o">=</span> <span class="n">startx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">j</span> <span class="o">=</span> <span class="n">starty</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1">// 下面开始的四个for就是模拟转了一圈
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="c1">// 模拟填充上行从左到右(左闭右开)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="n">starty</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="n">offset</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">res</span><span class="p">[</span><span class="n">startx</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 模拟填充右列从上到下(左闭右开)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">startx</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="n">offset</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 模拟填充下行从右到左(左闭右开)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">for</span> <span class="p">(;</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="n">starty</span><span class="p">;</span> <span class="n">j</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 模拟填充左列从下到上(左闭右开)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">startx</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1">// 第二圈开始的时候，起始位置要各自加1， 例如：第一圈起始位置是(0, 0)，第二圈起始位置是(1, 1)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">startx</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">starty</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1">// offset 控制每一圈里每一条边遍历的长度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 如果n为奇数的话，需要单独给矩阵最中间的位置赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="p">[</span><span class="n">mid</span><span class="p">][</span><span class="n">mid</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><hr>
+<p>从这个可以学到的：</p>
+<ul>
+<li>对角线遍历来等价一圈一圈。</li>
+<li>起点和终点都有收缩，对应到代码就是startx,starty, offset。</li>
+<li>利用左闭右开，上下和左右等价对待。</li>
+</ul>
+<p>顶级c++</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">generateMatrix</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="c1">// top
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>    <span class="c1">// bottom
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="c1">// left
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>    <span class="c1">// right
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">ans</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="n">k</span><span class="o">&lt;=</span><span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">l</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">r</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">,</span><span class="o">++</span><span class="n">k</span><span class="p">)</span> <span class="n">ans</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">++</span><span class="n">t</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">t</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">b</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">,</span><span class="o">++</span><span class="n">k</span><span class="p">)</span> <span class="n">ans</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">--</span><span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">r</span><span class="p">;</span><span class="n">i</span><span class="o">&gt;=</span><span class="n">l</span><span class="p">;</span><span class="o">--</span><span class="n">i</span><span class="p">,</span><span class="o">++</span><span class="n">k</span><span class="p">)</span> <span class="n">ans</span><span class="p">[</span><span class="n">b</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">--</span><span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">b</span><span class="p">;</span><span class="n">i</span><span class="o">&gt;=</span><span class="n">t</span><span class="p">;</span><span class="o">--</span><span class="n">i</span><span class="p">,</span><span class="o">++</span><span class="n">k</span><span class="p">)</span> <span class="n">ans</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">++</span><span class="n">l</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><h3 id="链表">链表</h3>
+<p>套路：</p>
+<p>构造单链表</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">//cpp
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 单链表
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="nc">ListNode</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>  <span class="c1">// 节点上存储的元素
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ListNode</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>  <span class="c1">// 指向下一个节点的指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ListNode</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="n">val</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">next</span><span class="p">(</span><span class="nb">NULL</span><span class="p">)</span> <span class="p">{}</span>  <span class="c1">// 节点的构造函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">//golang
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">ListNode</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Val</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Next</span> <span class="o">*</span><span class="nx">ListNode</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>删除的话一般需要知道这个节点的前一个节点添加节点的话几乎也是</p>
+<p>所以遇到添加或者删除一般要提前一个删除，但是这样的话head没有判断，所以最后判断一次就ok</p>
+<p>然而后面又学到一个骚方法</p>
+<p>设置一个虚假的头节点，那么真head就是中间节点了(亏贼)</p>
+<p><strong>一般要先判断链表是否没有元素，没有元素不能next，而就算有一个也能next</strong></p>
+<p>leetcode 707.</p>
+<blockquote>
+<p>设计链表的实现。您可以选择使用单链表或双链表。单链表中的节点应该具有两个属性：val 和 next。val 是当前节点的值，next 是指向下一个节点的指针/引用。如果要使用双向链表，则还需要一个属性 prev 以指示链表中的上一个节点。假设链表中的所有节点都是 0-index 的。</p>
+</blockquote>
+<blockquote>
+<p>在链表类中实现这些功能：</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>get(index)：获取链表中第 index 个节点的值。如果索引无效，则返回-1。</li>
+<li>addAtHead(val)：在链表的第一个元素之前添加一个值为 val 的节点。插入后，新节点将成为链表的第一个节点。</li>
+<li>addAtTail(val)：将值为 val 的节点追加到链表的最后一个元素。</li>
+<li>addAtIndex(index,val)：在链表中的第 index 个节点之前添加值为 val  的节点。如果 index 等于链表的长度，则该节点将附加到链表的末尾。如果 index 大于链表长度，则不会插入节点。如果index小于0，则在头部插入节点。</li>
+<li>deleteAtIndex(index)：如果索引 index 有效，则删除链表中的第 index 个节点。</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">MyLinkedList</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Length</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Head</span>   <span class="o">*</span><span class="nx">Node</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Tail</span>   <span class="o">*</span><span class="nx">Node</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Node</span> <span class="kd">struct</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Val</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Next</span> <span class="o">*</span><span class="nx">Node</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Prev</span> <span class="o">*</span><span class="nx">Node</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Constructor</span><span class="p">()</span> <span class="nx">MyLinkedList</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">list</span> <span class="o">:=</span> <span class="nx">MyLinkedList</span><span class="p">{</span><span class="nx">Length</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nx">Head</span><span class="p">:</span><span class="kc">nil</span><span class="p">,</span><span class="nx">Tail</span><span class="p">:</span><span class="kc">nil</span><span class="p">,}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">list</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">this</span> <span class="o">*</span><span class="nx">MyLinkedList</span><span class="p">)</span> <span class="nf">GetOne</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">)</span> <span class="o">*</span><span class="nx">Node</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">cursor</span> <span class="o">*</span><span class="nx">Node</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">index</span><span class="o">&gt;=</span><span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">/</span><span class="mi">2</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">gap</span><span class="o">:=</span> <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="nx">index</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">cursor</span><span class="p">=</span><span class="nx">this</span><span class="p">.</span><span class="nx">Tail</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nx">gap</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">cursor</span><span class="p">=</span><span class="nx">cursor</span><span class="p">.</span><span class="nx">Prev</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">gap</span><span class="o">:=</span> <span class="nx">index</span><span class="o">-</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">cursor</span><span class="p">=</span><span class="nx">this</span><span class="p">.</span><span class="nx">Head</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nx">gap</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">cursor</span><span class="p">=</span><span class="nx">cursor</span><span class="p">.</span><span class="nx">Next</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">cursor</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">this</span> <span class="o">*</span><span class="nx">MyLinkedList</span><span class="p">)</span> <span class="nf">Get</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">index</span><span class="o">&gt;=</span><span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">cursor</span> <span class="o">:=</span> <span class="nx">this</span><span class="p">.</span><span class="nf">GetOne</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">cursor</span><span class="p">.</span><span class="nx">Val</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">this</span> <span class="o">*</span><span class="nx">MyLinkedList</span><span class="p">)</span> <span class="nf">AddAtHead</span><span class="p">(</span><span class="nx">val</span> <span class="kt">int</span><span class="p">)</span>  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">nodeP</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Val</span><span class="p">:</span><span class="nx">val</span><span class="p">,</span><span class="nx">Next</span><span class="p">:</span><span class="kc">nil</span><span class="p">,</span><span class="nx">Prev</span><span class="p">:</span><span class="kc">nil</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">this</span><span class="p">.</span><span class="nx">Head</span><span class="p">=</span><span class="nx">nodeP</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">this</span><span class="p">.</span><span class="nx">Tail</span><span class="p">=</span><span class="nx">nodeP</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">node</span> <span class="o">:=</span> <span class="nx">Node</span><span class="p">{</span><span class="nx">Val</span><span class="p">:</span><span class="nx">val</span><span class="p">,</span><span class="nx">Next</span><span class="p">:</span><span class="nx">this</span><span class="p">.</span><span class="nx">Head</span><span class="p">,</span><span class="nx">Prev</span><span class="p">:</span><span class="kc">nil</span><span class="p">,}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nx">this</span><span class="p">.</span><span class="nx">Head</span><span class="p">.</span><span class="nx">Prev</span><span class="p">=</span><span class="o">&amp;</span><span class="nx">node</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">this</span><span class="p">.</span><span class="nx">Head</span><span class="p">=</span><span class="o">&amp;</span><span class="nx">node</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">this</span> <span class="o">*</span><span class="nx">MyLinkedList</span><span class="p">)</span> <span class="nf">AddAtTail</span><span class="p">(</span><span class="nx">val</span> <span class="kt">int</span><span class="p">)</span>  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">nodeP</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Val</span><span class="p">:</span><span class="nx">val</span><span class="p">,</span><span class="nx">Next</span><span class="p">:</span><span class="kc">nil</span><span class="p">,</span><span class="nx">Prev</span><span class="p">:</span><span class="kc">nil</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">this</span><span class="p">.</span><span class="nx">Head</span><span class="p">=</span><span class="nx">nodeP</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">this</span><span class="p">.</span><span class="nx">Tail</span><span class="p">=</span><span class="nx">nodeP</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">node</span> <span class="o">:=</span> <span class="nx">Node</span><span class="p">{</span><span class="nx">Val</span><span class="p">:</span><span class="nx">val</span><span class="p">,</span><span class="nx">Next</span><span class="p">:</span><span class="kc">nil</span><span class="p">,</span><span class="nx">Prev</span><span class="p">:</span><span class="nx">this</span><span class="p">.</span><span class="nx">Tail</span><span class="p">,}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">this</span><span class="p">.</span><span class="nx">Tail</span><span class="p">.</span><span class="nx">Next</span><span class="p">=</span> <span class="o">&amp;</span><span class="nx">node</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">this</span><span class="p">.</span><span class="nx">Tail</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">node</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">this</span> <span class="o">*</span><span class="nx">MyLinkedList</span><span class="p">)</span> <span class="nf">AddAtIndex</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">val</span> <span class="kt">int</span><span class="p">)</span>  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">index</span><span class="p">&gt;</span><span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">index</span><span class="o">==</span><span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">this</span><span class="p">.</span><span class="nf">AddAtTail</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nx">index</span><span class="p">&gt;</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">nodeP</span> <span class="o">:=</span> <span class="nx">this</span><span class="p">.</span><span class="nf">GetOne</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">prevP</span> <span class="o">:=</span> <span class="nx">nodeP</span><span class="p">.</span><span class="nx">Prev</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">newNode</span> <span class="o">:=</span> <span class="nx">Node</span><span class="p">{</span><span class="nx">Val</span><span class="p">:</span><span class="nx">val</span><span class="p">,</span><span class="nx">Next</span><span class="p">:</span><span class="nx">nodeP</span><span class="p">,</span><span class="nx">Prev</span><span class="p">:</span><span class="nx">nodeP</span><span class="p">.</span><span class="nx">Prev</span><span class="p">,}</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">nodeP</span><span class="p">.</span><span class="nx">Prev</span><span class="p">=</span><span class="o">&amp;</span><span class="nx">newNode</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">prevP</span><span class="p">.</span><span class="nx">Next</span><span class="p">=</span><span class="o">&amp;</span><span class="nx">newNode</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">this</span><span class="p">.</span><span class="nf">AddAtHead</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">this</span> <span class="o">*</span><span class="nx">MyLinkedList</span><span class="p">)</span> <span class="nf">DeleteAtIndex</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">)</span>  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">index</span><span class="p">&lt;</span><span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">&amp;&amp;</span> <span class="nx">index</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">index</span><span class="o">==</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">this</span><span class="p">.</span><span class="nx">Head</span><span class="p">=</span><span class="nx">this</span><span class="p">.</span><span class="nx">Head</span><span class="p">.</span><span class="nx">Next</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">--</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">!=</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">this</span><span class="p">.</span><span class="nx">Head</span><span class="p">.</span><span class="nx">Prev</span><span class="p">=</span><span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nx">index</span><span class="o">==</span><span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">-</span><span class="mi">1</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">this</span><span class="p">.</span><span class="nx">Tail</span><span class="p">=</span><span class="nx">this</span><span class="p">.</span><span class="nx">Tail</span><span class="p">.</span><span class="nx">Prev</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">--</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">!=</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">this</span><span class="p">.</span><span class="nx">Tail</span><span class="p">.</span><span class="nx">Next</span><span class="p">=</span><span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">nodeP</span> <span class="o">:=</span> <span class="nx">this</span><span class="p">.</span><span class="nf">GetOne</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">prevP</span><span class="o">:=</span><span class="nx">nodeP</span><span class="p">.</span><span class="nx">Prev</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">nextP</span><span class="o">:=</span><span class="nx">nodeP</span><span class="p">.</span><span class="nx">Next</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">prevP</span><span class="p">.</span><span class="nx">Next</span><span class="p">=</span><span class="nx">nextP</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">nextP</span><span class="p">.</span><span class="nx">Prev</span><span class="p">=</span><span class="nx">prevP</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">this</span><span class="p">.</span><span class="nx">Length</span><span class="o">--</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Your MyLinkedList object will be instantiated and called as such:
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * obj := Constructor();
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * param_1 := obj.Get(index);
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * obj.AddAtHead(val);
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * obj.AddAtTail(val);
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * obj.AddAtIndex(index,val);
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * obj.DeleteAtIndex(index);
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span></code></pre></div><p>官方实现:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">MyLinkedList</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">head</span> <span class="o">*</span><span class="nx">ListNode</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">size</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Constructor</span><span class="p">()</span> <span class="nx">MyLinkedList</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">MyLinkedList</span><span class="p">{</span><span class="o">&amp;</span><span class="nx">ListNode</span><span class="p">{},</span> <span class="mi">0</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">l</span> <span class="o">*</span><span class="nx">MyLinkedList</span><span class="p">)</span> <span class="nf">Get</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">index</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">index</span> <span class="o">&gt;=</span> <span class="nx">l</span><span class="p">.</span><span class="nx">size</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">cur</span> <span class="o">:=</span> <span class="nx">l</span><span class="p">.</span><span class="nx">head</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">index</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">cur</span> <span class="p">=</span> <span class="nx">cur</span><span class="p">.</span><span class="nx">Next</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">cur</span><span class="p">.</span><span class="nx">Val</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">l</span> <span class="o">*</span><span class="nx">MyLinkedList</span><span class="p">)</span> <span class="nf">AddAtHead</span><span class="p">(</span><span class="nx">val</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">l</span><span class="p">.</span><span class="nf">AddAtIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">l</span> <span class="o">*</span><span class="nx">MyLinkedList</span><span class="p">)</span> <span class="nf">AddAtTail</span><span class="p">(</span><span class="nx">val</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">l</span><span class="p">.</span><span class="nf">AddAtIndex</span><span class="p">(</span><span class="nx">l</span><span class="p">.</span><span class="nx">size</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">l</span> <span class="o">*</span><span class="nx">MyLinkedList</span><span class="p">)</span> <span class="nf">AddAtIndex</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">val</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">index</span> <span class="p">&gt;</span> <span class="nx">l</span><span class="p">.</span><span class="nx">size</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">index</span> <span class="p">=</span> <span class="nf">max</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">l</span><span class="p">.</span><span class="nx">size</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">pred</span> <span class="o">:=</span> <span class="nx">l</span><span class="p">.</span><span class="nx">head</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">index</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">pred</span> <span class="p">=</span> <span class="nx">pred</span><span class="p">.</span><span class="nx">Next</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">toAdd</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">ListNode</span><span class="p">{</span><span class="nx">val</span><span class="p">,</span> <span class="nx">pred</span><span class="p">.</span><span class="nx">Next</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">pred</span><span class="p">.</span><span class="nx">Next</span> <span class="p">=</span> <span class="nx">toAdd</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">l</span> <span class="o">*</span><span class="nx">MyLinkedList</span><span class="p">)</span> <span class="nf">DeleteAtIndex</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">index</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">index</span> <span class="o">&gt;=</span> <span class="nx">l</span><span class="p">.</span><span class="nx">size</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">l</span><span class="p">.</span><span class="nx">size</span><span class="o">--</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">pred</span> <span class="o">:=</span> <span class="nx">l</span><span class="p">.</span><span class="nx">head</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">index</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">pred</span> <span class="p">=</span> <span class="nx">pred</span><span class="p">.</span><span class="nx">Next</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">pred</span><span class="p">.</span><span class="nx">Next</span> <span class="p">=</span> <span class="nx">pred</span><span class="p">.</span><span class="nx">Next</span><span class="p">.</span><span class="nx">Next</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">max</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">b</span> <span class="p">&gt;</span> <span class="nx">a</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">a</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>总结起来(虽然一个是单链表一个是双链表):</p>
+<ol>
+<li>
+<p>构造函数给后面的处理带来了麻烦,没有真正用到虚拟头节点(虚拟尾节点)</p>
+</li>
+<li>
+<p>虚拟头节点不是你在add的时候创建一个，而是这个链表一直就有的。在这里就是</p>
+<p>head-&gt;index[0]-&gt;&hellip;-&gt;inde [length-1]-&gt;tail</p>
+</li>
+<li>
+<p>而且这样遍历的时候可以左闭右开，也就是遍历的时候可以从第一个开始遍历。</p>
+</li>
+</ol>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

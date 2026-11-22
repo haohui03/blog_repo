@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>net/http · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="learn http 前置知识: HTTP 1.1 / 2 基于TCP ， HTTP/3 可以基于TCP UDP 和QUIC. HTTP HTTP 报文的常见格式: GET / HTTP/1.1 User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT) Host: draveness.me Accept-Language: en-us Accept-Encoding: gzip, deflate Content-Type: text/html; charset=UTF-8 Content-Length: 138 Connection: Keep-Alive &amp;lt;html&amp;gt; ... &amp;lt;/html&amp;gt; TCP 粘" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/http/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="net/http" />
+<meta property="og:description" content="learn http 前置知识: HTTP 1.1 / 2 基于TCP ， HTTP/3 可以基于TCP UDP 和QUIC. HTTP HTTP 报文的常见格式: GET / HTTP/1.1 User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT) Host: draveness.me Accept-Language: en-us Accept-Encoding: gzip, deflate Content-Type: text/html; charset=UTF-8 Content-Length: 138 Connection: Keep-Alive &lt;html&gt; ... &lt;/html&gt; TCP 粘" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/http/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-19T09:01:23+08:00" />
+<meta property="article:modified_time" content="2023-06-19T09:20:30+08:00" />
+
+<meta itemprop="name" content="net/http">
+<meta itemprop="description" content="learn http 前置知识: HTTP 1.1 / 2 基于TCP ， HTTP/3 可以基于TCP UDP 和QUIC. HTTP HTTP 报文的常见格式: GET / HTTP/1.1 User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT) Host: draveness.me Accept-Language: en-us Accept-Encoding: gzip, deflate Content-Type: text/html; charset=UTF-8 Content-Length: 138 Connection: Keep-Alive &lt;html&gt; ... &lt;/html&gt; TCP 粘"><meta itemprop="datePublished" content="2023-06-19T09:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-06-19T09:20:30+08:00" />
+<meta itemprop="wordCount" content="857">
+<meta itemprop="keywords" content="golang,language,net," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="net/http"/>
+<meta name="twitter:description" content="learn http 前置知识: HTTP 1.1 / 2 基于TCP ， HTTP/3 可以基于TCP UDP 和QUIC. HTTP HTTP 报文的常见格式: GET / HTTP/1.1 User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT) Host: draveness.me Accept-Language: en-us Accept-Encoding: gzip, deflate Content-Type: text/html; charset=UTF-8 Content-Length: 138 Connection: Keep-Alive &lt;html&gt; ... &lt;/html&gt; TCP 粘"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">net/http</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-06-19
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/golang/">golang</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/language/">language</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/net/">net</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h1 id="learn-http">learn http</h1>
+<h2 id="前置知识">前置知识:</h2>
+<p>HTTP 1.1 / 2 基于TCP ， HTTP/3 可以基于TCP UDP 和QUIC.</p>
+<h2 id="http">HTTP</h2>
+<h3 id="http-报文的常见格式">HTTP 报文的常见格式:</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="nf">GET</span> <span class="nn">/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</span></span><span class="line"><span class="cl"><span class="n">User-Agent</span><span class="o">:</span> <span class="l">Mozilla/4.0 (compatible; MSIE5.01; Windows NT)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Host</span><span class="o">:</span> <span class="l">draveness.me</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Language</span><span class="o">:</span> <span class="l">en-us</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip, deflate</span>
+</span></span><span class="line"><span class="cl"><span class="n">Content-Type</span><span class="o">:</span> <span class="l">text/html; charset=UTF-8</span>
+</span></span><span class="line"><span class="cl"><span class="n">Content-Length</span><span class="o">:</span> <span class="l">138</span>
+</span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="o">:</span> <span class="l">Keep-Alive</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    ...
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><h3 id="tcp-粘包">TCP 粘包</h3>
+<p>TCP 协议是面向连接的、可靠的、基于字节流的传输层通信协议，上层协议一般都需要自己划分消息边界</p>
+<ol>
+<li>
+<p>基于长度 如上图，解析完头部之后就可以划分数据边界了。</p>
+</li>
+<li>
+<p>基于Delimiter</p>
+<blockquote>
+<p>当 HTTP 使用块传输（Chunked Transfer）机制时，HTTP 头中就不再包含 Content-Length 了，它会使用负载大小为 0 的 HTTP 消息作为终结符表示消息的边界。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="nethttp">net/http</h2>
+<p>net/http 实现了 HTTP 客户端和服务端，分别对应 http.RoundTripper 和 http.Handler 两个接口。</p>
+<ul>
+<li>http.RoundTripper：用来表示执行 HTTP 请求的接口，调用方将请求作为参数可以获取请求对应的响应</li>
+<li>http.Handler 主要用于 HTTP 服务器响应客户端的请求</li>
+</ul>
+<p><code>http.RoundTripper</code> 是用来表示执行 HTTP 请求的接口，而 HTTP 请求的接收方可以实现 <code>http.Handler</code> 接口，其中实现了处理 HTTP 请求的逻辑，处理的过程中会调用 <code>http.ResponseWriter</code> 接口的方法构造 HTTP 响应，它提供的三个接口 Header、Write 和 WriteHeader 分别会获取 HTTP 响应、将数据写入负载以及写入响应头，如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">RoundTripper</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">RoundTrip</span><span class="p">(</span><span class="o">*</span><span class="nx">Request</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">Response</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Handler</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ServeHTTP</span><span class="p">(</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="o">*</span><span class="nx">Request</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">ResponseWriter</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Header</span><span class="p">()</span> <span class="nx">Header</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">Write</span><span class="p">([]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">WriteHeader</span><span class="p">(</span><span class="nx">statusCode</span> <span class="kt">int</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>客户端和服务端面对的都是双向的 HTTP 请求与响应，客户端构建请求并等待响应，服务端处理请求并返回响应。HTTP 请求和响应在标准库中不止有一种实现，它们都包含了层级结构，标准库中的 <code>net/http.RoundTripper</code> 包含如下所示的层级结构：</p>
+<p>标准库也为net/http.handler提供了多种实现</p>
+<h3 id="客户端">客户端</h3>
+<p>HTTP 的客户端中包含几个比较重要的结构体，</p>
+<ul>
+<li>http.Client：HTTP 客户端，它的默认值是使用 net/http.DefaultTransport 的 HTTP 客户端</li>
+<li>http.Transport：是 http.RoundTripper 接口的实现，主要作用就是支持 HTTP/HTTPS 请求和 HTTP 代理</li>
+<li>http.persistConn：封装了一个 TCP 的持久连接，是与远程交换消息的句柄（Handle）</li>
+</ul>
+<p>客户端 http.Client 是级别较高的抽象，提供了 HTTP 的一些细节，包括 Cookies 和重定向；而 http.Transport 会处理 HTTP/HTTPS 协议的底层实现细节，其中会包含连接重用、构建请求以及发送请求等功能。</p>
+<p>RoundTripper的接口实现都是一个对远程发起请求的过程 <img src="https://haohui03.github.io/blog_repo/images/restored/2020-05-18-15897352888419-golang-roundtrip-84eb96927ac4.png" alt=""></p>
+<h4 id="httpclient">http.Client</h4>
+<p><a href="https://draveness.me/golang/">Go 语言设计与实现</a></p>
+<p><a href="https://pandaychen.github.io/2020/10/01/GOLANG-NETHTTP-ANALYSIS/">Golang 标准库：net/http 分析（一）</a></p>
+<p><a href="https://www.cnblogs.com/harrypotterjackson/p/15977660.html">QUIC</a></p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>interview-八股 · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="汇总 很多 必看 这个很也顶 network 工具： tcpdump Wireshark 具体一些没背八股前不清晰的问题： Cookie&amp;amp;session 你真的了解cookie和session吗 鉴权&amp;amp;Token 鉴权界的" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/09/17/category/interview-%E5%85%AB%E8%82%A1/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="interview-八股" />
+<meta property="og:description" content="汇总 很多 必看 这个很也顶 network 工具： tcpdump Wireshark 具体一些没背八股前不清晰的问题： Cookie&amp;session 你真的了解cookie和session吗 鉴权&amp;Token 鉴权界的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/09/17/category/interview-%E5%85%AB%E8%82%A1/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-17T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-09-17T13:27:30+08:00" />
+
+<meta itemprop="name" content="interview-八股">
+<meta itemprop="description" content="汇总 很多 必看 这个很也顶 network 工具： tcpdump Wireshark 具体一些没背八股前不清晰的问题： Cookie&amp;session 你真的了解cookie和session吗 鉴权&amp;Token 鉴权界的"><meta itemprop="datePublished" content="2023-09-17T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-09-17T13:27:30+08:00" />
+<meta itemprop="wordCount" content="738">
+<meta itemprop="keywords" content="interview,network," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="interview-八股"/>
+<meta name="twitter:description" content="汇总 很多 必看 这个很也顶 network 工具： tcpdump Wireshark 具体一些没背八股前不清晰的问题： Cookie&amp;session 你真的了解cookie和session吗 鉴权&amp;Token 鉴权界的"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">interview-八股</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-09-17
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/interview/">interview</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/network/">network</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="汇总">汇总</h2>
+<ol>
+<li><a href="https://github.com/wolverinn/Waking-Up/tree/master">很多 必看</a></li>
+<li><a href="https://mcg_dev.gitee.io/java-interview/">这个很也顶</a></li>
+</ol>
+<h3 id="network">network</h3>
+<h4 id="工具">工具：</h4>
+<ol>
+<li>tcpdump</li>
+<li>Wireshark</li>
+</ol>
+<h4 id="具体一些没背八股前不清晰的问题">具体一些没背八股前不清晰的问题：</h4>
+<ol>
+<li>
+<p>Cookie&amp;session <a href="https://www.cnblogs.com/ityouknow/p/10856177.html">你真的了解cookie和session吗</a></p>
+</li>
+<li>
+<p>鉴权&amp;Token <a href="https://juejin.cn/post/7017821497980878878">鉴权界的后起之秀：Token鉴权方案</a> <a href="https://zhuanlan.zhihu.com/p/395273289">鉴权必须了解的5个兄弟：cookie、session、token、jwt、单点登录</a></p>
+</li>
+<li>
+<p>数据从网卡到应用的过程 <a href="https://blog.csdn.net/JMW1407/article/details/108636657">计算机网络——数据从网卡到应用的过程</a> <a href="https://blog.csdn.net/u012796139/article/details/106184401">网络数据是如何传递给进程的</a> <a href="https://zhuanlan.zhihu.com/p/256428917">很顶</a> <a href="https://morven.life/posts/networking-1-pkg-snd-rcv/">个人博客 也很厉害</a></p>
+</li>
+<li>
+<p>ARP协议（不是很记得了） <a href="https://zhuanlan.zhihu.com/p/370507243">彻底搞懂系列之：ARP协议</a></p>
+</li>
+<li>
+<p>http的几个版本 <a href="https://cloud.tencent.com/developer/article/1857670">HTTP 版本区别</a></p>
+</li>
+<li>
+<p>跨域问题 <a href="https://juejin.cn/post/6983852288091619342">面试官问我CORS跨域，我直接一套操作斩杀！</a></p>
+</li>
+<li>
+<p>QUIC <a href="https://www.infoq.cn/article/lddlsa5f21sty04li3hp">QUIC协议</a></p>
+</li>
+<li>
+<p><a href="https://www.cnblogs.com/harrypotterjackson/p/15977660.html">QUIC</a></p>
+</li>
+<li>
+<p><a href="https://www.cnblogs.com/sewain/p/14250884.html#ssltls">tls</a></p>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/ffffffff8/article/details/120523524">http-&gt;https</a></p>
+</li>
+<li>
+<p><a href="https://testerhome.com/topics/32659">汇总</a></p>
+</li>
+<li>
+<p><a href="https://www.kaspersky.com.cn/resource-center/definitions/dns">DNS</a></p>
+</li>
+<li>
+<p><a href="https://www.kaspersky.com.cn/resource-center/definitions/what-is-dns-hijacking">什么是 DNS 劫持？</a></p>
+</li>
+<li>
+<p><a href="https://zhuanlan.zhihu.com/p/348711884">DNS劫持的工作原理及应对方法</a></p>
+</li>
+</ol>
+<h4 id="实战">实战</h4>
+<p><a href="https://juejin.cn/post/6844903834708344840">关于三次握手与四次挥手面试官想考我们什么？— 不看后悔系列</a></p>
+<h4 id="reference">Reference</h4>
+<p><a href="https://www.iamshuaidi.com/673.html">帅地玩编程</a></p>
+<p>小林coding</p>
+<p><a href="https://blog.csdn.net/fighting_tl/article/details/104697207">字节跳动面试之—计算机网络</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/422455960">字节计算机网络面试</a></p>
+<p><a href="https://juejin.cn/post/6939691851746279437">前端计算机网络面经</a></p>
+<p><a href="https://segmentfault.com/a/1190000038526729">计算机网络面经总结</a></p>
+<h3 id="redis">redis</h3>
+<h4 id="redis-map-扩容">redis map 扩容</h4>
+<p>由于redis的map扩容和golang的map扩容其实比较像，go中的map可以看我golang/structure里面的内容</p>
+<h4 id="redis的数据结构">redis的数据结构</h4>
+<ol>
+<li><a href="https://www.jianshu.com/p/9d8296562806">跳表</a></li>
+</ol>
+<h4 id="链接">链接</h4>
+<ol>
+<li><a href="https://www.nowcoder.com/discuss/353159155588472832">Redis面试题</a></li>
+<li><a href="https://www.cnblogs.com/hechengQAQ/p/17269320.html">Redis 面试题</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/340082703">持久化的内容</a></li>
+</ol>
+<h3 id="mysql">Mysql</h3>
+<ol>
+<li><a href="https://www.cnblogs.com/geaozhang/p/6797357.html">存储过程</a></li>
+<li><a href="https://segmentfault.com/a/1190000039248897">也是存储过程</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1800718">视图</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/132477535">窗口函数</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/425398194">分库分表</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/164519371">汇总</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/164518315">主从</a></li>
+<li><a href="https://blog.csdn.net/qq_41786285/article/details/109304126">主从</a></li>
+<li><a href="https://ost.51cto.com/posts/13547">缓存一致性</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/59061106">为什么用rc隔离级别</a></li>
+</ol>
+<h4 id="binlog">binlog</h4>
+<p>binlog是server层的功能</p>
+<ol>
+<li><a href="https://zhuanlan.zhihu.com/p/33504555">腾讯工程师带你深入解析 MySQL binlog</a></li>
+<li><a href="https://www.cnblogs.com/martinzhang/p/3454358.html">MySQL的binlog日志</a></li>
+<li><a href="https://www.cnblogs.com/rickiyang/p/13841811.html">带你了解 MySQL Binlog 不为人知的秘密</a></li>
+<li><a href="https://m.haicoder.net/note/mysql-interview/mysql-interview-mysql-binlog.html">binlog面试</a></li>
+</ol>
+<h4 id="lock">lock</h4>
+<ol>
+<li><a href="https://zhuanlan.zhihu.com/p/437594231">各种锁 挺不错的</a></li>
+<li><a href="https://juejin.cn/post/6844903666332368909">讲解了意向锁，讲得很好</a></li>
+</ol>
+<h4 id="explain-key_len">explain-key_len</h4>
+<ol>
+<li><a href="https://blog.csdn.net/fdipzone/article/details/55804684">mysql explain中key_len的计算方法</a></li>
+<li><a href="https://www.cnblogs.com/xuanzhi201111/p/4554769.html">key_len长度计算</a></li>
+</ol>
+<h4 id="storage">storage</h4>
+<ol>
+<li><a href="https://15445.courses.cs.cmu.edu/fall2022/slides/03-storage1.pdf">CMU-pdf1</a></li>
+<li><a href="https://15445.courses.cs.cmu.edu/fall2022/slides/04-storage2.pdf">CMU-pdf2</a></li>
+<li><a href="https://www.51cto.com/article/706701.html">MySQL的索引为什么使用B+树而不使用跳表？</a></li>
+</ol>
+<h3 id="系统设计">系统设计</h3>
+<ol>
+<li><a href="https://www.cnblogs.com/javastack/p/17853746.html">十亿用户的系统设计</a></li>
+<li><a href="https://posts.careerengine.us/p/621a3d089d168d07394ec913">十亿用户的系统设计</a></li>
+<li><a href="https://juejin.cn/post/6967742960540581918">限流</a></li>
+</ol>
+<h3 id="os">os</h3>
+<ol>
+<li><a href="https://www.cnblogs.com/Anker/p/3271773.html">孤儿进程与僵尸进程</a></li>
+<li>DMA <a href="https://www.cnblogs.com/wkfvawl/p/10958751.html">dma</a></li>
+<li><a href="https://forum.huawei.com/enterprise/zh/thread/580900453703630848">几种cache</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/522038503">字节终面：CPU 是如何读写内存的？</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1615744">Linux 内核的 4 大 IO 调度算法</a></li>
+<li><a href="https://www.cnblogs.com/-colin/p/7990053.html">父子进程共享什么</a></li>
+</ol>
+<h3 id="大杂烩">大杂烩</h3>
+<p><a href="https://zhuanlan.zhihu.com/p/662062549">redis zookeeper</a></p>
+<h3 id="算法">算法</h3>
+<p><a href="https://juejin.cn/post/6844904089650724872">100 算法</a></p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

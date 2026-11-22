@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>K8s on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/k8s/</link>
+    <description>Recent content in K8s on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 08 Jan 2024 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/k8s/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>k8s-day2</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/08/category/k8s-day2/</link>
+      <pubDate>Mon, 08 Jan 2024 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/08/category/k8s-day2/</guid>
+      <description>RBAC 参考 Kubernetes（k8s）权限管理RBAC详解 网络 参考 写得非常好</description>
+    </item>
+    
+    <item>
+      <title>CNI</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/cni/</link>
+      <pubDate>Sat, 08 Jul 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/cni/</guid>
+      <description>CNI Reference 从零开始入门 K8s：理解 CNI 和 CNI 插件</description>
+    </item>
+    
+    <item>
+      <title>k8s-day1</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/k8s-day1/</link>
+      <pubDate>Sat, 08 Jul 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/k8s-day1/</guid>
+      <description>学习k8s 概念 Master Master 负责管理集群, master 协调集群中的所有活动，例如调度应用程序、维护应用程序的所需状态、扩展应用程序和滚动更新。 节点是 Kubernetes 集群中的工</description>
+    </item>
+    
+  </channel>
+</rss>

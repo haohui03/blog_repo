@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>回溯[上] · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="回溯 思想 回溯其实就是穷举的一种方式，但是这种穷举可以把之前举过的信息保存(传递)给后面使用。 适用范围 组合问题：N个数里面按一定规则找出k个数" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/03/01/category/leetcode_day10/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="回溯[上]" />
+<meta property="og:description" content="回溯 思想 回溯其实就是穷举的一种方式，但是这种穷举可以把之前举过的信息保存(传递)给后面使用。 适用范围 组合问题：N个数里面按一定规则找出k个数" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/03/01/category/leetcode_day10/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-03-01T08:01:23+08:00" />
+<meta property="article:modified_time" content="2023-03-01T09:27:30+08:00" />
+
+<meta itemprop="name" content="回溯[上]">
+<meta itemprop="description" content="回溯 思想 回溯其实就是穷举的一种方式，但是这种穷举可以把之前举过的信息保存(传递)给后面使用。 适用范围 组合问题：N个数里面按一定规则找出k个数"><meta itemprop="datePublished" content="2023-03-01T08:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-03-01T09:27:30+08:00" />
+<meta itemprop="wordCount" content="2784">
+<meta itemprop="keywords" content="algorithm,jobs,leetcode," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="回溯[上]"/>
+<meta name="twitter:description" content="回溯 思想 回溯其实就是穷举的一种方式，但是这种穷举可以把之前举过的信息保存(传递)给后面使用。 适用范围 组合问题：N个数里面按一定规则找出k个数"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">回溯[上]</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-03-01
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/algorithm/">algorithm</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/jobs/">jobs</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/leetcode/">leetcode</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h1 id="回溯">回溯</h1>
+<h2 id="思想">思想</h2>
+<p>回溯其实就是穷举的一种方式，但是这种穷举可以把之前举过的信息保存(传递)给后面使用。</p>
+<h2 id="适用范围">适用范围</h2>
+<ul>
+<li>组合问题：N个数里面按一定规则找出k个数的集合</li>
+<li>切割问题：一个字符串按一定规则有几种切割方式</li>
+<li>子集问题：一个N个数的集合里有多少符合条件的子集</li>
+<li>排列问题：N个数按一定规则全排列，有几种排列方式</li>
+<li>棋盘问题：N皇后，解数独等等</li>
+</ul>
+<h2 id="理解">理解</h2>
+<p>把他当成数形结构的遍历</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/20210130173631174-5c50e9521107.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">backtracking</span><span class="p">(</span><span class="err">参数</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="err">终止条件</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="err">存放结果</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="err">选择：本层集合中元素（树中节点孩子的数量就是集合的大小）</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="err">处理节点</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">backtracking</span><span class="p">(</span><span class="err">路径，选择列表</span><span class="p">);</span> <span class="c1">// 递归
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="err">回溯，撤销处理结果</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>基本上图片加这个模板就可以</p>
+<h4 id="77-组合httpsleetcodecnproblemscombinations"><a href="https://leetcode.cn/problems/combinations/">77. 组合</a></h4>
+<blockquote>
+<p><em>给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。</em></p>
+</blockquote>
+<blockquote>
+<p><em>你可以按 任何顺序 返回答案。</em></p>
+</blockquote>
+<p>我的方法是：将6取3 降低规模到 (6+5取2) + (5取3)</p>
+<p>但是这样的话，会有很多重复。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">combine</span><span class="p">(</span><span class="nx">n</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">k</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">k</span><span class="o">==</span><span class="mi">1</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">ans</span><span class="o">:=</span><span class="p">[][]</span><span class="kt">int</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="mi">1</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="nx">n</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">ans</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">ans</span><span class="p">,[]</span><span class="kt">int</span><span class="p">{</span><span class="nx">i</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">ans</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">n</span><span class="o">==</span><span class="nx">k</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">ans</span><span class="o">:=</span><span class="p">[][]</span><span class="kt">int</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">subAns</span><span class="o">:=</span><span class="p">[]</span><span class="kt">int</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="mi">1</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;=</span><span class="nx">n</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">subAns</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">subAns</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">ans</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">ans</span><span class="p">,</span><span class="nx">subAns</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">ans</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ans</span><span class="o">:=</span><span class="nf">combine</span><span class="p">(</span><span class="nx">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">k</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">subAns</span><span class="o">:=</span><span class="nf">combine</span><span class="p">(</span><span class="nx">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span><span class="p">,</span><span class="nx">_</span><span class="o">:=</span><span class="k">range</span><span class="p">(</span><span class="nx">subAns</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">subAns</span><span class="p">[</span><span class="nx">i</span><span class="p">]=</span><span class="nb">append</span><span class="p">(</span><span class="nx">subAns</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span><span class="nx">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ans</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">ans</span><span class="p">,</span><span class="nx">subAns</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">ans</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>好的做法：</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/20201123195242899-c4fd1ef6504b.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">result</span><span class="p">;</span> <span class="c1">// 存放符合条件结果的集合
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">path</span><span class="p">;</span> <span class="c1">// 用来存放符合条件结果
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">void</span> <span class="nf">backtracking</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">int</span> <span class="n">startIndex</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">path</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">result</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">startIndex</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">path</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// 处理节点 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">backtracking</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// 递归
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">path</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span> <span class="c1">// 回溯，撤销处理的节点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">combine</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span> <span class="c1">// 可以不写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">path</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>   <span class="c1">// 可以不写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">backtracking</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p><img src="https://haohui03.github.io/blog_repo/images/restored/20210130194335207-5e168453cc62.png" alt=""></p>
+<h3 id="组合">组合</h3>
+<h4 id="组合总和httpsleetcodecnproblemscombination-sum"><a href="https://leetcode.cn/problems/combination-sum/">组合总和</a></h4>
+<h4 id="组合总和iihttpsleetcodecnproblemscombination-sum-ii"><a href="https://leetcode.cn/problems/combination-sum-ii/">组合总和II</a></h4>
+<h4 id="216组合总和iiihttpsleetcodecnproblemscombination-sum-iii"><a href="https://leetcode.cn/problems/combination-sum-iii/">216.组合总和III</a></h4>
+<h4 id="17电话号码的字母组合httpsleetcodecnproblemsletter-combinations-of-a-phone-number"><a href="https://leetcode.cn/problems/letter-combinations-of-a-phone-number/">17.电话号码的字母组合</a></h4>
+<h3 id="分割">分割</h3>
+<h4 id="分割回文字符串httpsleetcodecnproblemspalindrome-partitioning"><a href="https://leetcode.cn/problems/palindrome-partitioning/">分割回文字符串</a></h4>
+<h4 id="93复原ip地址httpsleetcodecnproblemsrestore-ip-addresses"><a href="https://leetcode.cn/problems/restore-ip-addresses/">93.复原IP地址</a></h4>
+<p>这几题用上面的方法都是比较简单的。</p>
+<h3 id="子集">子集</h3>
+<blockquote>
+<p>代码随想录总结得比较好: 求子集问题和77.组合 和131.分割回文串 又不一样了。</p>
+</blockquote>
+<blockquote>
+<p>如果把 子集问题、组合问题、分割问题都抽象为一棵树的话，那么组合问题和分割问题都是收集树的叶子节点，而子集问题是找树的所有节点！</p>
+</blockquote>
+<blockquote>
+<p>其实子集也是一种组合问题，因为它的集合是无序的，子集{1,2} 和 子集{2,1}是一样的。</p>
+</blockquote>
+<blockquote>
+<p>那么既然是无序，取过的元素不会重复取，写回溯算法的时候，for就要从startIndex开始，而不是从0开始！</p>
+</blockquote>
+<blockquote>
+<p>有同学问了，什么时候for可以从0开始呢？</p>
+</blockquote>
+<blockquote>
+<p>求排列问题的时候，就要从0开始，因为集合是有序的，{1, 2} 和{2, 1}是两个集合，排列问题我们后续的文章就会讲到的。</p>
+</blockquote>
+<p>具体的区别在于，组合和分割是在终止的时候把这次的添加到集合，而集合问题是每次开始前都添加到集合也就是所有的节点不止叶子节点。</p>
+<p>之前我的写法是添加递归一遍，不添加递归一遍，所以会很多重复。(很别扭)</p>
+<blockquote>
+<p><em>比较重要的一道题</em></p>
+</blockquote>
+<h4 id="90子集iihttpsleetcodecnproblemssubsets-ii"><a href="https://leetcode.cn/problems/subsets-ii/">90.子集II</a></h4>
+<p>重要的点在于“数层剪枝”</p>
+<p>首先讲讲<a href="https://leetcode.cn/problems/combination-sum-ii/">40.组合总和II</a></p>
+<blockquote>
+<p>给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。</p>
+</blockquote>
+<blockquote>
+<p>candidates 中的每个数字在每个组合中只能使用一次。</p>
+</blockquote>
+<blockquote>
+<p>说明： 所有数字（包括目标数）都是正整数。解集不能包含重复的组合。</p>
+</blockquote>
+<p>这里面也是树层剪枝 <img src="https://haohui03.github.io/blog_repo/images/restored/20201123202736384-ff400a24fa16.png" alt=""></p>
+<p>我的方法是对排序后在层间的for循环时先找到相同的最后一个,然后再跳过。其实是一样的只是之前没有总结成方法论。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="nx">index</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">candidates</span><span class="p">);</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="nx">subAns</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">subAns</span><span class="p">,</span><span class="nx">candidates</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">sum</span><span class="o">+=</span><span class="nx">candidates</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">combination</span><span class="p">(</span><span class="nx">candidates</span><span class="p">,</span><span class="nx">target</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">subAns</span><span class="p">=</span><span class="nx">subAns</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">subAns</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">sum</span><span class="o">-=</span><span class="nx">candidates</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">i</span><span class="o">!=</span><span class="nb">len</span><span class="p">(</span><span class="nx">candidates</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">candidates</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">==</span><span class="nx">candidates</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">i</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></div><p>现在总结一下，树层剪枝其实是因为，同样深度的同一个值的情况其实已经被第一次遇到的那个节点的子树包括了。所以只需要第一个子树的情况就可以。</p>
+<p>回到<a href="https://leetcode.cn/problems/subsets-ii/">90. 子集 II</a></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">res</span>  <span class="p">[][]</span><span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">subRes</span> <span class="p">[]</span><span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">subsetsWithDup</span><span class="p">(</span><span class="nx">nums</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">=[][]</span><span class="kt">int</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">subRes</span><span class="p">=[]</span><span class="kt">int</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">sort</span><span class="p">.</span><span class="nf">Sort</span><span class="p">(</span><span class="nx">sort</span><span class="p">.</span><span class="nf">IntSlice</span><span class="p">(</span><span class="nx">nums</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">sub</span><span class="p">(</span><span class="nx">nums</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">sub</span><span class="p">(</span><span class="nx">nums</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">index</span> <span class="kt">int</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">index</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">slice</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="nx">subRes</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">copy</span><span class="p">(</span><span class="nx">slice</span><span class="p">,</span><span class="nx">subRes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">res</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span><span class="nx">slice</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">i</span><span class="o">:=</span><span class="nx">index</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="o">&amp;&amp;</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">==</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> 
+</span></span><span class="line"><span class="cl">    <span class="nx">length</span><span class="o">:=</span><span class="nx">i</span><span class="o">-</span><span class="nx">index</span><span class="o">+</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// fmt.Println(length)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// fmt.Println(&#34;===&#34;,subRes)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="nx">length</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">k</span><span class="o">:=</span><span class="mi">0</span><span class="p">;</span><span class="nx">k</span><span class="p">&lt;</span><span class="nx">length</span><span class="p">;</span><span class="nx">k</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">subRes</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">subRes</span><span class="p">,</span><span class="nx">nums</span><span class="p">[</span><span class="nx">index</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// fmt.Println(subRes)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nf">sub</span><span class="p">(</span><span class="nx">nums</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">subRes</span><span class="p">=</span><span class="nx">subRes</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">subRes</span><span class="p">)</span><span class="o">-</span><span class="nx">length</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">length</span><span class="o">--</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>我使用length记录，同样的数字的长度然后递减再递归只能说重复太多，没有理解到子集。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">path</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">backtracking</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">,</span> <span class="kt">int</span> <span class="n">startIndex</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;&amp;</span> <span class="n">used</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">startIndex</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// used[i - 1] == true，说明同一树枝candidates[i - 1]使用过
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="c1">// used[i - 1] == false，说明同一树层candidates[i - 1]使用过
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="c1">// 而我们要对同一树层使用过的元素进行跳过
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">used</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="nb">false</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">path</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">used</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">backtracking</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">used</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">used</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">path</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">subsetsWithDup</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">path</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">used</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="nb">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sort</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">());</span> <span class="c1">// 去重需要排序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">backtracking</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">used</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>这是好的做法</p>
+<h4 id="491-递增子序列httpsleetcodecnproblemsnon-decreasing-subsequences"><a href="https://leetcode.cn/problems/non-decreasing-subsequences/">491. 递增子序列</a></h4>
+<p>这题算是比较难</p>
+<blockquote>
+<p>给你一个整数数组 nums ，找出并返回所有该数组中不同的递增子序列，递增子序列中 至少有两个元素 。你可以按 任意顺序 返回答案。</p>
+</blockquote>
+<blockquote>
+<p>数组中可能含有重复元素，如出现两个整数相等，也可以视作递增序列的一种特殊情况。</p>
+</blockquote>
+<p>我一开始用层间剪枝的方法，必须要用一个hash map或者数组来保存同一层中见过的其他数字。 这是因为他这里是不能排序的，很难知道是否见过了相同的。</p>
+<p>力扣官方题解有个比较好的去重思路。其实总的来说这类重复问题其实都是说，有n个重复的数字，在你的集合中你要用n，n-1,n-2….1个来进行递归。</p>
+<p>之前代码随想录是把这种选择单放到一个树的深度来考虑。</p>
+<p>这里官方题解是把他n个放到第一个棵子树，n-1放到第二颗。。。</p>
+<p>这样就必须让子树中相同数值都选中，</p>
+<blockquote>
+<p>那如何保证没有重复呢？我们需要给「不选择」做一个限定条件，只有当当前的元素不等于上一个选择的元素的时候，才考虑不选择当前元素，直接递归后面的元素。因为如果有两个相同的元素，我们会考虑这样四种情况：</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>前者被选择，后者被选择</li>
+<li>前者被选择，后者不被选择</li>
+<li>前者不被选择，后者被选择</li>
+<li>前者不被选择，后者不被选择 其中第二种情况和第三种情况其实是等价的，我们这样限制之后，舍弃了第二种，保留了第三种，于是达到了去重的目的。</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">var</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">temp</span> <span class="p">[]</span><span class="kt">int</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ans</span> <span class="p">[][]</span><span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">func</span> <span class="n">findSubsequences</span><span class="p">(</span><span class="n">nums</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ans</span> <span class="o">=</span> <span class="p">[][]</span><span class="kt">int</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dfs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">math</span><span class="p">.</span><span class="n">MinInt32</span><span class="p">,</span> <span class="n">nums</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ans</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">func</span> <span class="nf">dfs</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="n">last</span> <span class="kt">int</span><span class="p">,</span> <span class="n">nums</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">cur</span> <span class="o">==</span> <span class="n">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">len</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nl">t</span> <span class="p">:</span><span class="o">=</span> <span class="n">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="n">len</span><span class="p">(</span><span class="n">temp</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">copy</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ans</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">cur</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">last</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">temp</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">nums</span><span class="p">[</span><span class="n">cur</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nums</span><span class="p">[</span><span class="n">cur</span><span class="p">],</span> <span class="n">nums</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="o">:</span><span class="n">len</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">cur</span><span class="p">]</span> <span class="o">!=</span> <span class="n">last</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span> <span class="n">nums</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>注意他这里选的方法是和我之前那个一样，一个函数里面push的递归一次，不push的递归一次。模拟选和不选</p>
+<h4 id="全排列httpsleetcodecnproblemspermutations"><a href="https://leetcode.cn/problems/permutations/">全排列</a></h4>
+<p>排列和组合比较像，同样是取叶子节点。不同点在于：全排列的i是从0开始选没有被选过的。 这样的话需要一个数组记录是否被选过。 而不需要额外空间的方法是，每次选了之后做一个划分，划分后变成两部分，一部分是已经被选过，一部分是还没有被选。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">res</span> <span class="p">[][]</span><span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">subRes</span> <span class="p">[]</span><span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">permute</span><span class="p">(</span><span class="nx">nums</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">=[][]</span><span class="kt">int</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">subRes</span><span class="p">=[]</span><span class="kt">int</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">subFunc</span><span class="p">(</span><span class="nx">nums</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">subFunc</span><span class="p">(</span><span class="nx">nums</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span><span class="nx">startIndex</span> <span class="kt">int</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">subRes</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">slice</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="nx">subRes</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">copy</span><span class="p">(</span><span class="nx">slice</span><span class="p">,</span><span class="nx">subRes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">res</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span><span class="nx">slice</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="nx">startIndex</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">);</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">subRes</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">subRes</span><span class="p">,</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">nums</span><span class="p">[</span><span class="nx">startIndex</span><span class="p">],</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">]=</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span><span class="nx">nums</span><span class="p">[</span><span class="nx">startIndex</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">subFunc</span><span class="p">(</span><span class="nx">nums</span><span class="p">,</span><span class="nx">startIndex</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">nums</span><span class="p">[</span><span class="nx">startIndex</span><span class="p">],</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">]=</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span><span class="nx">nums</span><span class="p">[</span><span class="nx">startIndex</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">subRes</span><span class="p">=</span><span class="nx">subRes</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">subRes</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="47-全排列httpsleetcodecnproblemspermutations-ii"><a href="https://leetcode.cn/problems/permutations-ii/">47. 全排列</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">res</span> <span class="p">[][]</span><span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">subRes</span> <span class="p">[]</span><span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">permuteUnique</span><span class="p">(</span><span class="nx">nums</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">state</span> <span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">=[][]</span><span class="kt">int</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">subRes</span><span class="p">=[]</span><span class="kt">int</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">sort</span><span class="p">.</span><span class="nf">Sort</span><span class="p">(</span><span class="nx">sort</span><span class="p">.</span><span class="nf">IntSlice</span><span class="p">(</span><span class="nx">nums</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">permute</span><span class="p">(</span><span class="nx">nums</span><span class="p">,</span><span class="nx">state</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">permute</span><span class="p">(</span><span class="nx">nums</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span><span class="nx">state</span> <span class="p">[]</span><span class="kt">int</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">subRes</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">slice</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">copy</span><span class="p">(</span><span class="nx">slice</span><span class="p">,</span><span class="nx">subRes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">res</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span><span class="nx">slice</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">);</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">       
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">state</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">state</span><span class="p">[</span><span class="nx">i</span><span class="p">]=</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">subRes</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">subRes</span><span class="p">,</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">permute</span><span class="p">(</span><span class="nx">nums</span><span class="p">,</span><span class="nx">state</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">subRes</span><span class="p">=</span><span class="nx">subRes</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">subRes</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">state</span><span class="p">[</span><span class="nx">i</span><span class="p">]=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="o">&amp;&amp;</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">==</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">i</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>注意，一开始我把</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="k">for</span> <span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="o">&amp;&amp;</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">==</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">i</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>写在前面是不行的 写在前面的写法是和前面的比较而不是和后面的比较 写在前面的写法</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="332-重新安排行程httpsleetcodecnproblemsreconstruct-itinerary"><a href="https://leetcode.cn/problems/reconstruct-itinerary/">332. 重新安排行程</a></h4>
+<p>这题是能写出来，但是有点曲折。</p>
+<p>先贴代码:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span>  <span class="nx">res</span> <span class="p">[]</span><span class="kt">string</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">subRes</span> <span class="p">[]</span><span class="kt">string</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">findItinerary</span><span class="p">(</span><span class="nx">tickets</span> <span class="p">[][]</span><span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">list</span><span class="p">,</span><span class="nx">table</span><span class="o">:=</span><span class="nf">makeList</span><span class="p">(</span><span class="nx">tickets</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">subRes</span><span class="p">=[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;JFK&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">=[]</span><span class="kt">string</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">target</span><span class="o">:=</span><span class="s">&#34;JFK&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">find</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span><span class="nx">table</span><span class="p">,</span><span class="nx">target</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="nx">tickets</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">find</span><span class="p">(</span><span class="nx">list</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">][]</span><span class="kt">string</span> <span class="p">,</span><span class="nx">table</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">][]</span><span class="kt">bool</span> <span class="p">,</span> <span class="nx">target</span> <span class="kt">string</span><span class="p">,</span><span class="nx">length</span> <span class="kt">int</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">subRes</span><span class="p">)</span><span class="o">==</span><span class="nx">length</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">slice</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span><span class="nx">length</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">copy</span><span class="p">(</span><span class="nx">slice</span><span class="p">,</span><span class="nx">subRes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">res</span><span class="p">=</span><span class="nx">slice</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span><span class="p">,</span><span class="nx">s</span><span class="o">:=</span><span class="k">range</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">target</span><span class="p">]){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">table</span><span class="p">[</span><span class="nx">target</span><span class="p">][</span><span class="nx">i</span><span class="p">]</span><span class="o">==</span><span class="kc">false</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">subRes</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">subRes</span><span class="p">,</span><span class="nx">list</span><span class="p">[</span><span class="nx">target</span><span class="p">][</span><span class="nx">i</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">table</span><span class="p">[</span><span class="nx">target</span><span class="p">][</span><span class="nx">i</span><span class="p">]=</span><span class="kc">true</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">find</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span><span class="nx">table</span><span class="p">,</span><span class="nx">s</span><span class="p">,</span><span class="nx">length</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">subRes</span><span class="p">=</span><span class="nx">subRes</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">subRes</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">table</span><span class="p">[</span><span class="nx">target</span><span class="p">][</span><span class="nx">i</span><span class="p">]=</span><span class="kc">false</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">makeList</span><span class="p">(</span><span class="nx">tickets</span> <span class="p">[][]</span><span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">][]</span><span class="kt">string</span><span class="p">,</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">][]</span><span class="kt">bool</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">list</span><span class="o">:=</span><span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">][]</span><span class="kt">string</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span><span class="nx">v</span><span class="o">:=</span><span class="k">range</span><span class="p">(</span><span class="nx">tickets</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">_</span><span class="p">,</span><span class="nx">ok</span><span class="o">:=</span><span class="nx">list</span><span class="p">[</span><span class="nx">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]];</span><span class="nx">ok</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">list</span><span class="p">[</span><span class="nx">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]]=</span><span class="nb">append</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span><span class="nx">v</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">list</span><span class="p">[</span><span class="nx">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]]=[]</span><span class="kt">string</span><span class="p">{</span><span class="nx">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">table</span> <span class="o">:=</span><span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">][]</span><span class="kt">bool</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">k</span><span class="p">,</span><span class="nx">_</span><span class="o">:=</span><span class="k">range</span><span class="p">(</span><span class="nx">list</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">sort</span><span class="p">.</span><span class="nf">Sort</span><span class="p">(</span><span class="nx">sort</span><span class="p">.</span><span class="nf">StringSlice</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">k</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">table</span><span class="p">[</span><span class="nx">k</span><span class="p">]=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">bool</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">k</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">list</span><span class="p">,</span><span class="nx">table</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>比较好的做法:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// unordered_map&lt;出发机场, map&lt;到达机场, 航班次数&gt;&gt; targets
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">targets</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">backtracking</span><span class="p">(</span><span class="kt">int</span> <span class="n">ticketNum</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">ticketNum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">pair</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="nl">target</span> <span class="p">:</span> <span class="n">targets</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">second</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">// 记录到达机场是否飞过了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">result</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">first</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">target</span><span class="p">.</span><span class="n">second</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">backtracking</span><span class="p">(</span><span class="n">ticketNum</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">result</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">target</span><span class="p">.</span><span class="n">second</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">findItinerary</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span> <span class="n">tickets</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">targets</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="nl">vec</span> <span class="p">:</span> <span class="n">tickets</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">targets</span><span class="p">[</span><span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">++</span><span class="p">;</span> <span class="c1">// 记录映射关系
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&#34;JFK&#34;</span><span class="p">);</span> <span class="c1">// 起始机场
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">backtracking</span><span class="p">(</span><span class="n">tickets</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">result</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>学到的几点:</p>
+<ul>
+<li>当只需要遍历找到某一个叶子节点时，可以设置递归函数的返回值，一旦条件满足就返回标志，这样就可以向上不断返回。</li>
+</ul>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

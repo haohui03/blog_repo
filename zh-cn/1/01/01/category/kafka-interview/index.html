@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>kafka-interview · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="ISR机制 ISR： 是指同步副本集，我们可以理解为和 leader 保持同步的所有副本的集合。 AR： 一个分区的所有副本集合叫做 AR（ Assigned Repllicas ） OSR：与 leader-replica 未能保" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/kafka-interview/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="kafka-interview" />
+<meta property="og:description" content="ISR机制 ISR： 是指同步副本集，我们可以理解为和 leader 保持同步的所有副本的集合。 AR： 一个分区的所有副本集合叫做 AR（ Assigned Repllicas ） OSR：与 leader-replica 未能保" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/kafka-interview/" /><meta property="article:section" content="posts" />
+
+
+
+<meta itemprop="name" content="kafka-interview">
+<meta itemprop="description" content="ISR机制 ISR： 是指同步副本集，我们可以理解为和 leader 保持同步的所有副本的集合。 AR： 一个分区的所有副本集合叫做 AR（ Assigned Repllicas ） OSR：与 leader-replica 未能保">
+
+<meta itemprop="wordCount" content="748">
+<meta itemprop="keywords" content="infra,kafka,Middleware," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="kafka-interview"/>
+<meta name="twitter:description" content="ISR机制 ISR： 是指同步副本集，我们可以理解为和 leader 保持同步的所有副本的集合。 AR： 一个分区的所有副本集合叫做 AR（ Assigned Repllicas ） OSR：与 leader-replica 未能保"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">kafka-interview</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        0001-01-01
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/infra/">infra</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/kafka/">kafka</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/middleware/">Middleware</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="isr机制">ISR机制</h2>
+<ul>
+<li>ISR： 是指同步副本集，我们可以理解为和 leader 保持同步的所有副本的集合。</li>
+<li>AR： 一个分区的所有副本集合叫做 AR（ Assigned Repllicas ）</li>
+<li>OSR：与 leader-replica 未能保持同步的副本集叫做 OSR（ Out-Sync Relipcas ）</li>
+</ul>
+<h2 id="事务">事务</h2>
+<p>先来介绍下事务协调者，为了解决分布式事务问题，Kafka 引入了事务协调者这个角色，负责在服务端协调整个事务。这个协调者并不是一个独立的进程，而是 Broker 进程的一部分，协调者和分区一样通过选举来保证自身的可用性。</p>
+<p>Kafka 集群中也有一个特殊的用于记录事务日志的主题，里面记录的都是事务的日志。同时会有多个协调者的存在，每个协调者负责管理和使用事务日志中的几个分区。这样能够并行的执行事务，提高性能。</p>
+<p>下面看下具体的流程</p>
+<p>1、首先在开启事务的时候，生产者会给协调者发送一个开启事务的请求，协调者在事务日志中记录下事务ID;</p>
+<p>2、然后生产者开始发送事务消息给协调者，不过需要先发送消息告知协调者在哪个主题和分区，之后就正常的发送事务消息，这些事务消息不像 RocketMQ 会保存在特殊的队列中，Kafka 未提交的事务消息和普通的消息一样，只是在消费的时候依赖客户端进行过滤。</p>
+<p>3、消息发送完成，生产者根据自己的执行的状态对协调者进行事务的提交或者回滚；</p>
+<p>事务的提交</p>
+<p>1、协调者设置事务的状态为PrepareCommit，写入到事务日志中；</p>
+<p>2、协调者在每个分区中写入事务结束的标识，然后客户端就能把之前过滤的未提交的事务消息放行给消费端进行消费了；</p>
+<p>事务的回滚</p>
+<p>1、协调者设置事务的状态为PrepareAbort，写入到事务日志中；</p>
+<p>2、协调者在每个分区中写入事务回滚的标识，然后之前未提交的事务消息就能被丢弃了；</p>
+<h2 id="幂等">幂等</h2>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzkyMzU5Mzk1NQ==&amp;mid=2247506349&amp;idx=1&amp;sn=47b8ae3a94176440a6e5d5ad3505b4f3&amp;source=41#wechat_redirect">聊聊幂等设计</a></p>
+<h2 id="exactly-once">exactly once</h2>
+<p>值得注意的是这里的exactly once只能是在流处理中才能做到，如果是在消息队列中，那么只能做到at least once。</p>
+<p><a href="https://developer.aliyun.com/article/1172598">深入解析 Kafka Exactly Once 语义设计 &amp; 实现</a></p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

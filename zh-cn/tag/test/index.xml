@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>test on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/test/</link>
+    <description>Recent content in test on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 19 Aug 2023 08:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/test/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>golang test</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/golang-test/</link>
+      <pubDate>Sat, 19 Aug 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/golang-test/</guid>
+      <description>标准库 testing 标准测试使用go test 来编译运行测试*_test.go文件，这些文件不是go build命令编译的对象。 *_test.go 中，有三种测试 功能测试 每一个测试</description>
+    </item>
+    
+  </channel>
+</rss>

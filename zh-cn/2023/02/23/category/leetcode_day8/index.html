@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>二叉树（中） · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="二叉树(中) 层序遍历 和广度优先差不多 需要注意的是：要判断这层什么时候结束 我的方法是通过置一个nil作为结束，其实可以一趟一趟地看，先获取qu" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/02/23/category/leetcode_day8/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="二叉树（中）" />
+<meta property="og:description" content="二叉树(中) 层序遍历 和广度优先差不多 需要注意的是：要判断这层什么时候结束 我的方法是通过置一个nil作为结束，其实可以一趟一趟地看，先获取qu" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/02/23/category/leetcode_day8/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-02-23T08:01:23+08:00" />
+<meta property="article:modified_time" content="2023-02-23T09:27:30+08:00" />
+
+<meta itemprop="name" content="二叉树（中）">
+<meta itemprop="description" content="二叉树(中) 层序遍历 和广度优先差不多 需要注意的是：要判断这层什么时候结束 我的方法是通过置一个nil作为结束，其实可以一趟一趟地看，先获取qu"><meta itemprop="datePublished" content="2023-02-23T08:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-02-23T09:27:30+08:00" />
+<meta itemprop="wordCount" content="1042">
+<meta itemprop="keywords" content="algorithm,jobs,leetcode," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="二叉树（中）"/>
+<meta name="twitter:description" content="二叉树(中) 层序遍历 和广度优先差不多 需要注意的是：要判断这层什么时候结束 我的方法是通过置一个nil作为结束，其实可以一趟一趟地看，先获取qu"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">二叉树（中）</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-02-23
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/algorithm/">algorithm</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/jobs/">jobs</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/leetcode/">leetcode</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h1 id="二叉树中">二叉树(中)</h1>
+<h4 id="层序遍历">层序遍历</h4>
+<p>和广度优先差不多</p>
+<p>需要注意的是：要判断这层什么时候结束 我的方法是通过置一个nil作为结束，其实可以一趟一趟地看，先获取queue目前的长度这就是这一层的数量，然后按照这个size遍历就好。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">levelOrder</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">root</span><span class="o">==</span><span class="kc">nil</span><span class="p">{</span><span class="k">return</span> <span class="kc">nil</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nx">ans</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([][]</span><span class="kt">int</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">record</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">TreeNode</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">record</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">record</span> <span class="p">,</span> <span class="p">[]</span><span class="o">*</span><span class="nx">TreeNode</span><span class="p">{</span><span class="nx">root</span><span class="p">,</span><span class="kc">nil</span><span class="p">}</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">subAns</span><span class="o">:=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">pointer</span><span class="o">:=</span><span class="nx">record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">record</span><span class="p">=</span><span class="nx">record</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">pointer</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">            <span class="nx">subAns</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">subAns</span><span class="p">,(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Val</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Left</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span><span class="nx">record</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">record</span><span class="p">,(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Left</span><span class="p">)}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Right</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span><span class="nx">record</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">record</span><span class="p">,(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Right</span><span class="p">)}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">            <span class="nx">ans</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">ans</span><span class="p">,</span><span class="nx">subAns</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="nx">ans</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">subAns</span><span class="p">=</span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">record</span><span class="p">=</span><span class="nb">append</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span><span class="kc">nil</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>     
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">ans</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>相关题目：</p>
+<ul>
+<li>102.二叉树的层序遍历</li>
+<li>107.二叉树的层次遍历II</li>
+<li>199.二叉树的右视图</li>
+<li>637.二叉树的层平均值</li>
+<li>429.N叉树的层序遍历</li>
+<li>515.在每个树行中找最大值</li>
+<li>116.填充每个节点的下一个右侧节点指针</li>
+<li>117.填充每个节点的下一个右侧节点指针II</li>
+<li>104.二叉树的最大深度</li>
+<li>111.二叉树的最小深度</li>
+</ul>
+<h4 id="反转二叉树">反转二叉树</h4>
+<ul>
+<li>一开始的想法是用层序遍历然后把每一层内的值reverse，然后发现有可能有不存在左子树但是有右子树的情况。 后改成把遍历到的每一个点的左节点和右节点交换，后pass。</li>
+<li>问题是为什么可以，其实可以自己画图，最下层叶子节点是否成功可以转化成一个个小一点规模的问题，最后得以解决。</li>
+</ul>
+<h4 id="101-对称二叉树httpsleetcodecnproblemssymmetric-tree"><a href="https://leetcode.cn/problems/symmetric-tree/">101. 对称二叉树</a></h4>
+<p>这题的话其实一开始想的是通过中序遍历遍历左子树，用先遍历右子树的中序遍历遍历右子树然后判断两个slice相等不相等的，但是理论证明还是比较困难。</p>
+<p>这种题还是按照正常的流程来一个个遍历然后判断，其实递归的写法倒是不能写出来主要是要往那个方向去想。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">isSymmetric</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">root</span> <span class="o">==</span> <span class="kc">nil</span><span class="p">{</span><span class="k">return</span> <span class="kc">true</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nf">ifSymmetric</span><span class="p">((</span><span class="o">*</span><span class="nx">root</span><span class="p">).</span><span class="nx">Left</span><span class="p">,(</span><span class="o">*</span><span class="nx">root</span><span class="p">).</span><span class="nx">Right</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">ifSymmetric</span><span class="p">(</span><span class="nx">left</span><span class="p">,</span><span class="nx">right</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="kt">bool</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">left</span><span class="o">==</span><span class="kc">nil</span><span class="o">&amp;&amp;</span><span class="nx">right</span><span class="o">!=</span><span class="kc">nil</span> <span class="o">||</span> <span class="nx">left</span><span class="o">!=</span><span class="kc">nil</span><span class="o">&amp;&amp;</span><span class="nx">right</span><span class="o">==</span><span class="kc">nil</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">left</span><span class="o">==</span><span class="kc">nil</span><span class="o">&amp;&amp;</span><span class="nx">right</span><span class="o">==</span><span class="kc">nil</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">left</span><span class="p">).</span><span class="nx">Val</span><span class="o">!=</span><span class="p">(</span><span class="o">*</span><span class="nx">right</span><span class="p">).</span><span class="nx">Val</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">outside</span><span class="o">:=</span><span class="nf">ifSymmetric</span><span class="p">((</span><span class="o">*</span><span class="nx">left</span><span class="p">).</span><span class="nx">Left</span><span class="p">,(</span><span class="o">*</span><span class="nx">right</span><span class="p">).</span><span class="nx">Right</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">inside</span><span class="o">:=</span><span class="nf">ifSymmetric</span><span class="p">((</span><span class="o">*</span><span class="nx">left</span><span class="p">).</span><span class="nx">Right</span><span class="p">,(</span><span class="o">*</span><span class="nx">right</span><span class="p">).</span><span class="nx">Left</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">outside</span><span class="o">&amp;&amp;</span><span class="nx">inside</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="104-二叉树的最大深度httpsleetcodecnproblemsmaximum-depth-of-binary-tree"><a href="https://leetcode.cn/problems/maximum-depth-of-binary-tree/">104. 二叉树的最大深度</a></h4>
+<p>这题的话，一下就能感觉出来可以层序遍历这比较符合直觉。 但是，还是需要学习树的深度和高度怎么求</p>
+<p>深度： 一般是前序遍历</p>
+<p>高度： 通过后序遍历，主要的代码就是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">getdepth</span><span class="p">(</span><span class="n">treenode</span><span class="o">*</span> <span class="n">node</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">node</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">leftdepth</span> <span class="o">=</span> <span class="n">getdepth</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>       <span class="c1">// 左
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">rightdepth</span> <span class="o">=</span> <span class="n">getdepth</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>     <span class="c1">// 右
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">depth</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">max</span><span class="p">(</span><span class="n">leftdepth</span><span class="p">,</span> <span class="n">rightdepth</span><span class="p">);</span> <span class="c1">// 中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">depth</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">maxdepth</span><span class="p">(</span><span class="n">treenode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">getdepth</span><span class="p">(</span><span class="n">root</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>求深度的话一般来说是会和层序遍历有关的，所以要多想层序遍历。</p>
+<h4 id="222-完全二叉树的节点个数httpsleetcodecnproblemscount-complete-tree-nodes"><a href="https://leetcode.cn/problems/count-complete-tree-nodes/">222. 完全二叉树的节点个数</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Definition for a binary tree node.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * type TreeNode struct {
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Val int
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Left *TreeNode
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Right *TreeNode
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * }
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">countNodes</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">root</span><span class="o">==</span><span class="kc">nil</span><span class="p">{</span><span class="k">return</span> <span class="mi">0</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">h</span><span class="o">:=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">pointer</span><span class="o">:=</span><span class="nx">root</span><span class="p">;</span><span class="nx">pointer</span><span class="o">!=</span><span class="kc">nil</span><span class="p">;{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">h</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">pointer</span><span class="p">=(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Left</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ans</span><span class="p">,</span><span class="nx">_</span><span class="o">:=</span> <span class="nf">getNodes</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span><span class="nx">h</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">ans</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">getNodes</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">,</span> <span class="nx">height</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">root</span><span class="o">==</span><span class="kc">nil</span><span class="p">{</span><span class="k">return</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">h</span><span class="o">:=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">pointer</span><span class="o">:=</span><span class="nx">root</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">pointer</span><span class="o">!=</span><span class="kc">nil</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">h</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">pointer</span><span class="p">=(</span><span class="o">*</span><span class="nx">pointer</span><span class="p">).</span><span class="nx">Left</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">h</span><span class="p">&lt;</span><span class="nx">height</span><span class="p">{</span><span class="k">return</span> <span class="nf">getCompleteNodes</span><span class="p">(</span><span class="nx">h</span><span class="p">),</span><span class="nx">h</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nx">right</span><span class="p">,</span><span class="nx">rightH</span><span class="o">:=</span><span class="nf">getNodes</span><span class="p">((</span><span class="o">*</span><span class="nx">root</span><span class="p">).</span><span class="nx">Right</span><span class="p">,</span><span class="nx">height</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">left</span><span class="o">:=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">rightH</span><span class="p">&gt;</span><span class="nx">height</span><span class="o">-</span><span class="mi">2</span><span class="p">{</span><span class="nx">left</span><span class="p">=</span><span class="nf">getCompleteNodes</span><span class="p">(</span><span class="nx">height</span><span class="o">-</span><span class="mi">1</span><span class="p">)}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">left</span><span class="p">,</span><span class="nx">_</span><span class="p">=</span><span class="nf">getNodes</span><span class="p">((</span><span class="o">*</span><span class="nx">root</span><span class="p">).</span><span class="nx">Left</span><span class="p">,</span><span class="nx">height</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">left</span><span class="o">+</span><span class="nx">right</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">h</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">getCompleteNodes</span><span class="p">(</span><span class="nx">height</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nx">math</span><span class="p">.</span><span class="nf">Pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="nb">float64</span><span class="p">(</span><span class="nx">height</span><span class="p">))</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这个题的话，自己的这个方法我感觉还是很不错的。 利用了完全二叉树的性质，从右边开始算高度，如果高度匹配，说明左子树一定是满二叉树，如果高度不匹配那么自己肯定是满二叉树。利用这个性质就能很快写出。</p>
+<h4 id="110-平衡二叉树httpsleetcodecnproblemsbalanced-binary-tree"><a href="https://leetcode.cn/problems/balanced-binary-tree/">110. 平衡二叉树</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Definition for a binary tree node.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * type TreeNode struct {
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Val int
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Left *TreeNode
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Right *TreeNode
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * }
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">isBalanced</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">_</span><span class="p">,</span><span class="nx">balance</span><span class="o">:=</span><span class="nf">getHeightNBalance</span><span class="p">(</span><span class="nx">root</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">balance</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">getHeightNBalance</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="kt">bool</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">root</span><span class="o">==</span><span class="kc">nil</span><span class="p">{</span><span class="k">return</span> <span class="mi">0</span><span class="p">,</span><span class="kc">true</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">leftHeight</span><span class="p">,</span><span class="nx">leftBalance</span><span class="o">:=</span><span class="nf">getHeightNBalance</span><span class="p">((</span><span class="o">*</span><span class="nx">root</span><span class="p">).</span><span class="nx">Left</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">rightHeight</span><span class="p">,</span><span class="nx">rightBalance</span><span class="o">:=</span><span class="nf">getHeightNBalance</span><span class="p">((</span><span class="o">*</span><span class="nx">root</span><span class="p">).</span><span class="nx">Right</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">!(</span><span class="nx">leftBalance</span><span class="o">&amp;&amp;</span><span class="nx">rightBalance</span><span class="p">){</span><span class="k">return</span> <span class="mi">0</span><span class="p">,</span><span class="kc">false</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">balance</span><span class="o">:=</span><span class="kc">true</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="nx">math</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="kt">float64</span> <span class="p">(</span><span class="nx">leftHeight</span><span class="o">-</span><span class="nx">rightHeight</span><span class="p">)))&gt;</span><span class="mi">1</span> <span class="p">{</span><span class="nx">balance</span><span class="p">=</span><span class="kc">false</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nf">max</span><span class="p">(</span><span class="nx">leftHeight</span><span class="p">,</span><span class="nx">rightHeight</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nx">balance</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">max</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">a</span><span class="p">&gt;</span><span class="nx">b</span><span class="p">{</span><span class="k">return</span> <span class="nx">a</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这题不难，注意求高度，后序遍历注意一下递归的三条件就ok</p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>net on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/net/</link>
+    <description>Recent content in net on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 19 Jun 2023 09:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/net/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>go net package</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/</link>
+      <pubDate>Mon, 19 Jun 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/</guid>
+      <description>Reference 源码分析go</description>
+    </item>
+    
+    <item>
+      <title>net/http</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/http/</link>
+      <pubDate>Mon, 19 Jun 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/06/19/category/net/http/</guid>
+      <description>learn http 前置知识: HTTP 1.1 / 2 基于TCP ， HTTP/3 可以基于TCP UDP 和QUIC. HTTP HTTP 报文的常见格式: GET / HTTP/1.1 User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT) Host: draveness.me Accept-Language: en-us Accept-Encoding: gzip, deflate Content-Type: text/html; charset=UTF-8 Content-Length: 138 Connection: Keep-Alive &amp;lt;html&amp;gt; ... &amp;lt;/html&amp;gt; TCP 粘</description>
+    </item>
+    
+  </channel>
+</rss>

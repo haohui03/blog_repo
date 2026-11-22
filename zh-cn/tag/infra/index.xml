@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>infra on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/infra/</link>
+    <description>Recent content in infra on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 08 Jan 2024 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/infra/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>k8s-day2</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/08/category/k8s-day2/</link>
+      <pubDate>Mon, 08 Jan 2024 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/08/category/k8s-day2/</guid>
+      <description>RBAC 参考 Kubernetes（k8s）权限管理RBAC详解 网络 参考 写得非常好</description>
+    </item>
+    
+    <item>
+      <title>plan9&#43;go-assembler</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/plan9-go-assembler/</link>
+      <pubDate>Thu, 16 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/plan9-go-assembler/</guid>
+      <description>plan9 本文记录plan9汇编的学习过程，sorry全是抄的，只能说抄一遍印象深一点而且好复盘。 基本指令 栈调整 SUBQ $0x18, SP // 对 SP 做减法，为函数分配函数栈</description>
+    </item>
+    
+    <item>
+      <title>redis-single</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/redis-single/</link>
+      <pubDate>Thu, 16 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/redis-single/</guid>
+      <description>redis单机数据库的实现 数据库 服务端有一个结构体 struct redisServer { char *configfile; // 配置文件的绝对路径 int hz; // serverCron() 每秒调用的次数 redisDb *db; // 数据库 }; 命令 切换数据库SELEC</description>
+    </item>
+    
+    <item>
+      <title>redis bloom-filter</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/08/category/bloom-filter/</link>
+      <pubDate>Wed, 08 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/08/category/bloom-filter/</guid>
+      <description>原理 参考 布隆过滤器如何实现?</description>
+    </item>
+    
+    <item>
+      <title>rocksdb原理</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/10/17/category/rocksdb-principal/</link>
+      <pubDate>Tue, 17 Oct 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/10/17/category/rocksdb-principal/</guid>
+      <description>基本概念 版本(Version)：这个是RocksDB内部概念。一个版本包含某个时间点的所有存活SST文件。一旦一个落盘或者压缩完成，由于存活</description>
+    </item>
+    
+    <item>
+      <title>docker-images</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/10/15/category/docker-images/</link>
+      <pubDate>Sun, 15 Oct 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/10/15/category/docker-images/</guid>
+      <description>几个概念 rootfs 在linux的视角下，这是指第一个挂载的文件系统，这个文件系统是基于内存的，而且其包括了/Sbin /etc等重要目录,在挂载后其会</description>
+    </item>
+    
+    <item>
+      <title>go-redis-note</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/10/08/category/go-redis-note/</link>
+      <pubDate>Sun, 08 Oct 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/10/08/category/go-redis-note/</guid>
+      <description>记录go-redis使用过程中的一些事项 分布式锁(一上来就是大菜) 最近在阅读两个项目的时候都发现了分布式锁： osproxy： 分片上传时抢锁 r</description>
+    </item>
+    
+    <item>
+      <title>yehh-wiki</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/16/category/yehh-wiki/</link>
+      <pubDate>Sat, 16 Sep 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/16/category/yehh-wiki/</guid>
+      <description>???? 设计一个软件(服务)的原则/最佳实践-12factors Standard Go Project Layout golang 有用的库 viper 配置库 fsnotify 跨平台的文件提醒(一般是文件修改的提醒吧) zap/zapcore zap get-started 云原生</description>
+    </item>
+    
+    <item>
+      <title>DDIA-note</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/14/category/ddia-note/</link>
+      <pubDate>Thu, 14 Sep 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/14/category/ddia-note/</guid>
+      <description>Reference DDIA chinese</description>
+    </item>
+    
+    <item>
+      <title>kafka-day1</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/kafka-day1/</link>
+      <pubDate>Wed, 13 Sep 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/kafka-day1/</guid>
+      <description>Kafka入门 基本概念 Apache Kafka 核心组件和流程 控制器 控制器也叫leader broker,负责分区leader的选取,也就是负责选举partitio</description>
+    </item>
+    
+    <item>
+      <title>redis_basic</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/redis_basic/</link>
+      <pubDate>Wed, 13 Sep 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/redis_basic/</guid>
+      <description>pipeline Redis Pipeline介绍及应用 事务 Redis 中的原子操作：事务与 Lua 脚本 面试 大key问题 是什么是大key 主要是对应的Value很大（比如用户喜欢的音乐</description>
+    </item>
+    
+    <item>
+      <title>containerd-intro</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/23/category/containerd-intro/</link>
+      <pubDate>Wed, 23 Aug 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/23/category/containerd-intro/</guid>
+      <description>Containerd 可以做什么 管理容器的生命周期（从创建容器到销毁容器） 拉取/推送容器镜像 存储管理（管理镜像及容器数据的存储） 调用 runc 运行容器（与 runc 等容器运行时</description>
+    </item>
+    
+    <item>
+      <title>zero-copy</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/16/category/zero-copy/</link>
+      <pubDate>Wed, 16 Aug 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/16/category/zero-copy/</guid>
+      <description>零拷贝 广义上来说有三种实现思路： 用户态直接 I/O：应用程序可以直接访问硬件存储，操作系统内核只是辅助数据传输。这种方式依旧存在用户空间和内核</description>
+    </item>
+    
+    <item>
+      <title>rocksdb源码分析（1）</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb1/</link>
+      <pubDate>Sat, 05 Aug 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb1/</guid>
+      <description>rocksdb源码解读(一) 本系列开始对rocksdb源码进行解读，主要是为了更好的理解rocksdb的设计思想，以及对rocksdb的使用</description>
+    </item>
+    
+    <item>
+      <title>rocksdb源码分析（2）</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb2/</link>
+      <pubDate>Sat, 05 Aug 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb2/</guid>
+      <description>memtable WAL 介绍 column family共享WAL文件 Life Cycle of a WAL 创建 只有两种情况会创建WAL文件 打开一个新DB Flush DB* db; std::vector&amp;lt;ColumnFamilyDescriptor&amp;gt; column_families; column_families.push_back(ColumnFamilyDescriptor( kDefaultColumnFamilyName, ColumnFamilyOptions())); column_families.push_back(ColumnFamilyDescriptor( &amp;#34;new_cf&amp;#34;, ColumnFamilyOptions())); std::vector&amp;lt;ColumnFamilyHandle*&amp;gt; handles; s = DB::Open(DBOptions(), kDBPath, column_families, &amp;amp;handles, &amp;amp;db); db-&amp;gt;Put(WriteOptions(), handles[1], Slice(&amp;#34;key1&amp;#34;), Slice(&amp;#34;value1&amp;#34;));</description>
+    </item>
+    
+    <item>
+      <title>rocksdb源码分析（3）</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb3/</link>
+      <pubDate>Sat, 05 Aug 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb3/</guid>
+      <description>column family 介绍 是用来做逻辑隔离的，不同的column family可以有不同的配置，比如不同的compaction策略，不同的压缩策略等等。而且不同</description>
+    </item>
+    
+    <item>
+      <title>CNI</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/cni/</link>
+      <pubDate>Sat, 08 Jul 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/cni/</guid>
+      <description>CNI Reference 从零开始入门 K8s：理解 CNI 和 CNI 插件</description>
+    </item>
+    
+    <item>
+      <title>k8s-day1</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/k8s-day1/</link>
+      <pubDate>Sat, 08 Jul 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/k8s-day1/</guid>
+      <description>学习k8s 概念 Master Master 负责管理集群, master 协调集群中的所有活动，例如调度应用程序、维护应用程序的所需状态、扩展应用程序和滚动更新。 节点是 Kubernetes 集群中的工</description>
+    </item>
+    
+    <item>
+      <title>redis-note1</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/redis-note1/</link>
+      <pubDate>Sat, 08 Jul 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/07/08/category/redis-note1/</guid>
+      <description>Redis笔记1 What is redis Redis: REmote Dictionary Server tools redis-benchmark:性能测试工具。 redis-check-aof：修复有问题的AOF文件 redi</description>
+    </item>
+    
+    <item>
+      <title>docker-dockerfile</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/docker-dockerfile/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/docker-dockerfile/</guid>
+      <description>Dockerfile 最佳实践 分段构建 FROM golang AS build-env ADD . /go/src/app WORKDIR /go/src/app RUN go get -u -v github.com/kardianos/govendor RUN govendor sync RUN GOOS=linux GOARCH=386 go build -v -o /go/src/app/app-server FROM alpine RUN apk add -U tzdata RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime COPY --from=build-env /go/src/app/app-server /usr/local/bin/app-server EXPOSE 8080 CMD [ &amp;#34;app-server&amp;#34; ]</description>
+    </item>
+    
+  </channel>
+</rss>

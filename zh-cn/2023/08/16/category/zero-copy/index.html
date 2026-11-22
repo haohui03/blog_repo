@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>zero-copy · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="零拷贝 广义上来说有三种实现思路： 用户态直接 I/O：应用程序可以直接访问硬件存储，操作系统内核只是辅助数据传输。这种方式依旧存在用户空间和内核" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/08/16/category/zero-copy/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="zero-copy" />
+<meta property="og:description" content="零拷贝 广义上来说有三种实现思路： 用户态直接 I/O：应用程序可以直接访问硬件存储，操作系统内核只是辅助数据传输。这种方式依旧存在用户空间和内核" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/08/16/category/zero-copy/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-08-16T09:01:23+08:00" />
+<meta property="article:modified_time" content="2023-08-16T09:20:30+08:00" />
+
+<meta itemprop="name" content="zero-copy">
+<meta itemprop="description" content="零拷贝 广义上来说有三种实现思路： 用户态直接 I/O：应用程序可以直接访问硬件存储，操作系统内核只是辅助数据传输。这种方式依旧存在用户空间和内核"><meta itemprop="datePublished" content="2023-08-16T09:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-08-16T09:20:30+08:00" />
+<meta itemprop="wordCount" content="3280">
+<meta itemprop="keywords" content="infra,linux," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="zero-copy"/>
+<meta name="twitter:description" content="零拷贝 广义上来说有三种实现思路： 用户态直接 I/O：应用程序可以直接访问硬件存储，操作系统内核只是辅助数据传输。这种方式依旧存在用户空间和内核"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">zero-copy</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-08-16
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/infra/">infra</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/linux/">linux</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h2 id="零拷贝">零拷贝</h2>
+<p>广义上来说有三种实现思路：</p>
+<ul>
+<li>用户态直接 I/O：应用程序可以直接访问硬件存储，操作系统内核只是辅助数据传输。这种方式依旧存在用户空间和内核空间的上下文切换，硬件上的数据直接拷贝至了用户空间，不经过内核空间。因此，直接 I/O 不存在内核空间缓冲区和用户空间缓冲区之间的数据拷贝。</li>
+<li>减少数据拷贝次数：在数据传输过程中，避免数据在用户空间缓冲区和系统内核空间缓冲区之间的CPU拷贝，以及数据在系统内核空间内的CPU拷贝，这也是当前主流零拷贝技术的实现思路。</li>
+<li>写时复制技术：写时复制指的是当多个进程共享同一块数据时，如果其中一个进程需要对这份数据进行修改，那么将其拷贝到自己的进程地址空间中，如果只是数据读取操作则不需要进行拷贝操作。</li>
+</ul>
+<h2 id="linux-io--zero-copy">linux i/o &amp;&amp; zero-copy</h2>
+<p>在linux下有三种零拷贝实现(用户态直接IO)</p>
+<ol>
+<li>mmap+Write</li>
+<li>sendfile</li>
+<li>splice</li>
+</ol>
+<blockquote>
+<p>学到一个观测系统调用的方法，<strong>strace -c ./a.out</strong></p>
+</blockquote>
+<h3 id="mmap">mmap</h3>
+<blockquote>
+<p>mmap的作用，在应用这一层，是让你把文件的某一段，当作内存一样来访问。将文件映射到物理内存，将进程虚拟空间映射到那块内存。这样，进程不仅能像访问内存一样读写文件，多个进程映射同一文件，还能保证虚拟空间映射到同一块物理内存，达到内存共享的作用。</p>
+</blockquote>
+<p>注意mmap和shmget共享内存方式的不同，后者请看interview/Linux.md</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/AtCvL3oUQEqIfZw-f27169c849e0.png" alt="image.png"></p>
+<h4 id="原理">原理</h4>
+<h5 id="进程启动映射过程并在虚拟地址空间中为映射创建虚拟映射区域">进程启动映射过程，并在虚拟地址空间中为映射创建虚拟映射区域；</h5>
+<ul>
+<li>进程在用户空间调用库函数mmap，原型：void *mmap(void *start, size_t length, int prot, int flags, int fd, off_t offset);</li>
+<li>在当前进程的虚拟地址空间中，寻找一段空闲的满足要求的连续的虚拟地址</li>
+<li>为此虚拟区分配一个vm_area_struct结构，接着对这个结构的各个域进行了初始化</li>
+<li>将新建的虚拟区结构（vm_area_struct）插入进程的虚拟地址区域链表或树中</li>
+</ul>
+<h5 id="调用内核空间的系统调用函数mmap不同于用户空间函数实现文件物理地址和进程虚拟地址的一一映射关系">调用内核空间的系统调用函数mmap（不同于用户空间函数），实现文件物理地址和进程虚拟地址的一一映射关系</h5>
+<ul>
+<li>为映射分配了新的虚拟地址区域后，通过待映射的文件指针，在文件描述符表中找到对应的文件描述符，通过文件描述符，链接到内核“已打开文件集”中该文件的文件结构体（struct file），每个文件结构体维护着和这个已打开文件相关各项信息；</li>
+<li>通过该文件的文件结构体，链接到file_operations模块，调用内核函数mmap，其原型为：int mmap(struct file *filp, struct vm_area_struct *vma)，不同于用户空间库函数；</li>
+<li>内核mmap函数通过虚拟文件系统inode模块定位到文件磁盘物理地址；</li>
+<li>通过remap_pfn_range函数建立页表，即实现了文件地址和虚拟地址区域的映射关系。此时，这片虚拟地址并没有任何数据关联到主存中；</li>
+</ul>
+<h5 id="进程发起对这片映射空间的访问引发缺页异常实现文件内容到物理内存主存的拷贝">进程发起对这片映射空间的访问，引发缺页异常，实现文件内容到物理内存（主存）的拷贝</h5>
+<ul>
+<li>前两个阶段仅在于创建虚拟区间并完成地址映射，但是并没有将任何文件数据的拷贝至主存。真正的文件读取是当进程发起读或写操作时；</li>
+<li>进程的读或写操作访问虚拟地址空间这一段映射地址，通过查询页表，发现这一段地址并不在物理页面上。因为目前只建立了地址映射，真正的硬盘数据还没有拷贝到内存中，因此引发缺页异常；</li>
+<li>缺页异常进行一系列判断，确定无非法操作后，内核发起请求调页过程。</li>
+<li>调页过程先在交换缓存空间（swap cache）中寻找需要访问的内存页，如果没有则调用nopage函数把所缺的页从磁盘装入到主存中；</li>
+<li>1之后进程即可对这片主存进行读或者写的操作，如果写操作改变了其内容，一定时间后系统会自动回写脏页面到对应磁盘地址，也即完成了写入到文件的过程；</li>
+<li>修改过的脏页面并不会立即更新回文件中，而是有一段时间的延迟，可以调用msync()来强制同步, 这样所写的内容就能立即保存到文件里了；</li>
+</ul>
+<h4 id="分析函数">分析函数</h4>
+<h5 id="用户空间mmap函数">用户空间mmap函数</h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * addr 指定映射的起始地址，通常设为NULL，由内核来分配
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * length 代表将文件中映射到内存的部分的长度。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * prot 映射区域的保护方式: 
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *  PROT_EXEC 映射区域可被执行
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *  PROT_READ 映射区域可被读取
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *  PROT_WRITE 映射区域可被写入
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *  PROT_NONE 映射区域不能存取
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * flags 要映射到内存中的文件描述符，有open函数打开文件时返回的值。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * offset：文件映射的偏移量，通常设置为0，代表从文件最前方开始对应，offset必须是分页大小的整数倍。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="nf">mmap</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">addr</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">len</span><span class="p">,</span> <span class="kt">int</span> <span class="n">prot</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">off_t</span> <span class="n">offset</span><span class="p">);</span>
+</span></span></code></pre></div><p>两个优点：</p>
+<ul>
+<li>一是节省内存空间，因为用户进程上的这一段内存是虚拟的，并不真正占据物理内存，只是映射到文件所在的内核缓冲区上，因此可以节省一半的内存占用；</li>
+<li>二是省去了一次 CPU 拷贝，对比传统的 Linux I/O 读写，数据不需要再经过用户进程进行转发了，而是直接在内核里就完成了拷贝。</li>
+</ul>
+<p>问题:</p>
+<ol>
+<li>设置一个信号处理器，专门用来处理 SIGBUS 信号，这个处理器直接返回， write() 就可以正常返回已写入的字节数而不会被 SIGBUS 中断，errno 错误码也会被设置成 success。然而这实际上是一个掩耳盗铃的解决方案，因为 BIGBUS 信号的带来的信息是系统发生了一些很严重的错误，而我们却选择忽略掉它，一般不建议采用这种方式。</li>
+<li>通过内核的文件租借锁（这是 Linux 的叫法，Windows 上称之为机会锁）来解决这个问题，这种方法相对来说更好一些。我们可以通过内核对文件描述符上读/写的租借锁，当另外一个进程尝试对当前用户进程正在进行传输的文件进行截断的时候，内核会发送给用户一个实时信号：RT_SIGNAL_LEASE 信号，这个信号会告诉用户内核正在破坏你加在那个文件上的读/写租借锁，这时 write() 系统调用会被中断，并且当前用户进程会被 SIGBUS 信号杀死，返回值则是中断前写的字节数，errno 同样会被设置为 success。文件租借锁需要在对文件进行内存映射之前设置，最后在用户进程结束之前释放掉。</li>
+</ol>
+<h3 id="sendfile">sendfile</h3>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/hQKAfeTUVGFb9pi-198f8f46ba10.png" alt="image.png"></p>
+<h4 id="sendfile-gather">sendfile gather</h4>
+<p>当然有！通过引入一个新硬件上的支持，我们可以把这个仅剩的一次 CPU 拷贝也给抹掉：Linux 在内核 2.4 版本里引入了 DMA 的 scatter/gather – 分散/收集功能，并修改了 sendfile() 的代码使之和 DMA 适配。scatter 使得 DMA 拷贝可以不再需要把数据存储在一片连续的内存空间上，而是允许离散存储，gather 则能够让 DMA 控制器根据少量的元信息：一个包含了内存地址和数据大小的缓冲区描述符，收集存储在各处的数据，最终还原成一个完整的网络包，直接拷贝到网卡而非套接字缓冲区，避免了最后一次的 CPU 拷贝：</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/DR7hBKYcyuZN8GF-08955dda583c.png" alt="image.png"></p>
+<p>可以减少内核空间（CPU）的拷贝</p>
+<h3 id="splice">Splice</h3>
+<p>splice 系统调用可以在内核空间的读缓冲区（read buffer）和网络缓冲区（socket buffer）之间建立管道（pipeline），从而避免了两者之间的 CPU 拷贝操作。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">ssize_t</span> <span class="nf">splice</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd_in</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="n">off_in</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd_out</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="n">off_out</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">len</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">);</span>
+</span></span></code></pre></div><p>flag的取值：</p>
+<ul>
+<li>SPLICE_F_MOVE：指示 splice() 尝试仅仅是移动内存页面而不是复制，设置了这个值不代表就一定不会复制内存页面，复制还是移动取决于内核能否从管道中移动内存页面，或者管道中的内存页面是否是完整的；这个标记的初始实现有很多 bug，所以从 Linux 2.6.21 版本开始就已经无效了，但还是保留了下来，因为在未来的版本里可能会重新被实现。</li>
+<li>SPLICE_F_NONBLOCK：指示 splice() 不要阻塞 I/O，也就是使得 splice() 调用成为一个非阻塞调用，可以用来实现异步数据传输，不过需要注意的是，数据传输的两个文件描述符也最好是预先通过 O_NONBLOCK 标记成非阻塞 I/O，不然 splice() 调用还是有可能被阻塞。</li>
+<li>SPLICE_F_MORE：通知内核下一个 splice() 系统调用将会有更多的数据传输过来，这个标记对于输出端是 socket 的场景非常有用。</li>
+</ul>
+<p>经典用法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">pfd</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">pipe</span><span class="p">(</span><span class="n">pfd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ssize_t</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">splice</span><span class="p">(</span><span class="n">file_fd</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">pfd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">4096</span><span class="p">,</span> <span class="n">SPLICE_F_MOVE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">assert</span><span class="p">(</span><span class="n">bytes</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">bytes</span> <span class="o">=</span> <span class="n">splice</span><span class="p">(</span><span class="n">pfd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">socket_fd</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">bytes</span><span class="p">,</span> <span class="n">SPLICE_F_MOVE</span> <span class="o">|</span> <span class="n">SPLICE_F_MORE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">assert</span><span class="p">(</span><span class="n">bytes</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span></code></pre></div><p><img src="https://haohui03.github.io/blog_repo/images/restored/3RsnibpAT825UDc-9e616e73b80d.png" alt="image.png"></p>
+<ol>
+<li>用户进程调用 pipe()，从用户态陷入内核态，创建匿名单向管道，pipe() 返回，上下文从内核态切换回用户态；</li>
+<li>用户进程调用 splice()，从用户态陷入内核态；</li>
+<li>DMA 控制器将数据从硬盘拷贝到内核缓冲区，从管道的写入端&quot;拷贝&quot;进管道，splice() 返回，上下文从内核态回到用户态；</li>
+<li>用户进程再次调用 splice()，从用户态陷入内核态；</li>
+<li>内核把数据从管道的读取端&quot;拷贝&quot;到套接字缓冲区，DMA 控制器将数据从套接字缓冲区拷贝到网卡；</li>
+<li>splice() 返回，上下文从内核态切换回用户态。</li>
+</ol>
+<h3 id="对比">对比</h3>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/uWR6NqDECMALYSl-665ef95d8ac2.png" alt="image.png"></p>
+<h3 id="send-with-msg_zerocopy">send() with MSG_ZEROCOPY</h3>
+<p>TODO</p>
+<h3 id="绕过内核">绕过内核</h3>
+<ol>
+<li>用户直接访问硬件</li>
+<li>内核控制访问硬件</li>
+</ol>
+<h3 id="内核缓冲区和用户缓冲区之间的传输优化">内核缓冲区和用户缓冲区之间的传输优化</h3>
+<h4 id="cow">COW</h4>
+<h2 id="reference">reference:</h2>
+<p><a href="https://zhuanlan.zhihu.com/p/308054212">Linux I/O 原理和 Zero-copy 技术全面揭秘</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/83398714#:~:text=%E9%9B%B6%E6%8B%B7%E8%B4%9D%EF%BC%88Zero-copy%EF%BC%89,%E5%9C%A8%E8%BF%99%E6%96%B9%E9%9D%A2%E7%9A%84%E8%B4%9F%E8%BD%BD%E3%80%82">深入剖析Linux IO原理和几种零拷贝机制的实现</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/610566047">mmap</a></p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rocksdb on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/rocksdb/</link>
+    <description>Recent content in rocksdb on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 17 Oct 2023 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/rocksdb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>rocksdb原理</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/10/17/category/rocksdb-principal/</link>
+      <pubDate>Tue, 17 Oct 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/10/17/category/rocksdb-principal/</guid>
+      <description>基本概念 版本(Version)：这个是RocksDB内部概念。一个版本包含某个时间点的所有存活SST文件。一旦一个落盘或者压缩完成，由于存活</description>
+    </item>
+    
+    <item>
+      <title>rocksdb源码分析（1）</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb1/</link>
+      <pubDate>Sat, 05 Aug 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb1/</guid>
+      <description>rocksdb源码解读(一) 本系列开始对rocksdb源码进行解读，主要是为了更好的理解rocksdb的设计思想，以及对rocksdb的使用</description>
+    </item>
+    
+    <item>
+      <title>rocksdb源码分析（2）</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb2/</link>
+      <pubDate>Sat, 05 Aug 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb2/</guid>
+      <description>memtable WAL 介绍 column family共享WAL文件 Life Cycle of a WAL 创建 只有两种情况会创建WAL文件 打开一个新DB Flush DB* db; std::vector&amp;lt;ColumnFamilyDescriptor&amp;gt; column_families; column_families.push_back(ColumnFamilyDescriptor( kDefaultColumnFamilyName, ColumnFamilyOptions())); column_families.push_back(ColumnFamilyDescriptor( &amp;#34;new_cf&amp;#34;, ColumnFamilyOptions())); std::vector&amp;lt;ColumnFamilyHandle*&amp;gt; handles; s = DB::Open(DBOptions(), kDBPath, column_families, &amp;amp;handles, &amp;amp;db); db-&amp;gt;Put(WriteOptions(), handles[1], Slice(&amp;#34;key1&amp;#34;), Slice(&amp;#34;value1&amp;#34;));</description>
+    </item>
+    
+    <item>
+      <title>rocksdb源码分析（3）</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb3/</link>
+      <pubDate>Sat, 05 Aug 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/05/category/rocksdb3/</guid>
+      <description>column family 介绍 是用来做逻辑隔离的，不同的column family可以有不同的配置，比如不同的compaction策略，不同的压缩策略等等。而且不同</description>
+    </item>
+    
+  </channel>
+</rss>

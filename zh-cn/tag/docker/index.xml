@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/docker/</link>
+    <description>Recent content in docker on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 15 Oct 2023 13:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>docker-images</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/10/15/category/docker-images/</link>
+      <pubDate>Sun, 15 Oct 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/10/15/category/docker-images/</guid>
+      <description>几个概念 rootfs 在linux的视角下，这是指第一个挂载的文件系统，这个文件系统是基于内存的，而且其包括了/Sbin /etc等重要目录,在挂载后其会</description>
+    </item>
+    
+    <item>
+      <title>docker-dockerfile</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/docker-dockerfile/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/1/01/01/category/docker-dockerfile/</guid>
+      <description>Dockerfile 最佳实践 分段构建 FROM golang AS build-env ADD . /go/src/app WORKDIR /go/src/app RUN go get -u -v github.com/kardianos/govendor RUN govendor sync RUN GOOS=linux GOARCH=386 go build -v -o /go/src/app/app-server FROM alpine RUN apk add -U tzdata RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime COPY --from=build-env /go/src/app/app-server /usr/local/bin/app-server EXPOSE 8080 CMD [ &amp;#34;app-server&amp;#34; ]</description>
+    </item>
+    
+  </channel>
+</rss>

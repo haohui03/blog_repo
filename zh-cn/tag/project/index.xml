@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>project on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/tag/project/</link>
+    <description>Recent content in project on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 19 Aug 2023 08:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/tag/project/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>gee-intro</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/gee-intro/</link>
+      <pubDate>Sat, 19 Aug 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/08/19/category/gee-intro/</guid>
+      <description>gee 本项目模仿极客兔兔的7天项目进行学习 gee-web 简介 这是一个简单的web框架，实现了路由、中间件、静态文件服务、模板渲染等功能。主要是模仿gin框架</description>
+    </item>
+    
+  </channel>
+</rss>

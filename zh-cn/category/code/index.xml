@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>code on Yehh</title>
+    <link>https://haohui03.github.io/blog_repo/zh-cn/category/code/</link>
+    <description>Recent content in code on Yehh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 17 Jan 2024 09:01:23 +0800</lastBuildDate><atom:link href="https://haohui03.github.io/blog_repo/zh-cn/category/code/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>quic协议</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/17/category/quic%E5%8D%8F%E8%AE%AE/</link>
+      <pubDate>Wed, 17 Jan 2024 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/17/category/quic%E5%8D%8F%E8%AE%AE/</guid>
+      <description>QUIC QUIC在用户空间实现，tcp/udp在内核空间 优势 减少了 TCP 三次握手及 TLS 握手时间。 改进的拥塞控制。 避免队头阻塞的多路复用。 连接迁移。 前向安</description>
+    </item>
+    
+    <item>
+      <title>k8s-day2</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/08/category/k8s-day2/</link>
+      <pubDate>Mon, 08 Jan 2024 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/08/category/k8s-day2/</guid>
+      <description>RBAC 参考 Kubernetes（k8s）权限管理RBAC详解 网络 参考 写得非常好</description>
+    </item>
+    
+    <item>
+      <title>golang-lock</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-lock/</link>
+      <pubDate>Mon, 01 Jan 2024 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-lock/</guid>
+      <description>基本概念 互斥锁会将操作串行化，可以保证操作完全有序，适合资源只能由一个协程进行操作的情况，并发能力弱； 读写锁适合读多写少的情况，并发能有比较</description>
+    </item>
+    
+    <item>
+      <title>golang-tcmalloc</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-tcmalloc/</link>
+      <pubDate>Mon, 01 Jan 2024 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2024/01/01/category/golang-tcmalloc/</guid>
+      <description>TCmalloc 为了解决中大对象的内存申请，TCmalloc有一个全局共享内存堆 Page 每个 Page 默认是 8KB。这里的page就像是虚拟内存的page Span Span是包</description>
+    </item>
+    
+    <item>
+      <title>golang-gc-optimization</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/12/12/category/golang-gc-optimization/</link>
+      <pubDate>Tue, 12 Dec 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/12/12/category/golang-gc-optimization/</guid>
+      <description>golang 是如何运行起来的</description>
+    </item>
+    
+    <item>
+      <title>golang-map</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/23/category/golang-map/</link>
+      <pubDate>Thu, 23 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/23/category/golang-map/</guid>
+      <description>map map是一个很重要的数据结构，本篇文章记录学习golang中map源码的过程。 图多取自别人的博客，非原创请注意 基本的概念不在赘述了 以下分析</description>
+    </item>
+    
+    <item>
+      <title>grpc-advanced</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/20/category/grpc-advanced/</link>
+      <pubDate>Mon, 20 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/20/category/grpc-advanced/</guid>
+      <description>grpc-tsl server side TLS 有关TLS的知识结合这个看体验更佳 Interceptor 有4种拦截器 type UnaryClientInterceptor func(ctx context.Context, method string, req, reply interface{}, cc *ClientConn, invoker UnaryInvoker, opts ...CallOption) error type UnaryServerInterceptor func(ctx context.Context, req interface{}, info *UnaryServerInfo, handler UnaryHandler) (resp interface{}, err error) type StreamClientInterceptor func(ctx context.Context, desc *StreamDesc, cc *ClientConn, method string, streamer Streamer,</description>
+    </item>
+    
+    <item>
+      <title>go-zero goctl</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/go-zero-goctl/</link>
+      <pubDate>Sun, 19 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/go-zero-goctl/</guid>
+      <description>goctl </description>
+    </item>
+    
+    <item>
+      <title>grpc-intro</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/grpc-intro/</link>
+      <pubDate>Sun, 19 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/grpc-intro/</guid>
+      <description>grpc 简单使用 这次这次实践的目录 . ├── client │ └── hello-client │ └── client.go ├── go.mod ├── go.sum ├── proto │ └── hello │ ├── hello_grpc.pb.go │ ├── hello.pb.go │ └── hello.proto └── server └── hello-server └</description>
+    </item>
+    
+    <item>
+      <title>protobuf-intro</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/protobuf-intro/</link>
+      <pubDate>Sun, 19 Nov 2023 09:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/19/category/protobuf-intro/</guid>
+      <description>本篇文章记录学习protobuf的过程 定义消息 syntax = &amp;#34;proto3&amp;#34;; message name { body } syntax = &amp;#34;proto3&amp;#34;; message SearchRequest { string query = 1; int32 page_number = 2; int32 result_per_page = 3; } 通常把message定义在一个单独的文件</description>
+    </item>
+    
+    <item>
+      <title>plan9&#43;go-assembler</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/plan9-go-assembler/</link>
+      <pubDate>Thu, 16 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/plan9-go-assembler/</guid>
+      <description>plan9 本文记录plan9汇编的学习过程，sorry全是抄的，只能说抄一遍印象深一点而且好复盘。 基本指令 栈调整 SUBQ $0x18, SP // 对 SP 做减法，为函数分配函数栈</description>
+    </item>
+    
+    <item>
+      <title>redis-single</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/redis-single/</link>
+      <pubDate>Thu, 16 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/16/category/redis-single/</guid>
+      <description>redis单机数据库的实现 数据库 服务端有一个结构体 struct redisServer { char *configfile; // 配置文件的绝对路径 int hz; // serverCron() 每秒调用的次数 redisDb *db; // 数据库 }; 命令 切换数据库SELEC</description>
+    </item>
+    
+    <item>
+      <title>《Golang 编译器代码浅析》阅读</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/13/category/golang-%E7%BC%96%E8%AF%91%E5%99%A8%E4%BB%A3%E7%A0%81%E6%B5%85%E6%9E%90%E9%98%85%E8%AF%BB/</link>
+      <pubDate>Mon, 13 Nov 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/13/category/golang-%E7%BC%96%E8%AF%91%E5%99%A8%E4%BB%A3%E7%A0%81%E6%B5%85%E6%9E%90%E9%98%85%E8%AF%BB/</guid>
+      <description>Golang 编译器代码浅析</description>
+    </item>
+    
+    <item>
+      <title>golang-base-structure</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-base-structure/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-base-structure/</guid>
+      <description>记录golang中的底层数据结构 slice 基础的东西比如len，cap，ptr这些东西就不说了 从slice中获取内存地址和从内存中构造slice 从s</description>
+    </item>
+    
+    <item>
+      <title>golang-pprof</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-pprof/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-pprof/</guid>
+      <description>简单介绍 是什么 pprof 是用于可视化和分析性能分析数据的工具 pprof 以 profile.proto 读取分析样本的集合，并生成报告以可视化并帮助分析数据（支持文本和图形报告） profile.proto 是一个</description>
+    </item>
+    
+    <item>
+      <title>golang-snowflake</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-snowflake/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-snowflake/</guid>
+      <description>雪花算法 1.第一位 占用1bit，其值始终是0，没有实际作用。 2.时间戳 占用41bit，精确到毫秒，总共可以容纳约69年的时间。 3.工作机器i</description>
+    </item>
+    
+    <item>
+      <title>golang-unsafe</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-unsafe/</link>
+      <pubDate>Thu, 09 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/09/category/golang-unsafe/</guid>
+      <description>unsafe包介绍 首先，unsafe正如其名是不安全的。 来自go语言官方文档的警告 unsafe包的文档是这么说的： 导入unsafe的软件包可</description>
+    </item>
+    
+    <item>
+      <title>redis bloom-filter</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/11/08/category/bloom-filter/</link>
+      <pubDate>Wed, 08 Nov 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/11/08/category/bloom-filter/</guid>
+      <description>原理 参考 布隆过滤器如何实现?</description>
+    </item>
+    
+    <item>
+      <title>leetcode_record3&#43;顶级线段树</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/10/31/category/leetcode_record3/</link>
+      <pubDate>Tue, 31 Oct 2023 08:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/10/31/category/leetcode_record3/</guid>
+      <description>2003. 每棵子树内缺失的最小基因值 这题只给了parent数组，不像以往的题目给了根节点，以及对应的树结构。所以首先就是要建树，后面才好后序遍历。 然</description>
+    </item>
+    
+    <item>
+      <title>rocksdb原理</title>
+      <link>https://haohui03.github.io/blog_repo/zh-cn/2023/10/17/category/rocksdb-principal/</link>
+      <pubDate>Tue, 17 Oct 2023 13:01:23 +0800</pubDate>
+      
+      <guid>https://haohui03.github.io/blog_repo/zh-cn/2023/10/17/category/rocksdb-principal/</guid>
+      <description>基本概念 版本(Version)：这个是RocksDB内部概念。一个版本包含某个时间点的所有存活SST文件。一旦一个落盘或者压缩完成，由于存活</description>
+    </item>
+    
+  </channel>
+</rss>

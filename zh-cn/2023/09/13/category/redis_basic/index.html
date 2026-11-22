@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>redis_basic · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="pipeline Redis Pipeline介绍及应用 事务 Redis 中的原子操作：事务与 Lua 脚本 面试 大key问题 是什么是大key 主要是对应的Value很大（比如用户喜欢的音乐" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/redis_basic/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="redis_basic" />
+<meta property="og:description" content="pipeline Redis Pipeline介绍及应用 事务 Redis 中的原子操作：事务与 Lua 脚本 面试 大key问题 是什么是大key 主要是对应的Value很大（比如用户喜欢的音乐" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/09/13/category/redis_basic/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-13T13:01:23+08:00" />
+<meta property="article:modified_time" content="2023-09-13T13:27:30+08:00" />
+
+<meta itemprop="name" content="redis_basic">
+<meta itemprop="description" content="pipeline Redis Pipeline介绍及应用 事务 Redis 中的原子操作：事务与 Lua 脚本 面试 大key问题 是什么是大key 主要是对应的Value很大（比如用户喜欢的音乐"><meta itemprop="datePublished" content="2023-09-13T13:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-09-13T13:27:30+08:00" />
+<meta itemprop="wordCount" content="1990">
+<meta itemprop="keywords" content="infra,Middleware,Redis," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="redis_basic"/>
+<meta name="twitter:description" content="pipeline Redis Pipeline介绍及应用 事务 Redis 中的原子操作：事务与 Lua 脚本 面试 大key问题 是什么是大key 主要是对应的Value很大（比如用户喜欢的音乐"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">redis_basic</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-09-13
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/infra/">infra</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/middleware/">Middleware</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/redis/">Redis</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h3 id="pipeline">pipeline</h3>
+<p><a href="https://juejin.cn/post/6844904127001001991">Redis Pipeline介绍及应用</a></p>
+<h3 id="事务">事务</h3>
+<p><a href="https://blog.nicolasyang.me/posts/atomicity-in-redis-transaction-and-lua/">Redis 中的原子操作：事务与 Lua 脚本</a></p>
+<h2 id="面试">面试</h2>
+<h3 id="大key问题">大key问题</h3>
+<h4 id="是什么是大key">是什么是大key</h4>
+<p>主要是对应的Value很大（比如用户喜欢的音乐列表）</p>
+<h4 id="大key有什么影响">大Key有什么影响</h4>
+<ul>
+<li>执行大key命令的客户端本身，耗时明显增加，甚至超时</li>
+<li>执行大key相关读取或者删除操作时，会严重占用带宽和CPU，影响其他客户端</li>
+<li>大key本身的存储带来分布式系统中分片数据不平衡，CPU使用率也不平衡</li>
+<li>大key有时候也是热key，读取操作频繁，影响面会很大</li>
+<li>执行大key删除时，在低版本redis中可能阻塞线程</li>
+</ul>
+<h4 id="大key是如何产生的">大key是如何产生的</h4>
+<p>大key的产生往往是业务方设计不合理，没有预见vaule的动态增长问题：</p>
+<ul>
+<li>一直往value塞数据，没有删除机制，迟早要爆炸</li>
+<li>数据没有合理做分片，将大key变成小key</li>
+</ul>
+<h4 id="如何发现问题">如何发现问题</h4>
+<ol>
+<li>online （bigkeys命令）</li>
+<li>offline redis-rdb-tools（对RDB文件进行分析）</li>
+</ol>
+<h4 id="解决">解决</h4>
+<h5 id="可删除">可删除：</h5>
+<ol>
+<li>redis 版本大于4.0 UNLINK</li>
+<li>redis 版本小于4.0 先Scan再delete</li>
+</ol>
+<h5 id="不可删除">不可删除：</h5>
+<p>压缩和拆分key</p>
+<h4 id="参考">参考</h4>
+<ol>
+<li><a href="https://www.51cto.com/article/701990.html">解决了Redis大key问题，同事们都夸他牛皮</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/622474134">Redis性能瓶颈揭秘：如何优化大key问题？</a></li>
+</ol>
+<h3 id="分片问题">分片问题</h3>
+<h4 id="参考-1">参考</h4>
+<ol>
+<li><a href="https://juejin.cn/post/6844903850529259528">分片</a></li>
+<li><a href="https://blog.51cto.com/u_12206475/4778771">分片面经 这个很顶</a></li>
+</ol>
+<h3 id="持久化的场景">持久化的场景</h3>
+<h4 id="rdb">RDB</h4>
+<p>优势</p>
+<ul>
+<li>一旦采用该方式，那么你的整个Redis数据库将只包含一个文件，这样非常方便进行备份。比如你可能打算没1天归档一些数据。</li>
+<li>方便备份，我们可以很容易的将一个一个RDB文件移动到其他的存储介质上</li>
+<li>RDB 在恢复大数据集时的速度比 AOF 的恢复速度要快。</li>
+<li>RDB 可以最大化 Redis 的性能：父进程在保存 RDB 文件时唯一要做的就是 fork 出一个子进程，然后这个子进程就会处理接下来的所有保存工作，父进程无须执行任何磁盘 I/O 操作。</li>
+</ul>
+<p>劣势</p>
+<ul>
+<li>如果你需要尽量避免在服务器故障时丢失数据，那么 RDB 不适合你。 虽然 Redis 允许你设置不同的保存点（save point）来控制保存 RDB 文件的频率， 但是， 因为RDB 文件需要保存整个数据集的状态， 所以它并不是一个轻松的操作。 因此你可能会至少 5 分钟才保存一次 RDB 文件。 在这种情况下， 一旦发生故障停机， 你就可能会丢失好几分钟的数据。</li>
+<li>每次保存 RDB 的时候，Redis 都要 fork() 出一个子进程，并由子进程来进行实际的持久化工作。 在数据集比较庞大时， fork() 可能会非常耗时，造成服务器在某某毫秒内停止处理客户端； 如果数据集非常巨大，并且 CPU 时间非常紧张的话，那么这种停止时间甚至可能会长达整整一秒。 虽然 AOF 重写也需要进行 fork() ，但无论 AOF 重写的执行间隔有多长，数据的耐久性都不会有任何损失。</li>
+</ul>
+<p>也就是说方便归档，但是实时性不好，而且频繁保存会降低redis效率</p>
+<h4 id="aof">AOF</h4>
+<p>优势</p>
+<ul>
+<li>使用 AOF 持久化会让 Redis 变得非常耐久（much more durable）：你可以设置不同的 fsync 策略，比如无 fsync ，每秒钟一次 fsync ，或者每次执行写入命令时 fsync 。 AOF 的默认策略为每秒钟 fsync 一次，在这种配置下，Redis 仍然可以保持良好的性能，并且就算发生故障停机，也最多只会丢失一秒钟的数据（ fsync 会在后台线程执行，所以主线程可以继续努力地处理命令请求）。</li>
+<li>AOF 文件是一个只进行追加操作的日志文件（append only log）， 因此对 AOF 文件的写入不需要进行 seek ， 即使日志因为某些原因而包含了未写入完整的命令（比如写入时磁盘已满，写入中途停机，等等）， redis-check-aof 工具也可以轻易地修复这种问题。</li>
+<li>Redis 可以在 AOF 文件体积变得过大时，自动地在后台对 AOF 进行重写： 重写后的新 AOF 文件包含了恢复当前数据集所需的最小命令集合。 整个重写操作是绝对安全的，因为 Redis 在创建新 AOF 文件的过程中，会继续将命令追加到现有的 AOF 文件里面，即使重写过程中发生停机，现有的 AOF 文件也不会丢失。 而一旦新 AOF 文件创建完毕，Redis 就会从旧 AOF 文件切换到新 AOF 文件，并开始对新 AOF 文件进行追加操作。</li>
+<li>AOF 文件有序地保存了对数据库执行的所有写入操作， 这些写入操作以 Redis 协议的格式保存， 因此 AOF 文件的内容非常容易被人读懂， 对文件进行分析（parse）也很轻松。 导出（export） AOF 文件也非常简单： 举个例子， 如果你不小心执行了 FLUSHALL 命令， 但只要 AOF 文件未被重写， 那么只要停止服务器， 移除 AOF 文件末尾的 FLUSHALL 命令， 并重启 Redis ， 就可以将数据集恢复到 FLUSHALL 执行之前的状态。</li>
+</ul>
+<p>劣势</p>
+<ul>
+<li>对于相同的数据集来说，AOF 文件的体积通常要大于 RDB 文件的体积。</li>
+<li>根据所使用的 fsync 策略，AOF 的速度可能会慢于 RDB 。 在一般情况下， 每秒 fsync 的性能依然非常高， 而关闭 fsync 可以让 AOF 的速度和 RDB 一样快， 即使在高负荷之下也是如此。 不过在处理巨大的写入载入时，RDB 可以提供更有保证的最大延迟时间（latency）。</li>
+<li>AOF 在过去曾经发生过这样的 bug ： 因为个别命令的原因，导致 AOF 文件在重新载入时，无法将数据集恢复成保存时的原样。 （举个例子，阻塞命令 BRPOPLPUSH 就曾经引起过这样的 bug 。） 测试套件里为这种情况添加了测试： 它们会自动生成随机的、复杂的数据集， 并通过重新载入这些数据来确保一切正常。 虽然这种 bug 在 AOF 文件中并不常见， 但是对比来说， RDB 几乎是不可能出现这种 bug 的。</li>
+</ul>
+<h3 id="redis读写分离主从">redis读写分离（主从）</h3>
+<h4 id="参考-2">参考</h4>
+<ol>
+<li><a href="https://cn.pingcap.com/article/post/5208.html">你的redis如何做读写分离</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/151740247">redis主从</a></li>
+</ol>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

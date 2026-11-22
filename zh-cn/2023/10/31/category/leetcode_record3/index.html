@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta name="generator" content="Hugo 0.101.0" />
+  <meta charset="utf-8">
+  <title>leetcode_record3&#43;顶级线段树 · Yehh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="2003. 每棵子树内缺失的最小基因值 这题只给了parent数组，不像以往的题目给了根节点，以及对应的树结构。所以首先就是要建树，后面才好后序遍历。 然" />
+
+  <meta name="keywords" content="Hugo, theme, den" />
+
+<link rel="canonical" href="https://haohui03.github.io/blog_repo/zh-cn/2023/10/31/category/leetcode_record3/" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://haohui03.github.io/blog_repo/css/den.css">
+
+
+
+
+<meta property="og:title" content="leetcode_record3&#43;顶级线段树" />
+<meta property="og:description" content="2003. 每棵子树内缺失的最小基因值 这题只给了parent数组，不像以往的题目给了根节点，以及对应的树结构。所以首先就是要建树，后面才好后序遍历。 然" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haohui03.github.io/blog_repo/zh-cn/2023/10/31/category/leetcode_record3/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-10-31T08:01:23+08:00" />
+<meta property="article:modified_time" content="2023-11-07T09:27:30+08:00" />
+
+<meta itemprop="name" content="leetcode_record3&#43;顶级线段树">
+<meta itemprop="description" content="2003. 每棵子树内缺失的最小基因值 这题只给了parent数组，不像以往的题目给了根节点，以及对应的树结构。所以首先就是要建树，后面才好后序遍历。 然"><meta itemprop="datePublished" content="2023-10-31T08:01:23+08:00" />
+<meta itemprop="dateModified" content="2023-11-07T09:27:30+08:00" />
+<meta itemprop="wordCount" content="4164">
+<meta itemprop="keywords" content="algorithm,jobs,leetcode," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="leetcode_record3&#43;顶级线段树"/>
+<meta name="twitter:description" content="2003. 每棵子树内缺失的最小基因值 这题只给了parent数组，不像以往的题目给了根节点，以及对应的树结构。所以首先就是要建树，后面才好后序遍历。 然"/>
+</head>
+<body>
+  
+  <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://haohui03.github.io/blog_repo/images/background.jpg'); background-position: center; background-size: cover;">
+  <div class="container">
+  <nav class="header-nav navbar navbar-expand-md navbar-dark light-dark">
+    <div class="header-logo navbar-brand">
+      
+        <a class="float-left" href="https://haohui03.github.io/blog_repo/zh-cn/">
+      
+        
+        <img class="mr20 header-logo-image" src="https://haohui03.github.io/blog_repo/images/globe.svg" alt="logo">
+        
+        
+          Yehh
+         
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="nav-menu collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/notes/">筆記</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              
+                <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">编程</a>
+              
+            
+          </li>
+        
+          <li class="nav-item">
+            
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/zh-cn/about/">关于</a>
+            
+          </li>
+        
+        
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://haohui03.github.io/blog_repo/en/"><i class="fas fa-globe"></i> English</a>
+            </li>
+          
+          
+          
+          
+        
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="container header-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="header-content">
+        <h1 class="header-title">leetcode_record3&#43;顶级线段树</h1>
+        <p class="header-date">作者：
+          叶浩辉 /
+        
+        2023-10-31
+          / 分类：
+          <a href="https://haohui03.github.io/blog_repo/zh-cn/category/code/">code</a>
+        </p>
+        
+        <div class="header-underline"></div>
+        
+          <div class="clearfix"></div>
+          <p class="float-right header-tags">
+              <i class="fas fa-tags" aria-hidden="true"></i>
+              <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/algorithm/">algorithm</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/jobs/">jobs</a>, 
+                <a href="https://haohui03.github.io/blog_repo/zh-cn/tag/leetcode/">leetcode</a>
+          </p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <main>
+<div class="container content">
+  <article>
+  <h4 id="2003-每棵子树内缺失的最小基因值httpsleetcodecnproblemssmallest-missing-genetic-value-in-each-subtreedescriptionenvtypedaily-questionenvid2023-10-31"><a href="https://leetcode.cn/problems/smallest-missing-genetic-value-in-each-subtree/description/?envType=daily-question&amp;envId=2023-10-31">2003. 每棵子树内缺失的最小基因值</a></h4>
+<p>这题只给了parent数组，不像以往的题目给了根节点，以及对应的树结构。所以首先就是要建树，后面才好后序遍历。</p>
+<p>然后就是怎么保存子树信息，并结合到父节点上。这里用到了一个unordered_set，保存子树中出现的基因值，然后从2开始遍历，找到第一个不在子树中的基因值，就是当前节点的答案。</p>
+<p>然后有意思的点在于，实际上只需要从基因值为1的节点开始向上遍历到根就可以了。</p>
+<p>有点巧妙了</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">smallestMissingValueSubtree</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">parents</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">parents</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">ans</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="o">==</span> <span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span> <span class="c1">// 不存在基因值为 1 的点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 建树
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">g</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">g</span><span class="p">[</span><span class="n">parents</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">unordered_set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vis</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">dfs</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">vis</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">x</span><span class="p">]);</span> <span class="c1">// 标记基因值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="nl">son</span><span class="p">:</span> <span class="n">g</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">vis</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">son</span><span class="p">]))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">dfs</span><span class="p">(</span><span class="n">son</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">mex</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// 缺失的最小基因值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">node</span> <span class="o">=</span> <span class="n">it</span> <span class="o">-</span> <span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="n">node</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span> <span class="p">(</span><span class="n">vis</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">mex</span><span class="p">))</span> <span class="p">{</span> <span class="c1">// node 子树包含这个基因值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">mex</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ans</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">mex</span><span class="p">;</span> <span class="c1">// 缺失的最小基因值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">node</span> <span class="o">=</span> <span class="n">parents</span><span class="p">[</span><span class="n">node</span><span class="p">];</span> <span class="c1">// 往上走
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 作者：灵茶山艾府
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 链接：https://leetcode.cn/problems/smallest-missing-genetic-value-in-each-subtree/
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 来源：力扣（LeetCode）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+</span></span></span></code></pre></div><h4 id="2926-平衡子序列的最大和httpsleetcodecnproblemsmaximum-balanced-subsequence-sumdescription"><a href="https://leetcode.cn/problems/maximum-balanced-subsequence-sum/description/">2926. 平衡子序列的最大和</a></h4>
+<p>以前就听说过线段树的威名，这次终于见到了，打算做几道题彻底吃透。</p>
+<h5 id="首先看点参考资料">首先看点参考资料：</h5>
+<ol>
+<li>
+<p><a href="https://jogchat.com/shuati/%E7%A1%85%E8%B0%B7%E9%9D%A2%E8%AF%95%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95%E4%B9%8B-%E7%BA%BF%E6%AE%B5%E6%A0%91%E3%80%81%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.php">硅谷面试经典算法之-线段树、树状数组</a></p>
+</li>
+<li>
+<p><a href="https://oi-wiki.org/ds/seg/">线段树</a> <img src="https://haohui03.github.io/blog_repo/images/restored/kiuHgMyKtjcXRCq-6f62ee1ec4e8.png" alt="image.png"></p>
+</li>
+</ol>
+<p>看到一个有趣的trick：</p>
+<p>定义lowbit(x)为x的二进制表达式中最右边的1所对应的值。</p>
+<p>比如，1234的二进制是0100 1101 0010 lowbit(1234)=2，在程序的实现中，</p>
+<p>Lowbit(x)=x&amp;-x;（为什么这样写呢？因为计算机内部采用补码表示，-x是x按位取反，尾数+1的结果）</p>
+<p>这和计算一个数中1的个数有异曲同工之妙！！！(赞)</p>
+<h5 id="建立">建立</h5>
+<p>代码：</p>
+<h6 id="大致建立递归">大致建立（递归）</h6>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *@param start, end: Denote an segment / interval
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *@return: The root of Segment Tree
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SegmentTreeNode</span> <span class="o">*</span> <span class="n">build</span><span class="p">(</span><span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">&gt;</span> <span class="n">end</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">SegmentTreeNode</span> <span class="o">*</span><span class="n">node</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SegmentTreeNode</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">node</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">end</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">node</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">=</span> <span class="n">build</span><span class="p">((</span><span class="n">start</span> <span class="o">+</span> <span class="n">end</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><h6 id="例题">例题</h6>
+<blockquote>
+<p>Range Sum Query - Mutable</p>
+</blockquote>
+<blockquote>
+<p>Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.</p>
+</blockquote>
+<blockquote>
+<p>The update(i, val) function modifies nums by updating the element at index i to val.</p>
+</blockquote>
+<blockquote>
+<p>Example:</p>
+</blockquote>
+<blockquote>
+<p>Given nums = [1, 3, 5]</p>
+</blockquote>
+<blockquote>
+<p>sumRange(0, 2) -&gt; 9 update(1, 2) sumRange(0, 2) -&gt; 8</p>
+</blockquote>
+<p>线段树代码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">NumArray</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">SegmentTreeNode</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kt">int</span> <span class="n">start</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kt">int</span> <span class="n">end</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kt">int</span> <span class="n">sum</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="n">SegmentTreeNode</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="nf">SegmentTreeNode</span><span class="o">(</span><span class="kt">int</span> <span class="n">start</span><span class="o">,</span> <span class="kt">int</span> <span class="n">end</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">start</span> <span class="o">=</span> <span class="n">start</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">end</span> <span class="o">=</span> <span class="n">end</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">sum</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">SegmentTreeNode</span> <span class="n">root</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">NumArray</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">root</span> <span class="o">=</span> <span class="n">buildTree</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">1</span><span class="o">);</span>    
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">val</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">update</span><span class="o">(</span><span class="n">root</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">val</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">(</span><span class="n">SegmentTreeNode</span> <span class="n">node</span><span class="o">,</span> <span class="kt">int</span> <span class="n">position</span><span class="o">,</span> <span class="kt">int</span> <span class="n">val</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">start</span> <span class="o">==</span> <span class="n">position</span> <span class="o">&amp;&amp;</span> <span class="n">node</span><span class="o">.</span><span class="na">end</span> <span class="o">==</span> <span class="n">position</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">node</span><span class="o">.</span><span class="na">sum</span> <span class="o">=</span> <span class="n">val</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="na">start</span> <span class="o">+</span> <span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">end</span> <span class="o">-</span> <span class="n">node</span><span class="o">.</span><span class="na">start</span><span class="o">)</span> <span class="o">/</span> <span class="n">2</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="o">(</span><span class="n">position</span> <span class="o">&lt;=</span> <span class="n">mid</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">update</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">position</span><span class="o">,</span> <span class="n">val</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">update</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">,</span> <span class="n">position</span><span class="o">,</span> <span class="n">val</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">node</span><span class="o">.</span><span class="na">sum</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">.</span><span class="na">sum</span> <span class="o">+</span> <span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">.</span><span class="na">sum</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">sumRange</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">sumRange</span><span class="o">(</span><span class="n">root</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">int</span> <span class="nf">sumRange</span><span class="o">(</span><span class="n">SegmentTreeNode</span> <span class="n">node</span><span class="o">,</span> <span class="kt">int</span> <span class="n">lo</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hi</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">start</span> <span class="o">==</span> <span class="n">lo</span> <span class="o">&amp;&amp;</span> <span class="n">node</span><span class="o">.</span><span class="na">end</span> <span class="o">==</span> <span class="n">hi</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="na">sum</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="na">start</span> <span class="o">+</span> <span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">end</span> <span class="o">-</span> <span class="n">node</span><span class="o">.</span><span class="na">start</span><span class="o">)</span> <span class="o">/</span> <span class="n">2</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="o">(</span><span class="n">hi</span> <span class="o">&lt;=</span> <span class="n">mid</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">sumRange</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">lo</span><span class="o">,</span> <span class="n">hi</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">lo</span> <span class="o">&gt;</span> <span class="n">mid</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">sumRange</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">,</span> <span class="n">lo</span><span class="o">,</span> <span class="n">hi</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">sumRange</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">lo</span><span class="o">,</span> <span class="n">mid</span><span class="o">)</span> <span class="o">+</span> <span class="n">sumRange</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">hi</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">SegmentTreeNode</span> <span class="nf">buildTree</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">,</span> <span class="kt">int</span> <span class="n">lo</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hi</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="o">(</span><span class="n">lo</span> <span class="o">&gt;</span> <span class="n">hi</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">SegmentTreeNode</span> <span class="n">node</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SegmentTreeNode</span><span class="o">(</span><span class="n">lo</span><span class="o">,</span> <span class="n">hi</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="o">(</span><span class="n">lo</span> <span class="o">==</span> <span class="n">hi</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">node</span><span class="o">.</span><span class="na">sum</span> <span class="o">=</span> <span class="n">nums</span><span class="o">[</span><span class="n">lo</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">lo</span> <span class="o">+</span> <span class="o">(</span><span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span><span class="o">)</span> <span class="o">/</span> <span class="n">2</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">node</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="n">buildTree</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="n">lo</span><span class="o">,</span> <span class="n">mid</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">node</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="n">buildTree</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">hi</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">node</span><span class="o">.</span><span class="na">sum</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">.</span><span class="na">sum</span> <span class="o">+</span> <span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">.</span><span class="na">sum</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">node</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Your NumArray object will be instantiated and called as such:
+</span></span></span><span class="line"><span class="cl"><span class="c1">// NumArray numArray = new NumArray(nums);
+</span></span></span><span class="line"><span class="cl"><span class="c1">// numArray.sumRange(0, 1);
+</span></span></span><span class="line"><span class="cl"><span class="c1">// numArray.update(1, 10);
+</span></span></span><span class="line"><span class="cl"><span class="c1">// numArray.sumRange(1, 2);
+</span></span></span></code></pre></div><p>然而实际上，由于值域一般都很大，所以需要动态开点的技术。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @Description: 线段树（动态开点）
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @Author: LFool
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @Date 2022/6/7 09:15
+</span></span></span><span class="line"><span class="cl"><span class="cm"> **/</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SegmentTreeDynamic</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">class</span> <span class="nc">Node</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">val</span><span class="o">,</span> <span class="n">add</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">N</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="n">1e9</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">Node</span> <span class="n">root</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">(</span><span class="n">Node</span> <span class="n">node</span><span class="o">,</span> <span class="kt">int</span> <span class="n">start</span><span class="o">,</span> <span class="kt">int</span> <span class="n">end</span><span class="o">,</span> <span class="kt">int</span> <span class="n">l</span><span class="o">,</span> <span class="kt">int</span> <span class="n">r</span><span class="o">,</span> <span class="kt">int</span> <span class="n">val</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">l</span> <span class="o">&lt;=</span> <span class="n">start</span> <span class="o">&amp;&amp;</span> <span class="n">end</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">node</span><span class="o">.</span><span class="na">val</span> <span class="o">+=</span> <span class="o">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span> <span class="o">*</span> <span class="n">val</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">node</span><span class="o">.</span><span class="na">add</span> <span class="o">+=</span> <span class="n">val</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="o">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">end</span><span class="o">)</span> <span class="o">&gt;&gt;</span> <span class="n">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pushDown</span><span class="o">(</span><span class="n">node</span><span class="o">,</span> <span class="n">mid</span> <span class="o">-</span> <span class="n">start</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">mid</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">l</span> <span class="o">&lt;=</span> <span class="n">mid</span><span class="o">)</span> <span class="n">update</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">start</span><span class="o">,</span> <span class="n">mid</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">,</span> <span class="n">val</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">r</span> <span class="o">&gt;</span> <span class="n">mid</span><span class="o">)</span> <span class="n">update</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">end</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">,</span> <span class="n">val</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pushUp</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">query</span><span class="o">(</span><span class="n">Node</span> <span class="n">node</span><span class="o">,</span> <span class="kt">int</span> <span class="n">start</span><span class="o">,</span> <span class="kt">int</span> <span class="n">end</span><span class="o">,</span> <span class="kt">int</span> <span class="n">l</span><span class="o">,</span> <span class="kt">int</span> <span class="n">r</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">l</span> <span class="o">&lt;=</span> <span class="n">start</span> <span class="o">&amp;&amp;</span> <span class="n">end</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="o">)</span> <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="o">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">end</span><span class="o">)</span> <span class="o">&gt;&gt;</span> <span class="n">1</span><span class="o">,</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pushDown</span><span class="o">(</span><span class="n">node</span><span class="o">,</span> <span class="n">mid</span> <span class="o">-</span> <span class="n">start</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">mid</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">l</span> <span class="o">&lt;=</span> <span class="n">mid</span><span class="o">)</span> <span class="n">ans</span> <span class="o">+=</span> <span class="n">query</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">start</span><span class="o">,</span> <span class="n">mid</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">r</span> <span class="o">&gt;</span> <span class="n">mid</span><span class="o">)</span> <span class="n">ans</span> <span class="o">+=</span> <span class="n">query</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">end</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ans</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">pushUp</span><span class="o">(</span><span class="n">Node</span> <span class="n">node</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">node</span><span class="o">.</span><span class="na">val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">.</span><span class="na">val</span> <span class="o">+</span> <span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">pushDown</span><span class="o">(</span><span class="n">Node</span> <span class="n">node</span><span class="o">,</span> <span class="kt">int</span> <span class="n">leftNum</span><span class="o">,</span> <span class="kt">int</span> <span class="n">rightNum</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">left</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="n">node</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">right</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="n">node</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">add</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="k">return</span> <span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">.</span><span class="na">val</span> <span class="o">+=</span> <span class="n">node</span><span class="o">.</span><span class="na">add</span> <span class="o">*</span> <span class="n">leftNum</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">.</span><span class="na">val</span> <span class="o">+=</span> <span class="n">node</span><span class="o">.</span><span class="na">add</span> <span class="o">*</span> <span class="n">rightNum</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 对区间进行「加减」的更新操作，下推懒惰标记时需要累加起来，不能直接覆盖
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">.</span><span class="na">add</span> <span class="o">+=</span> <span class="n">node</span><span class="o">.</span><span class="na">add</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">.</span><span class="na">add</span> <span class="o">+=</span> <span class="n">node</span><span class="o">.</span><span class="na">add</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">node</span><span class="o">.</span><span class="na">add</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 作者：LFool⚡
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 链接：https://leetcode.cn/problems/range-module/
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 来源：力扣（LeetCode）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+</span></span></span></code></pre></div><p>特别的，c++里面new操作比较重，所以一般会有一个这个板子来管理内存</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//arraylist 以SIZE为周期分配内存，delete的内存也可以被回收有点牛的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CachedObj</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span><span class="o">*</span> <span class="k">operator</span> <span class="k">new</span><span class="p">(</span><span class="n">size_t</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">head</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">T</span><span class="o">*</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">[</span><span class="n">SIZE</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">SIZE</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">add</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">T</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">head</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">CachedObj</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span> <span class="nf">delete</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="n">add</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">p</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="o">~</span><span class="n">CachedObj</span><span class="p">()</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="n">T</span><span class="o">*</span> <span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="k">const</span> <span class="n">size_t</span> <span class="n">SIZE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">void</span> <span class="nf">add</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">-&gt;</span><span class="n">CachedObj</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">head</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="n">CachedObj</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">head</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">size_t</span> <span class="n">CachedObj</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">SIZE</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Node</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CachedObj</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Node</span><span class="o">*</span> <span class="n">left</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Node</span><span class="o">*</span> <span class="n">right</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">add</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><h5 id="例题-1">例题</h5>
+<p><a href="https://leetcode.cn/problems/range-module/solutions/1612955/by-lfool-eo50/?envType=daily-question&amp;envId=2023-11-12">线段树例题</a></p>
+<h5 id="bit-树状数组-binary-indexed-tree">BIT 树状数组 Binary Indexed Tree</h5>
+<h6 id="引入">引入</h6>
+<p>利用数组实现前缀和，查询本来是 O(1)，但是对于频繁更新的数组，每次重新计算前缀和，时间复杂度 O(n)。此时树状数组的优势便立即显现。</p>
+<p><img src="https://haohui03.github.io/blog_repo/images/restored/lDrtoVABvh4We2s-ef16054d0c37.png" alt="image.png"> <img src="https://haohui03.github.io/blog_repo/images/restored/DBIfX4TZrQmuFNl-a8d9ea0cfef8.png" alt="image.png"></p>
+<p>例如上图中 A 和 B 都是数组。A 数组正常存储数据，B 数组是树状数组。</p>
+<ol>
+<li>节点意义</li>
+</ol>
+<p>在树状数组中，所有的奇数下标的节点的含义是叶子节点，表示单点，它存的值是原数组相同下标存的值。例如上图中 B1，B3，B5，B7 分别存的值是 A1，A3，A5，A7。所有的偶数下标的节点均是父节点。父节点内存的是区间和。例如 B4 内存的是 B1 + B2 + B3 + A4 = A1 + A2 + A3 + A4。这个区间的左边界是该父节点最左边叶子节点对应的下标，右边界就是自己的下标。例如 B8 表示的区间左边界是 B1，右边界是 B8，所以它表示的区间和是 A1 + A2 + …… + A8。</p>
+<ol start="2">
+<li>代码</li>
+</ol>
+<p><strong>全是字字珠玑</strong></p>
+<p>x如果为左子结点，则父结点的编号是x+lowbit(x)，</p>
+<p>x如果为右子结点，则父结点的编号是x-lowbit(x)</p>
+<p>Time Complexity - O(nlogn) build， O(logn) update， O(logn) rangeSum， Space Complexity - O(n)</p>
+<p>很 有意思的构建，以数组nums = {1, 2, 3, 4, 5, 6, 7, 8}为例，这个数组长度为8。 跟dynamic programming的预处理很像，我们先建立一个长度为nums.length + 1 = 9的数组BIT。接下来遍历数组nums，对BIT数组进行update(i + 1, nums[i])。这里BIT数组每个值BIT[i]代表nums数组里在i之前的部分元素和。原理是像自然数可以被表示为2n的和一样，把nums数组 里到0到i的sum表示成2n的和，从而导致update和rangeSum都可以用O(logn)的时间求出来。这里构建的时候可以有几种写法，主要就 是利用当前i的least significante 1来确定到底BIT[i]要保存多少原数组的值。这里借用algorithmist的原话”Every index in the cumulative sum array, say i, is responsible for the cumulative sum from the index i to (i - (1«r) + 1)。” 构建过程中可以用 (i &amp; -i)来找到least significate 1，之后来进行i = i + (i &amp; -i)来尝试从小到大计算下一个BIT数组中被影响的元素。 而rangeSum的时候则使用i = i - (i &amp; -i)来从大到小查找从0到i - 1的sum。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">NumArray</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">BIT</span><span class="o">[];</span>               <span class="c1">// Binary Indexed Tree = Fenwick Tree
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">NumArray</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">BIT</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">nums</span><span class="o">.</span><span class="na">length</span> <span class="o">+</span> <span class="n">1</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">init</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">nums</span> <span class="o">=</span> <span class="n">nums</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">val</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">BIT</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">BIT</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">+=</span> <span class="n">val</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="o">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="o">-</span><span class="n">i</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">val</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">val</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">init</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">delta</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">sumRange</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">getSum</span><span class="o">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span> <span class="o">-</span> <span class="n">getSum</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">int</span> <span class="nf">getSum</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="o">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sum</span> <span class="o">+=</span> <span class="n">BIT</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="o">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="o">-</span><span class="n">i</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">sum</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><h6 id="参考">参考</h6>
+<ol>
+<li><a href="https://halfrost.com/binary_indexed_tree/">聊聊树状数组 Binary Indexed Tree</a></li>
+</ol>
+<h5 id="回到这个题">回到这个题</h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// 树状数组模板（维护前缀最大值）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">class</span> <span class="nc">BIT</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">tree</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">BIT</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="o">:</span> <span class="n">tree</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">LLONG_MIN</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">tree</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">tree</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">tree</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">i</span> <span class="o">+=</span> <span class="n">i</span> <span class="o">&amp;</span> <span class="o">-</span><span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">long</span> <span class="kt">long</span> <span class="nf">pre_max</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">long</span> <span class="kt">long</span> <span class="n">res</span> <span class="o">=</span> <span class="n">LLONG_MIN</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">tree</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">i</span> <span class="o">&amp;=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">long</span> <span class="kt">long</span> <span class="n">maxBalancedSubsequenceSum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 离散化 nums[i]-i
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">auto</span> <span class="n">b</span> <span class="o">=</span> <span class="n">nums</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sort</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">b</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">b</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">b</span><span class="p">.</span><span class="n">end</span><span class="p">()),</span> <span class="n">b</span><span class="p">.</span><span class="n">end</span><span class="p">());</span> <span class="c1">// 去重
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">        <span class="n">BIT</span> <span class="n">t</span> <span class="o">=</span> <span class="n">BIT</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// j 为 nums[i]-i 离散化后的值（从 1 开始）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">lower_bound</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">b</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="n">b</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">long</span> <span class="kt">long</span> <span class="n">f</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">pre_max</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="mi">0LL</span><span class="p">)</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">f</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">t</span><span class="p">.</span><span class="n">pre_max</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>他其实是用dp的思想，但是用树状数组来维护前缀最大值，这样就可以在O(logn)的时间内求出前缀最大值，而不用每次都遍历一遍。</p>
+<p>这个思路其实和逆序对差不多（逆序对也是BIT的经典题目，通过逆序来找小一个数的前缀和，就能找到比目前这个数小的数目<a href="https://www.cnblogs.com/COLIN-LIGHTNING/p/8621294.html">可以看这个</a>）</p>
+<p>这题的话通过正序dp来累积最大值，每次在状态转移的时候可以在logn时间找到前面的最大值来更新现在的。</p>
+<p>还要学一下这个离散化的写法，复制-&gt;排序-&gt;去重。然后用下标来表示原来的值。</p>
+<p>只能说太亏贼了</p>
+<h5 id="差分数组">差分数组</h5>
+<p>上面的两个都是单点更新，区间查询。但是有时候我们需要区间更新，单点查询。这时候就需要差分数组了。</p>
+<p>其实原理很简单，更新的区间就是在开始和结尾记录一下，然后查单点的话就是一次遍历就能获取所有点的值。</p>
+<p>这个也常要用到离散化，可以用map记录index，val，然后把index存到一个slice，然后排序。查询的时候查比要查的id小的sum就可以。</p>
+<h4 id="lru和lfu">LRU和LFU</h4>
+<p>其实这两个之前都写过</p>
+<p>LRU：双向列表加map</p>
+<p>LFU：两个map加多个双向列表</p>
+<p>但是还是看看这个：<a href="https://halfrost.com/lru_lfu_interview/">究极顶级的LRU&amp;LFU</a></p>
+<h4 id="floyd">Floyd</h4>
+<p>floyd算法用于计算图中两点之间的最短路径</p>
+<p>核心思想就dp</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">dfs<span class="o">(</span>k,i,j<span class="o">)=</span>min<span class="o">(</span>dfs<span class="o">(</span>k−1,i,j<span class="o">)</span>,dfs<span class="o">(</span>k−1,i,k<span class="o">)</span>+dfs<span class="o">(</span>k−1,k,j<span class="o">))</span>
+</span></span></code></pre></div><h4 id="分组循环">分组循环</h4>
+<p>每日一题遇到的<a href="https://leetcode.cn/problems/longest-even-odd-subarray-with-threshold/description/?envType=daily-question&amp;envId=2023-11-16">2760. 最长奇偶子数组</a></p>
+<p>我的代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">longestAlternatingSubarray</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">,</span> <span class="kt">int</span> <span class="n">threshold</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">l</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">r</span><span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">res</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">()){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="o">&amp;&amp;</span><span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">&lt;=</span><span class="n">threshold</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">l</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">&gt;=</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">r</span><span class="o">=</span><span class="n">l</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">(</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="o">&lt;</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">()){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">%</span><span class="mi">2</span><span class="o">!=</span><span class="n">nums</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="o">%</span><span class="mi">2</span><span class="o">&amp;&amp;</span><span class="n">nums</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;=</span><span class="n">threshold</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">r</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">            <span class="n">res</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="n">r</span><span class="o">-</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">l</span><span class="o">=</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">r</span><span class="o">&gt;=</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>优雅的代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">longestAlternatingSubarray</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">nums</span><span class="p">,</span> <span class="kt">int</span> <span class="n">threshold</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span> <span class="o">||</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">i</span><span class="o">++</span><span class="p">;</span> <span class="c1">// 直接跳过
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">start</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// 记录这一组的开始位置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">i</span><span class="o">++</span><span class="p">;</span> <span class="c1">// 开始位置已经满足要求，从下一个位置开始判断
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">&amp;&amp;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">threshold</span> <span class="o">&amp;&amp;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 从 start 到 i-1 是满足题目要求的子数组
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">ans</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">start</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">作者：灵茶山艾府</span>
+</span></span><span class="line"><span class="cl"><span class="err">链接：</span><span class="nl">https</span><span class="p">:</span><span class="c1">//leetcode.cn/problems/longest-even-odd-subarray-with-threshold/
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="err">来源：力扣（</span><span class="n">LeetCode</span><span class="err">）</span>
+</span></span><span class="line"><span class="cl"><span class="err">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span>
+</span></span></code></pre></div><p>模板：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nl">n</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">start</span> <span class="o">=</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="n">and</span> <span class="p">...</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="cp"># 从 start 到 i-1 是一组
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="cp"># 下一组从 i 开始，无需 i += 1
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="err">作者：灵茶山艾府</span>
+</span></span><span class="line"><span class="cl"><span class="err">链接：</span><span class="nl">https</span><span class="p">:</span><span class="c1">//leetcode.cn/problems/longest-even-odd-subarray-with-threshold/
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="err">来源：力扣（</span><span class="n">LeetCode</span><span class="err">）</span>
+</span></span><span class="line"><span class="cl"><span class="err">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span>
+</span></span></code></pre></div><h4 id="689-三个无重叠子数组的最大和httpsleetcodecnproblemsmaximum-sum-of-3-non-overlapping-subarraysdescriptionenvtypedaily-questionenvid2023-11-19"><a href="https://leetcode.cn/problems/maximum-sum-of-3-non-overlapping-subarrays/description/?envType=daily-question&amp;envId=2023-11-19">689. 三个无重叠子数组的最大和</a></h4>
+<p>算最大和其实很简单，但是推算位置还是没见过的。其实说难也不难，就是通过dp最大值往后倒推，看这个值是前面那个值推过来的。如果说字典序的话，就是看dp的顺序。</p>
+
+  </article>
+
+  
+  
+    
+    <div class="author-card">
+    <div class="underline"></div>
+    <div class="author-box">
+      <div class="author-image"><a href="https://haohui03.github.io/blog_repo/zh-cn/about/"><img src="https://haohui03.github.io/blog_repo/images/yehh.png" alt="叶浩辉" /></a></div>
+      <div class="author-content">
+      <p class="author-title">作者</p>
+      <p class="author-name">叶浩辉</p>
+      <p class="author-desc">一起分享与进步吧。</p>
+      </div>
+    </div>
+  </div>
+    
+  
+  
+
+
+</div>
+
+  </main><div class="footer gradient-2">
+  <div class="container footer-container ">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        <div class="footer-title">网站地图</div>
+        <ul class="list-unstyled">
+            
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/tags/">标签</a></li>
+              
+              
+                <li><a href="https://haohui03.github.io/blog_repo/zh-cn/categories/">分类</a></li>
+              
+            
+            
+            
+            <li><a rel="alternate" type="application/rss&#43;xml" href="https://haohui03.github.io/blog_repo/zh-cn/index.xml"><i class="fas fa-rss-square"></i> RSS订阅</a></li>
+            
+            
+            
+        </ul>
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">社群</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">GitHub</a></li>
+          
+        </ul>
+        
+      </div>
+      <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+        
+        <div class="footer-title">友链</div>
+        <ul class="list-unstyled">
+          
+          <li><a href="https://github.com/shaform/hugo-theme-den/" rel="noopener" target="_blank">关于我</a></li>
+          
+        </ul>
+        
+      </div> 
+      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <p class="pull-right text-right">
+          <small><em>Proudly powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a></em></small><br/>
+          <small><em>Theme - <a href="https://github.com/shaform/hugo-theme-den" rel="noopener" target="_blank">Den</a></em></small><br/>
+          <small>
+            &copy; 
+            yehh
+            
+              2017 -
+            2026
+          </small>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>
