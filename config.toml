@@ -139,6 +139,16 @@ defaultContentLanguageInSubdir = true
     weight = 10
     identifier = "about-me"
     url = "https://github.com/shaform/hugo-theme-den/"
+  [[languages.en.menu.links]]
+    name = "Dan Luu"
+    weight = 20
+    identifier = "dan-luu"
+    url = "https://danluu.com/"
+  [[languages.en.menu.links]]
+    name = "Marc Brooker"
+    weight = 30
+    identifier = "marc-brooker"
+    url = "https://brooker.co.za/blog/"
 
 [languages.zh-cn]
   languageCode = "zh-cn"
@@ -171,3 +181,13 @@ defaultContentLanguageInSubdir = true
     weight = 10
     identifier = "about-me"
     url = "https://github.com/shaform/hugo-theme-den/"
+  [[languages.zh-cn.menu.links]]
+    name = "Dan Luu"
+    weight = 20
+    identifier = "dan-luu"
+    url = "https://danluu.com/"
+  [[languages.zh-cn.menu.links]]
+    name = "Marc Brooker"
+    weight = 30
+    identifier = "marc-brooker"
+    url = "https://brooker.co.za/blog/"
